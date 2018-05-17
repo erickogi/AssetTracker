@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.assettrack.assettrack">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Views.Engineer.EngineerMainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Shared.Login.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Views.Admin.Assets.ActivityManageAssets"
+            android:label="@string/title_activity_manage_assets"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Admin.Clients.ActivityManageClients"
+            android:label="@string/title_activity_manage_clients"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Admin.Engineers.ActivityManageEngineers"
+            android:label="@string/title_activity_manage_engineers"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Admin.Issues.ActivityManageIssues"
+            android:label="@string/title_activity_manage_issues"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Engineer.NewAsset.Installation"
+            android:label="@string/title_activity_installation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Engineer.ListAsset.AssetList"
+            android:label="@string/title_activity_asset_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

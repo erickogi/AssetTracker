@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#795548 </color>
+    <color name="colorPrimaryDark">#5D4037</color>
+    <color name="colorAccent">#9E9E9E </color>
+    <color name="colorA">#65D7A0</color>
+    <color name="colorB">#C6DCF7 </color>
+    <color name="colorOver">#c8f8f8f8</color>
+
+    <color name="background_color">#009688</color>
+    <color name="button_selectorcolor">#9E9E9E</color>
+    <!--<color name="colorPrimary">#28C678 </color>-->
+    <!--<color name="colorPrimaryDark">#1C286C</color>-->
+    <!--<color name="colorAccent">#424B90 </color>-->
+    <!--<color name="colorA">#65D7A0</color>-->
+    <!--<color name="colorB">#C6DCF7 </color>-->
+    <color name="line">#b7b4b4</color>
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white_greyish">#EEEEEE</color>
+
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="divideer">#BDBDBD</color>
+
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurple">#7c4dff</color>
+    <color name="yello">#ffb300</color>
+    <color name="green">#00bfa5</color>
+    <color name="darkblue">#23283a</color>
+    <color name="testcolorblue">#152b38</color>
+    <color name="pink">#fe104d</color>
+
+    <color name="black_overlay">#66000000</color>
+
+
+    <color name="drawertext">#000000</color>
+
+
+    <color name="transparentm">#00000000</color>
+
+
+    <color name="material_orange_500">#f8971c</color>
+
+
+    <color name="colorOverlay">#d2ffffff</color>
+    <color name="divider">#d7d7db</color>
+    <color name="negative">#ff3b30</color>
+    <color name="others">#007aff</color>
+    <color name="positive">#007aff</color>
+    <color name="text_actionsheet_msg">#8f8f8f</color>
+    <color name="text_actionsheet_title">#000000</color>
+    <color name="text_default">#000000</color>
+    <color name="text_input">#5c5c5c</color>
+    <color name="transparent">#00FFFFFF</color>
+
+
+    <color name="drawertextftft">#FFFFFF</color>
+
+    <color name="red">#f12d2a</color>
+
+
+    <color name="imagepicker_white">#FFFFFF</color>
+    <color name="imagepicker_black">#000000</color>
+    <color name="imagepicker_black_alpha_50">#80000000</color>
+    <color name="imagepicker_grey">#9E9E9E</color>
+    <color name="imagepicker_dark">#323232</color>
+    <color name="imagepicker_teal">#009688</color>
+    <color name="imagepicker_teal_dark">#00796B</color>
+    <color name="imagepicker_pink">#E91E63</color>
+
+
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#01A368</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+
+
+    <color name="colorBottomNavigationAccent">#FF4081</color>
+    <color name="colorBottomNavigationActiveColored">#FFFFFF</color>
+    <color name="colorBottomNavigationDisable">#3A000000</color>
+    <color name="colorBottomNavigationInactive">#747474</color>
+    <color name="colorBottomNavigationInactiveColored">#50FFFFFF</color>
+    <color name="colorBottomNavigationNotification">#F63D2B</color>
+    <color name="colorBottomNavigationPrimary">#3F51B5</color>
+    <color name="colorBottomNavigationPrimaryDark">#303F9F</color>
+    <color name="colorBottomNavigationSelectedBackground">#17000000</color>
+
+</resources>

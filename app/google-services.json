@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "446907116112",
+    "firebase_url": "https://assettracker-dcdb1.firebaseio.com",
+    "project_id": "assettracker-dcdb1",
+    "storage_bucket": "assettracker-dcdb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446907116112:android:fc84989d4350e857",
+        "android_client_info": {
+          "package_name": "com.assettrack.assettrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446907116112-fjdgubm2bfj97go2frnqmcffqi6ktjsa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.assettrack.assettrack",
+            "certificate_hash": "87fbf7edadff0dff22c4f9c6574c15f1711b24c1"
+          }
+        },
+        {
+          "client_id": "446907116112-7djep5rlgei13774mjql9a70b51jevdr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZMZH4xDE4dntm9GhTyHPLlbznTi4Dz8Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446907116112-7djep5rlgei13774mjql9a70b51jevdr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
