@@ -60,12 +60,13 @@ public class InstallationStepFour extends Fragment implements BlockingStep, Imag
 
     public static final int READ_WRITE_STORAGE = 52;
     Imageutils imageutils;
-    private RadioGroup rgAssetStatus;
-    private RadioButton rbOkay, rbFaulty;
-    private TextInputEditText edtScan;
     private ImageView img;
     private Button btnImage;
     private String path;
+    private RadioGroup rgAssetStatus;
+    private RadioButton rbOkay, rbFaulty;
+    private TextInputEditText edtScan;
+
     private ProgressDialog mProgressDialog;
     private Button btnAddTrrainees;
     private ListView recyclerView;

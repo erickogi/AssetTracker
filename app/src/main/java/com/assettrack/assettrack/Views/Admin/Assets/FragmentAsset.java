@@ -56,15 +56,17 @@ import static com.assettrack.assettrack.Constatnts.GLConstants.Companion;
 public class FragmentAsset extends Fragment {
     AssetListAdapter listAdapter;
     ArrayList<AssetModel> assetModels;
+    private RecyclerView recyclerView;
+    private StaggeredGridLayoutManager mStaggeredLayoutManager;
+    private LinearLayout linearLayoutEmpty;
+
+
     String searchtext = "";
     private View view;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
     private EditText edtSearch;
-    private LinearLayout linearLayoutEmpty;
     private SearchView search;
-    private RecyclerView recyclerView;
-    private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private ActionMode mActionMode;
     private int STATUS_ID;
     private ActionMode.Callback callback = new ActionMode.Callback() {
