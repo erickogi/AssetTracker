@@ -1,18 +1,28 @@
 package com.assettrack.assettrack.Models;
 
-public class cus {
+public class EngineerModel {
 
-   private int id;
-   private String firstname;
-   private String lastname;
-   private String employeeid;
-   private int role;
-   private String email;
-   private String designation;
-   private String created_at;
+    private int id;
+    private String firstname;
+    private String lastname;
+    private String employeeid;
+    private int role;
+    private String email;
+    private String phoneNumber;
+    private String designation;
+    private String created_at;
     private String updated_at;
- private String full_name;
+    private String full_name;
     private String rolename;
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     public int getId() {
         return id;
@@ -62,6 +72,14 @@ public class cus {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getDesignation() {
         return designation;
     }
@@ -102,3 +120,4 @@ public class cus {
         this.rolename = rolename;
     }
 }
+

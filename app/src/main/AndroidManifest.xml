@@ -16,6 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="barcode" />
+
         <activity
             android:name=".Views.Engineer.EngineerMainActivity"
             android:label="@string/app_name"
@@ -53,6 +57,14 @@
         <activity
             android:name=".Views.Engineer.ListAsset.AssetList"
             android:label="@string/title_activity_asset_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Shared.Asset.AssetActivity"
+            android:label="@string/title_activity_asset"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Engineer.Scanner"
+            android:label="@string/title_activity_scanner"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

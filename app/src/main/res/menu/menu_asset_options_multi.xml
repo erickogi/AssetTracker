@@ -16,6 +16,7 @@
         android:title="Update status"
         app:showAsAction="never" />
     <item
+        android:visible="false"
         android:id="@+id/share"
         android:icon="@drawable/ic_share_black_24dp"
         android:orderInCategory="100"

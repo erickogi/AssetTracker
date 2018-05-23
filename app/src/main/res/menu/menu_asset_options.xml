@@ -17,6 +17,7 @@
         android:title="Delete asset"
         app:showAsAction="never" />
     <item
+        android:visible="false"
         android:id="@+id/assign"
         android:orderInCategory="100"
         android:title="Assign engineer"
@@ -27,6 +28,7 @@
         android:title="Update status"
         app:showAsAction="never" />
     <item
+        android:visible="false"
         android:id="@+id/share"
         android:orderInCategory="100"
         android:title="Share"

@@ -1,8 +1,8 @@
 package com.assettrack.assettrack.Views.Engineer
 
 import android.Manifest
-import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,18 +12,19 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import com.androidnetworking.error.ANError
+import com.assettrack.assettrack.Constatnts.APiConstants
 import com.assettrack.assettrack.Data.PrefManager
+import com.assettrack.assettrack.Data.Request
+import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener
 import com.assettrack.assettrack.R
-import com.assettrack.assettrack.Utils.Constants
-import com.assettrack.assettrack.Utils.MyToast
 import com.assettrack.assettrack.Views.Engineer.ListAsset.AssetList
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
@@ -32,16 +33,14 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.nightonke.boommenu.BoomMenuButton
 import com.special.ResideMenu.ResideMenu
 import com.special.ResideMenu.ResideMenuItem
-
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
 
 class EngineerMainActivity : AppCompatActivity() {
     private var resideMenu: ResideMenu? = null
     private val bmb: BoomMenuButton? = null
     private val img_fab: ImageView? = null
     internal var i: Int = 0
-
+    lateinit var progress: ProgressDialog
     internal fun setResideMenu() {
         resideMenu = ResideMenu(this)
         resideMenu!!.setBackground(R.drawable.background_bf)
@@ -86,10 +85,13 @@ class EngineerMainActivity : AppCompatActivity() {
 
     }
 
+    private lateinit var prefManager: PrefManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        prefManager = PrefManager(this)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -138,6 +140,7 @@ class EngineerMainActivity : AppCompatActivity() {
                 }
                 .build()
         materialBarcodeScanner.startScan()
+
     }
     private fun startDialog() {
 
@@ -192,7 +195,9 @@ class EngineerMainActivity : AppCompatActivity() {
     fun addNewAssetr(view: View) {}
 
     fun addNewAsset(view: View) {
-        startActivity(Intent(this, Installation::class.java))
+        var intent = Intent(this, Installation::class.java)
+        intent.putExtra("state", 2)
+        startActivity(intent)
         //
     }
 
@@ -214,10 +219,44 @@ class EngineerMainActivity : AppCompatActivity() {
 
 
 
+            searchAsset(edtCode.text)
 
 
         }
 
+
+    }
+
+    private fun searchAsset(text: Editable?) {
+        progress = ProgressDialog(this)
+        progress.setMessage("Working ...")
+        progress.setCancelable(false)
+        progress.isIndeterminate
+        progress.setTitle("Search asset")
+        progress.show()
+
+        var params: HashMap<String, String> = HashMap()
+        var url = APiConstants.searchasset
+
+        Request.postRequest(url, params, prefManager.getToken(), object : RequestListener {
+            override fun onError(error: ANError) {
+
+                progress.dismiss()
+
+            }
+
+            override fun onError(error: String) {
+
+                progress.dismiss()
+
+            }
+
+            override fun onSuccess(response: String) {
+
+
+            }
+
+        })
 
     }
 
@@ -228,12 +267,6 @@ class EngineerMainActivity : AppCompatActivity() {
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 100)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

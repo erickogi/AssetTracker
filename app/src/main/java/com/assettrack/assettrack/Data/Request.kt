@@ -1,83 +1,125 @@
 package com.assettrack.assettrack.Data
 
 import android.util.Log
-
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.StringRequestListener
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener
-
-import java.util.HashMap
+import org.json.JSONObject
+import java.util.*
 
 class Request {
 
 
-    fun postRequest(url: String, params: HashMap<String, String>, token: String?, listener: RequestListener) {
+    companion object {
+        fun postRequest(url: String, params: HashMap<String, String>, token: String?, listener: RequestListener) {
 
-        var mtoken = ""
-        if (token != null) {
+            var mtoken = ""
+            if (token != null) {
 
-            mtoken = token
+                mtoken = token
 
+            }
+
+            AndroidNetworking.post(url)
+                    .addBodyParameter(params)
+                    .addHeaders("Authorization", "Bearer $mtoken")
+                    .addHeaders("Accept", "application/json")
+
+
+                    .setTag("test")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(object : StringRequestListener {
+                        override fun onResponse(response: String) {
+                            // do anything with response
+                            listener.onSuccess(response)
+
+                        }
+
+                        override fun onError(error: ANError) {
+                            // handle error
+
+                            Log.d("eww", error.toString())
+                            listener.onError("" + error.errorBody)
+                            //  listener.onError(error)
+                        }
+                    })
         }
 
-        AndroidNetworking.post(url)
-                .addBodyParameter(params)
-                .addHeaders("Authorization", "Bearer $mtoken")
-                .addHeaders("Accept", "application/json")
+        fun getRequest(url: String, token: String?, listener: RequestListener) {
+            var mtoken = ""
+            if (token != null) {
+
+                mtoken = token
+
+            }
 
 
-                .setTag("test")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsString(object : StringRequestListener {
-                    override fun onResponse(response: String) {
-                        // do anything with response
-                        listener.onSuccess(response)
+            AndroidNetworking.get(url)
 
-                    }
 
-                    override fun onError(error: ANError) {
-                        // handle error
+                    .addHeaders("Authorization", "Bearer $mtoken")
+                    .addHeaders("Accept", "application/json")
 
-                        Log.d("eww", error.toString())
-                        listener.onError("" + error.errorBody)
-                    }
-                })
-    }
 
-    fun getRequest(url: String, token: String?, listener: RequestListener) {
-        var mtoken = ""
-        if (token != null) {
+                    .setTag("test")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(object : StringRequestListener {
+                        override fun onResponse(response: String) {
+                            // do anything with response
+                            listener.onSuccess(response)
 
-            mtoken = token
+                        }
 
+                        override fun onError(error: ANError) {
+                            // handle error
+                            listener.onError(error.errorBody)
+                        }
+                    })
         }
 
 
-        AndroidNetworking.get(url)
+        fun putRequest(url: String, params: JSONObject, token: String?, listener: RequestListener) {
+            var mtoken = ""
+            if (token != null) {
+
+                mtoken = token
+
+            }
+
+            Log.d("putrequest", params.toString())
+
+            AndroidNetworking.put(url)
 
 
-                .addHeaders("Authorization", "Bearer $mtoken")
-                .addHeaders("Accept", "application/json")
+                    .addHeaders("Authorization", "Bearer $mtoken")
+                    .addHeaders("Accept", "application/json")
 
+                    //.addBodyParameter(params)
+                    // .addApplicationJsonBody(params)
+                    .addJSONObjectBody(params)
+                    //.setContentType(ContentT)
 
-                .setTag("test")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsString(object : StringRequestListener {
-                    override fun onResponse(response: String) {
-                        // do anything with response
-                        listener.onSuccess(response)
+                    .setTag("test")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(object : StringRequestListener {
+                        override fun onResponse(response: String) {
+                            // do anything with response
+                            listener.onSuccess(response)
 
-                    }
+                        }
 
-                    override fun onError(error: ANError) {
-                        // handle error
-                        listener.onError(error.errorBody)
-                    }
-                })
+                        override fun onError(error: ANError) {
+                            // handle error
+                            listener.onError(error.errorBody)
+                        }
+                    })
+        }
+
     }
 
 }

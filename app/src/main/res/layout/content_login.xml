@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/login_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:orientation="vertical" >
 
@@ -33,7 +33,6 @@
             android:layout_marginTop="20dp"
             android:padding="10dp"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/email"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="@string/email"
@@ -49,12 +48,12 @@
             android:background="@color/white_greyish" />
 
         <EditText
+            android:layout_marginTop="12dp"
             android:id="@+id/input_password"
             android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/password"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="@string/passowrd"
@@ -64,6 +63,11 @@
             android:textColorHint="@color/white"
             android:textSize="16sp" />
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/white_greyish" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -72,6 +76,7 @@
             android:paddingTop="8dp" >
 
             <CheckBox
+                android:visibility="gone"
                 android:id="@+id/show_hide_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,7 +103,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@drawable/loginbutton_selector"
             android:padding="3dp"
             android:text="@string/login"
             android:textColor="#009688"
@@ -107,6 +111,7 @@
     </LinearLayout>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/createAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

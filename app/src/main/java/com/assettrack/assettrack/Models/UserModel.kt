@@ -3,6 +3,9 @@ package com.assettrack.assettrack.Models
 class UserModel {
 
 
+    //companion object {
+
+
     private var id: Int = 0
     private var firstname: String? = null
     private var lastname: String? = null
@@ -15,6 +18,18 @@ class UserModel {
     private var full_name: String? = null
     private var rolename: String? = null
     private var token: String? = null
+    private var phoneNumber: String? = null
+
+    constructor()
+
+
+    fun getPhoneNumber(): String? {
+        return phoneNumber
+    }
+
+    fun setPhoneNumber(phoneNumber: String) {
+        this.phoneNumber = phoneNumber
+    }
 
     fun getToken(): String? {
         return token
@@ -111,4 +126,5 @@ class UserModel {
     fun setRolename(rolename: String) {
         this.rolename = rolename
     }
+    //}
 }

@@ -19,18 +19,17 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 
 import com.assettrack.assettrack.Constatnts.GLConstants;
+import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.view.TimePickerView;
-
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
@@ -114,24 +113,24 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
 
     private void initData() {
 
-//        if (GLConstants.assetModel != null) {
-//            AssetModel assetModel = GLConstants.assetModel;
-//            if (GLConstants.assetModel.getEngineer_remarks() != null) {
-//                //customerID=assetModel.getCustomer_id();
-//                edtEngRemarks.setText(assetModel.getEngineer_remarks());
-//
-//            }
-//            if (assetModel.getReceiver_comments() != null) {
-//                edtCustRemarks.setText(assetModel.getReceiver_comments());
-//            }
-//            if (assetModel.getInstallation_date() != null) {
-//                edtDateInst.setText(assetModel.getInstallation_date());
-//            }
-//
-//        } else {
-//
-//            snack("null");
-//        }
+        if (GLConstants.Companion.getAssetModel() != null) {
+            //AssetModel GLConstants.Companion.getAssetModel() = GLConstants.GLConstants.Companion.getAssetModel();
+            if (GLConstants.Companion.getAssetModel().getEngineer_remarks() != null) {
+                //customerID=GLConstants.Companion.getAssetModel().getCustomer_id();
+                edtEngRemarks.setText(GLConstants.Companion.getAssetModel().getEngineer_remarks());
+
+            }
+            if (GLConstants.Companion.getAssetModel().getReceiver_comments() != null) {
+                edtCustRemarks.setText(GLConstants.Companion.getAssetModel().getReceiver_comments());
+            }
+            if (GLConstants.Companion.getAssetModel().getInstallation_date() != null) {
+                edtDateInst.setText(GLConstants.Companion.getAssetModel().getInstallation_date());
+            }
+
+        } else {
+
+            snack("null");
+        }
     }
 
     private void snack(String msg) {
@@ -204,30 +203,38 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
 
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
-//        if (GLConstants.assetModel == null) {
-//            GLConstants.assetModel = new AssetModel();
-//
-//            GLConstants.assetModel.setEngineer_remarks(edtEngRemarks.getText().toString());
-//            GLConstants.assetModel.setReceiver_comments(edtCustRemarks.getText().toString());
-//            GLConstants.assetModel.setInstallation_date(edtDateInst.getText().toString());
-//            if (trainees != null) {
-//                GLConstants.assetModel.setTrainees(Arrays.toString(trainees));
-//            } else {
-//                GLConstants.assetModel.setTrainees("");
-//            }
-//
-//        } else {
-//
-//            GLConstants.assetModel.setEngineer_remarks(edtEngRemarks.getText().toString());
-//            GLConstants.assetModel.setReceiver_comments(edtCustRemarks.getText().toString());
-//            GLConstants.assetModel.setInstallation_date(edtDateInst.getText().toString());
-//            if (trainees != null) {
-//                GLConstants.assetModel.setTrainees(Arrays.toString(trainees));
-//            } else {
-//                GLConstants.assetModel.setTrainees("");
-//            }
+        if (GLConstants.Companion.getAssetModel() == null) {
+            GLConstants.Companion.setAssetModel(new AssetModel());
 
-       // }
+            GLConstants.Companion.getAssetModel().setEngineer_remarks(edtEngRemarks.getText().toString());
+            GLConstants.Companion.getAssetModel().setReceiver_comments(edtCustRemarks.getText().toString());
+            GLConstants.Companion.getAssetModel().setInstallation_date(edtDateInst.getText().toString());
+            if (trainees != null) {
+                StringBuilder trainee = new StringBuilder();
+                for (int a = 0; a < trainees.length; a++) {
+                    trainee.append(" ," + trainees[a]);
+                }
+                GLConstants.Companion.getAssetModel().setTrainees(trainee.toString());
+            } else {
+                GLConstants.Companion.getAssetModel().setTrainees("null");
+            }
+
+        } else {
+
+            GLConstants.Companion.getAssetModel().setEngineer_remarks(edtEngRemarks.getText().toString());
+            GLConstants.Companion.getAssetModel().setReceiver_comments(edtCustRemarks.getText().toString());
+            GLConstants.Companion.getAssetModel().setInstallation_date(edtDateInst.getText().toString());
+            if (trainees != null) {
+                StringBuilder trainee = new StringBuilder();
+                for (int a = 0; a < trainees.length; a++) {
+                    trainee.append(" ," + trainees[a]);
+                }
+                GLConstants.Companion.getAssetModel().setTrainees(trainee.toString());
+            } else {
+                GLConstants.Companion.getAssetModel().setTrainees("null");
+            }
+
+        }
         callback.goToNextStep();
     }
 

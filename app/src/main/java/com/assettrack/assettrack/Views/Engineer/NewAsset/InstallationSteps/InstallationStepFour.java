@@ -31,6 +31,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.assettrack.assettrack.Constatnts.GLConstants;
+import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
 import com.assettrack.assettrack.Utils.Imageutils;
@@ -39,7 +40,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
-
 import com.google.android.gms.vision.barcode.Barcode;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
@@ -170,42 +170,42 @@ public class InstallationStepFour extends Fragment implements BlockingStep, Imag
 
     private void initUIData() {
 
-//        if (GLConstants.assetModel != null) {
-//            AssetModel assetModel = GLConstants.assetModel;
-//            if (GLConstants.assetModel.getAsset_code() != null) {
-//                //customerID=assetModel.getCustomer_id();
-//                edtScan.setText(assetModel.getAsset_code());
-//
-//            }
-//
-//            if (assetModel.getAsset_status() != null && assetModel.getAsset_status().equals("Okay")) {
-//                rbOkay.setChecked(true);
-//                // edtWarrantyDuration.setVisibility(View.VISIBLE);
-//                // edtWarrantyDuration.setText(assetModel.getWarranty_duration());
-//                rbFaulty.setChecked(false);
-//            } else if (assetModel.getAsset_status() != null && assetModel.getAsset_status().equals("Faulty")) {
-//                rbFaulty.setChecked(true);
-//                //edtWarrantyDuration.setVisibility(View.GONE);
-//                rbOkay.setChecked(false);
-//            }
-//            if (assetModel.getAsset_image() != null) {
-//                path = assetModel.getAsset_image();
-//                RequestOptions options = (new RequestOptions())
-//                        .placeholder(R.drawable.imagepicker_image_placeholder)
-//                        .error(R.drawable.imagepicker_image_placeholder)
-//                        .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-//                Glide.with(getContext())
-//                        .load(assetModel.getAsset_image())
-//                        .apply(options)
-//                        .into(img);
-//                //edtDepartment.setText(assetModel.getDepartment());
-//            }
-//
-//
-//        } else {
-//
-//            snack("null");
-//        }
+        if (GLConstants.Companion.getAssetModel() != null) {
+            AssetModel assetModel = GLConstants.Companion.getAssetModel();
+            if (GLConstants.Companion.getAssetModel().getAsset_code() != null) {
+                //customerID=assetModel.getCustomer_id();
+                edtScan.setText(assetModel.getAsset_code());
+
+            }
+
+            if (assetModel.getStatename() != null && assetModel.getStatename().equals("Okay")) {
+                rbOkay.setChecked(true);
+                // edtWarrantyDuration.setVisibility(View.VISIBLE);
+                // edtWarrantyDuration.setText(assetModel.getWarranty_duration());
+                rbFaulty.setChecked(false);
+            } else {
+                rbFaulty.setChecked(true);
+                //edtWarrantyDuration.setVisibility(View.GONE);
+                rbOkay.setChecked(false);
+            }
+            if (assetModel.getAsset_image() != null) {
+                path = assetModel.getAsset_image();
+                RequestOptions options = (new RequestOptions())
+                        .placeholder(R.drawable.imagepicker_image_placeholder)
+                        .error(R.drawable.imagepicker_image_placeholder)
+                        .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(getContext())
+                        .load(assetModel.getAsset_image())
+                        .apply(options)
+                        .into(img);
+                //edtDepartment.setText(assetModel.getDepartment());
+            }
+
+
+        } else {
+
+            snack("null");
+        }
 
     }
 
@@ -222,25 +222,24 @@ public class InstallationStepFour extends Fragment implements BlockingStep, Imag
 
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
-//        if (GLConstants.assetModel == null) {
-//            GLConstants.assetModel = new AssetModel();
-//
-//            GLConstants.assetModel.setAsset_code(edtScan.getText().toString());
-//            GLConstants.assetModel.setAsset_image(path);
-//            GLConstants.assetModel.setAsset_status(getRadioChecked(rgAssetStatus));
-//
-//
-//        } else {
-//
-//
-//            GLConstants.assetModel.setAsset_code(edtScan.getText().toString());
-//            GLConstants.assetModel.setAsset_image(path);
-//            GLConstants.assetModel.setAsset_status(getRadioChecked(rgAssetStatus));
-//            GLConstants.assetModel.setAsset_status_id(String.valueOf(getAssetStatus(rgAssetStatus)));
-//
-//
-//
-//        }
+        if (GLConstants.Companion.getAssetModel() == null) {
+            GLConstants.Companion.setAssetModel(new AssetModel());
+
+            GLConstants.Companion.getAssetModel().setAsset_code(edtScan.getText().toString());
+            GLConstants.Companion.getAssetModel().setAsset_image(path);
+            GLConstants.Companion.getAssetModel().setStatename(getRadioChecked(rgAssetStatus));
+            GLConstants.Companion.getAssetModel().setState(getAssetStatus(rgAssetStatus));
+
+        } else {
+
+
+            GLConstants.Companion.getAssetModel().setAsset_code(edtScan.getText().toString());
+            GLConstants.Companion.getAssetModel().setAsset_image(path);
+            GLConstants.Companion.getAssetModel().setStatename(getRadioChecked(rgAssetStatus));
+            GLConstants.Companion.getAssetModel().setState(getAssetStatus(rgAssetStatus));
+
+
+        }
         callback.complete();
     }
 

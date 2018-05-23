@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-
 import com.assettrack.assettrack.Adapters.CustomerSearchAdapter;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
@@ -83,35 +82,35 @@ public class DialogSearchCustomer extends android.support.v4.app.DialogFragment 
         // Get field from view
         recyclerView = view.findViewById(R.id.recycler_view);
         customerModelsFull = (ArrayList<CustomerModel>) getArguments().getSerializable("data");
-//        for (CustomerModel customerModel : customerModelsFull) {
-//            Log.d("dla", "" + customerModel.getName());
-//        }
+        for (CustomerModel customerModel : customerModelsFull) {
+            Log.d("dla", "" + customerModel.getName());
+        }
 
-//
-//        customerModelsFilterd = customerModelsFull;
-//
-//
-//        customerSearchAdapter = new CustomerSearchAdapter(getContext(), customerModelsFilterd);
-//
-//        customerSearchAdapter.notifyDataSetChanged();
-//        mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(mStaggeredLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(customerSearchAdapter);
-//
-//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView,
-//                new RecyclerTouchListener.ClickListener() {
-//                    @Override
-//                    public void onClick(View view, int position) {
-//
-//                        sendBackResult(customerModelsFilterd.get(position));
-//                    }
-//
-//                    @Override
-//                    public void onLongClick(View view, int position) {
-//
-//                    }
-//                }));
+
+        customerModelsFilterd = customerModelsFull;
+
+
+        customerSearchAdapter = new CustomerSearchAdapter(getContext(), customerModelsFilterd);
+
+        customerSearchAdapter.notifyDataSetChanged();
+        mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mStaggeredLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(customerSearchAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView,
+                new RecyclerTouchListener.ClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+
+                        sendBackResult(customerModelsFilterd.get(position));
+                    }
+
+                    @Override
+                    public void onLongClick(View view, int position) {
+
+                    }
+                }));
 
 
         // Fetch arguments from bundle and set title

@@ -5,23 +5,19 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.View
 import com.assettrack.assettrack.Constatnts.GLConstants
 import com.assettrack.assettrack.Data.PrefManager
 import com.assettrack.assettrack.Interfaces.UtilListeners.DrawerItemListener
 import com.assettrack.assettrack.Kogi.BottomNav.AHBottomNavigation
 import com.assettrack.assettrack.Kogi.BottomNav.AHBottomNavigationItem
 import com.assettrack.assettrack.R
-import com.assettrack.assettrack.R.id.fab
 import com.assettrack.assettrack.Utils.DrawerClass
 import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients
 import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers
 import com.assettrack.assettrack.Views.Admin.Issues.ActivityManageIssues
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
-
 import kotlinx.android.synthetic.main.activity_manage_assets.*
 
 class ActivityManageAssets : AppCompatActivity() {
@@ -102,11 +98,11 @@ class ActivityManageAssets : AppCompatActivity() {
 
         fab.hide()
         bottomNav()
-        fragment = FragmentBase()
+        fragment = FragmentAsset()
         val bundle = Bundle()
         bundle.putInt("type", 0)
         bundle.putInt("STATUS_ID", 0)
-        (fragment as FragmentBase).arguments = bundle
+        (fragment as FragmentAsset).arguments = bundle
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
 
@@ -125,7 +121,7 @@ class ActivityManageAssets : AppCompatActivity() {
         val item3 = AHBottomNavigationItem("Faulty", //null
                 R.drawable.ic_error_outline_black_24dp, R.color.red
         )
-        val item4 = AHBottomNavigationItem("Service", //null
+        val item4 = AHBottomNavigationItem("Grounded", //null
                 R.drawable.ic_phonelink_off_black_24dp, R.color.orange_color_picker
         )
 
@@ -147,7 +143,7 @@ class ActivityManageAssets : AppCompatActivity() {
         bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"))
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
             val bundle = Bundle()
-            fragment = FragmentBase()
+            fragment = FragmentAsset()
             when (position) {
                 0 -> {
 
@@ -192,15 +188,13 @@ class ActivityManageAssets : AppCompatActivity() {
             nm.printStackTrace()
         }
 
-        setCount(2, 0)
-        setCount(6, 1)
-        setCount(1, 2)
-        setCount(6, 3)
+
 
     }
 
 
     fun setCount(count: Int, pos: Int) {
+
         try {
 
             if (count > 0) {
@@ -214,6 +208,8 @@ class ActivityManageAssets : AppCompatActivity() {
         }
 
     }
+
+
 
     internal fun setFragment() {
         // fragment = new FragmentSearch();

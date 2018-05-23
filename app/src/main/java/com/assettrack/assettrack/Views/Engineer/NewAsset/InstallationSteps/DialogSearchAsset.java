@@ -5,11 +5,9 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import android.view.Window;
 import com.assettrack.assettrack.Adapters.CustomerSearchAdapter;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
-import com.assettrack.assettrack.Utils.RecyclerTouchListener;
 
 import java.util.ArrayList;
 

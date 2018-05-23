@@ -14,15 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-
 import com.assettrack.assettrack.Constatnts.GLConstants;
 import com.assettrack.assettrack.Models.AccessoriesModel;
+import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
@@ -74,49 +73,49 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
 
         initActions();
         initUIData();
-//        if (GLConstants.assetModel != null && GLConstants.assetModel.getAccessoriesModels() != null) {
-//            intData(GLConstants.assetModel.getAccessoriesModels());
+//        if (GLConstants.Companion.getAssetModel() != null && GLConstants.Companion.getAssetModel().getAccessoriesModels() != null) {
+//            intData(GLConstants.Companion.getAssetModel().getAccessoriesModels());
 //        }
 
     }
 
     private void initUIData() {
 
-//        if (GLConstants.assetModel != null) {
-//            AssetModel assetModel = GLConstants.assetModel;
-//            if (GLConstants.assetModel.getContanct_person() != null) {
-//                //customerID=assetModel.getCustomer_id();
-//                edtContactPerson.setText(assetModel.getContanct_person());
-//
-//            }
-//            if (assetModel.getContact_person_position() != null) {
-//                edtContactPersonPosition.setText(assetModel.getContact_person_position());
-//            }
-//            if (assetModel.getRoom_meets_specification() != null && assetModel.getRoom_meets_specification().equals("Yes")) {
-//                rbYes.setChecked(true);
-//                // edtWarrantyDuration.setVisibility(View.VISIBLE);
-//                // edtWarrantyDuration.setText(assetModel.getWarranty_duration());
-//                rbNo.setChecked(false);
-//            } else if (assetModel.getWarranty() != null && assetModel.getWarranty().equals("No")) {
-//                rbNo.setChecked(true);
-//                //edtWarrantyDuration.setVisibility(View.GONE);
-//                rbYes.setChecked(false);
-//            }
-//            if (assetModel.getDepartment() != null) {
-//                edtDepartment.setText(assetModel.getDepartment());
-//            }
-//            if (assetModel.getRoomsizestatus() != null) {
-//                edtRoomSizeMet.setText(assetModel.getRoomsizestatus());
-//            }
+        if (GLConstants.Companion.getAssetModel() != null) {
+            AssetModel assetModel = GLConstants.Companion.getAssetModel();
+            if (GLConstants.Companion.getAssetModel().getRecievers_name() != null) {
+                //customerID=assetModel.getCustomer_id();
+                edtContactPerson.setText(assetModel.getRecievers_name());
+
+            }
+            if (assetModel.getContact_person_position() != null) {
+                edtContactPersonPosition.setText(assetModel.getContact_person_position());
+            }
+            if (assetModel.getRoom_meets_specification() != null && assetModel.getRoom_meets_specification().equals("Yes")) {
+                rbYes.setChecked(true);
+                // edtWarrantyDuration.setVisibility(View.VISIBLE);
+                // edtWarrantyDuration.setText(assetModel.getWarranty_duration());
+                rbNo.setChecked(false);
+            } else if (assetModel.getWarranty() != null && assetModel.getWarranty().equals("No")) {
+                rbNo.setChecked(true);
+                //edtWarrantyDuration.setVisibility(View.GONE);
+                rbYes.setChecked(false);
+            }
+            if (assetModel.getDepartment() != null) {
+                edtDepartment.setText(assetModel.getDepartment());
+            }
+            if (assetModel.getRoomsizestatus() != null) {
+                edtRoomSizeMet.setText(assetModel.getRoomsizestatus());
+            }
 //            if (assetModel.getAccessoriesModels() != null && assetModel.getAccessoriesModels().size() > 0) {
 //                // edtModel.setText(assetModel.getModel());
 //                intData(assetModel.getAccessoriesModels());
 //            }
-//
-//        } else {
-//
-//            snack("null");
-//        }
+
+        } else {
+
+            snack("null");
+        }
 
     }
 
@@ -168,7 +167,7 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
 //                                    accessoriesModel.setName(a);
 //                                    accessoriesModel.setId(a);
 //                                }
-//                                GLConstants.assetModel.setAccessoriesModels(accessoriesModels);
+//                                GLConstants.Companion.getAssetModel().setAccessoriesModels(accessoriesModels);
 //
 //                            } catch (Exception nm) {
 //                                nm.printStackTrace();
@@ -283,7 +282,7 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
 //                                        accessoriesModel.setName(a);
 //                                        accessoriesModel.setId(a);
 //                                    }
-//                                    GLConstants.assetModel.setAccessoriesModels(accessoriesModels);
+//                                    GLConstants.Companion.getAssetModel().setAccessoriesModels(accessoriesModels);
 //
 //                                } catch (Exception nm) {
 //                                    nm.printStackTrace();
@@ -309,24 +308,24 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
 
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
-//        if (GLConstants.assetModel == null) {
-//            GLConstants.assetModel = new AssetModel();
-//
-//            GLConstants.assetModel.setContanct_person(edtContactPerson.getText().toString());
-//            GLConstants.assetModel.setCustomer_name(edtContactPersonPosition.getText().toString());
-//            GLConstants.assetModel.setRoom_meets_specification(getRadioChecked(rgRoomSpecification));
-//            GLConstants.assetModel.setDepartment(edtDepartment.getText().toString());
-//            GLConstants.assetModel.setRoomsizestatus(edtRoomSizeMet.getText().toString());
-//
-//
-//        } else {
-//            GLConstants.assetModel.setContanct_person(edtContactPerson.getText().toString());
-//            GLConstants.assetModel.setCustomer_name(edtContactPersonPosition.getText().toString());
-//            GLConstants.assetModel.setRoom_meets_specification(getRadioChecked(rgRoomSpecification));
-//            GLConstants.assetModel.setDepartment(edtDepartment.getText().toString());
-//            GLConstants.assetModel.setRoomsizestatus(edtRoomSizeMet.getText().toString());
-//
-//        }
+        if (GLConstants.Companion.getAssetModel() == null) {
+            GLConstants.Companion.setAssetModel(new AssetModel());
+
+            GLConstants.Companion.getAssetModel().setContact_person_position(edtContactPerson.getText().toString());
+            GLConstants.Companion.getAssetModel().setContact_person_position(edtContactPersonPosition.getText().toString());
+            GLConstants.Companion.getAssetModel().setRoom_meets_specification(getRadioChecked(rgRoomSpecification));
+            GLConstants.Companion.getAssetModel().setDepartment(edtDepartment.getText().toString());
+            GLConstants.Companion.getAssetModel().setRoomsizestatus(edtRoomSizeMet.getText().toString());
+
+
+        } else {
+            GLConstants.Companion.getAssetModel().setContact_person_position(edtContactPerson.getText().toString());
+            GLConstants.Companion.getAssetModel().setContact_person_position(edtContactPersonPosition.getText().toString());
+            GLConstants.Companion.getAssetModel().setRoom_meets_specification(getRadioChecked(rgRoomSpecification));
+            GLConstants.Companion.getAssetModel().setDepartment(edtDepartment.getText().toString());
+            GLConstants.Companion.getAssetModel().setRoomsizestatus(edtRoomSizeMet.getText().toString());
+
+        }
         callback.goToNextStep();
 
     }

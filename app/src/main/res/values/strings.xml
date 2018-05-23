@@ -204,10 +204,11 @@
 
     <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
     <string name="title_activity_admin_main">AdminMainActivity</string>
-    <string name="title_activity_manage_status">ActivityManageStatus</string>
-    <string name="title_activity_manage_assets">ActivityManageAssets</string>
-    <string name="title_activity_manage_engineers">ActivityManageEngineers</string>
-    <string name="title_activity_manage_clients">ActivityManageClients</string>
-    <string name="title_activity_manage_issues">ActivityManageIssues</string>
+    <string name="title_activity_manage_status">Status</string>
+    <string name="title_activity_manage_assets">Assets</string>
+    <string name="title_activity_manage_engineers">Engineers</string>
+    <string name="title_activity_manage_clients">Clients</string>
+    <string name="title_activity_manage_issues">Issues</string>
+    <string name="title_activity_scanner">Scanner</string>
 
 </resources>

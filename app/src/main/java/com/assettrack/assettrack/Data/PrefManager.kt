@@ -1,6 +1,5 @@
 package com.assettrack.assettrack.Data
 
-import android.accounts.AccountManager.KEY_ACCOUNT_NAME
 import android.content.Context
 import android.content.SharedPreferences
 import com.assettrack.assettrack.Models.UserModel
@@ -18,6 +17,7 @@ class PrefManager {
     private var Kfull_name: String? = "full_name"
     private var Krolename: String? = "rolename"
     private var Ktoken: String? = "token"
+    private var KphoneNumber: String? = "phoneNumber"
 
     private var KEY_IS_LOGGED_IN="isloggedin"
     private var PREF_NAME:String?="PREFNAME"
@@ -38,8 +38,9 @@ class PrefManager {
     }
 
 
-
-
+    fun getToken(): String {
+        return pref.getString(Ktoken, "")
+    }
 
     fun isLoggedIn(): Boolean {
         return pref.getBoolean(KEY_IS_LOGGED_IN, false)
@@ -65,12 +66,12 @@ class PrefManager {
         userData.setEmployeeid(pref.getString(Kemployeeid,null))
         userData.setFirstname(pref.getString(Kfirstname,null))
         userData.setLastname(pref.getString(Klastname,null))
-        userData.setFull_name(pref.getString(Krolename,null))
+        userData.setFull_name(pref.getString(Kfull_name, null))
         userData.setId(pref.getInt(Kid,0))
         userData.setToken(pref.getString(Ktoken,null))
         userData.setUpdated_at(pref.getString(Kupdated_at,null))
-        userData.setPhoneNumber(pref.getString(Kid,null))
-        userData.setId(pref.getInt(Kid,0))
+        userData.setPhoneNumber(pref.getString(KphoneNumber, null))
+        userData.setRolename(pref.getString(Krolename, null))
 
         return userData
     }
@@ -79,27 +80,23 @@ class PrefManager {
     fun setUserData(userData: UserModel) {
 
 
-        editor.putInt(KEY_USER_ID, userData.getUserId())
-        editor.putString(KEY_USER_NAME, userData.getUserName())
-        editor.putString(KEY_USER_F_NAME, userData.getFirstName())
-        editor.putString(KEY_USER_L_NAME, userData.getLastName())
-        editor.putString(KEY_USER_EMAIL, userData.getEmail())
-        editor.putString(KEY_USER_PHONENumber, userData.getPhoneNumber())
-        //editor.putString(KEY_USER_Designation, userData.getDesignation());
-        // editor.putInt(KEY_USER_USERTYPE, userData.getUserType());
-        editor.putString(KEY_USER_PHOTO, userData.getPhoto())
-
+        editor.putInt(Krole, userData.getRole())
+        editor.putString(Kcreated_at, userData.getCreated_at())
+        editor.putString(Kdesignation, userData.getDesignation())
+        editor.putString(Kemail, userData.getEmail())
+        editor.putString(Kemployeeid, userData.getEmployeeid())
+        editor.putString(Kfirstname, userData.getFirstname())
+        editor.putString(Klastname, userData.getLastname())
+        editor.putString(Kfull_name, userData.getFull_name())
+        editor.putInt(Kid, userData.getId())
+        editor.putString(Ktoken, userData.getToken())
+        editor.putString(Kupdated_at, userData.getUpdated_at())
+        editor.putString(KphoneNumber, userData.getPhoneNumber())
+        editor.putString(Krolename, userData.getCreated_at())
 
         editor.commit()
 
     }
 
-    fun getGoogleAccountName(): String {
-        return pref.getString(KEY_ACCOUNT_NAME, "null")
-    }
 
-    fun setGoogleAccountName(accountName: String) {
-        editor.putString(KEY_ACCOUNT_NAME, accountName)
-        editor.commit()
-    }
 }
