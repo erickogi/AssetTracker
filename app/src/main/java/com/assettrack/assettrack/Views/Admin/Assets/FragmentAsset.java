@@ -315,6 +315,13 @@ public class FragmentAsset extends Fragment {
             listAdapter = new AssetListAdapter(getContext(), assetModels, 1, new OnclickRecyclerListener() {
                 @Override
                 public void onClickListener(int position) {
+                    Companion.setId(String.valueOf(assetModels.get(position).getId()));
+                    Companion.setAssetModel(assetModels.get(position));
+                    Intent intent = new Intent(getActivity(), AssetActivity.class);
+                    intent.putExtra("data", assetModels.get(position));
+                    intent.putExtra("state", false);
+                    startActivity(intent);
+
 
                 }
 

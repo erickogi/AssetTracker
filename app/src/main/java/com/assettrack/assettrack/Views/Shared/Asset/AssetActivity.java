@@ -1,5 +1,7 @@
 package com.assettrack.assettrack.Views.Shared.Asset;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +30,17 @@ import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
+import com.fueled.fabulous.FabulousPattern;
+import com.fueled.fabulous.FabulousPosition;
+import com.nightonke.boommenu.BoomButtons.BoomButton;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.OnBoomListener;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +57,131 @@ public class AssetActivity extends AppCompatActivity {
     private FragmentAssetDetails fragmentDetails;
     private FragmentAssetIssues fragmentIssues;
     private FragmentChartView fragmentChartView;
+    private FloatingActionButton fab;
+    private BoomMenuButton bmb;
+
+    void setBmb() {
+        bmb = findViewById(R.id.bmb);
+        bmb.setNormalColor(R.color.colorAccent);
+        bmb.setRippleEffect(true);
+
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
+
+        HamButton.Builder buildero = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+
+
+                    }
+                })
+                // .button().setClickable(true)
+                .normalImageRes(R.drawable.code_bar)
+                .normalText("Add New Asset")
+                .containsSubText(true)
+                .rippleEffect(true)
+                .rotateImage(true)
+
+                .subNormalText("Add a new asset to be able to track and manage");
+        bmb.addBuilder(buildero);
+
+
+        //for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+        HamButton.Builder builder = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+
+
+                    }
+                })
+                // .button().setClickable(true)
+                .normalImageRes(R.drawable.code_bar)
+                .normalText("Scan Bar code")
+                .containsSubText(true)
+                .rippleEffect(true)
+                .rotateImage(true)
+
+                .subNormalText("Find asset by scanning a bar code");
+        bmb.addBuilder(builder);
+
+
+        HamButton.Builder builder1 = new HamButton.Builder()
+                .normalImageRes(R.drawable.code)
+                .containsSubText(true)
+                .rippleEffect(true)
+                .normalText("Enter Asset Code")
+                .rotateImage(true)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+
+                    }
+                })
+                //.rotateImage(true)
+
+
+                .subNormalText("Find asset by its unique code");
+
+
+        bmb.addBuilder(builder1);
+
+        HamButton.Builder builder2 = new HamButton.Builder()
+                .normalImageRes(R.drawable.ic_search_black_24dp)
+                .normalText("Assets List")
+                .containsSubText(true)
+                .rippleEffect(true)
+                .subNormalText("List all assets registered")
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+
+
+                    }
+                });
+        bmb.addBuilder(builder2);
+        bmb.setAutoBoomImmediately(false);
+
+        bmb.setOnBoomListener(new OnBoomListener() {
+            @Override
+            public void onClicked(int index, BoomButton boomButton) {
+                // startScan();
+            }
+
+            @Override
+            public void onBackgroundClick() {
+
+                // img_fab.setRotation(45);
+                bmb.setAutoBoomImmediately(true);
+            }
+
+            @Override
+            public void onBoomWillHide() {
+                // img_fab.setRotation(45);
+                bmb.setAutoHide(true);
+            }
+
+            @Override
+            public void onBoomDidHide() {
+
+            }
+
+            @Override
+            public void onBoomWillShow() {
+                // img_fab.setRotation(45);
+            }
+
+            @Override
+            public void onBoomDidShow() {
+
+            }
+        });
+        //}
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +190,19 @@ public class AssetActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
         fab.setVisibility(View.GONE);
+        //  setBmb();
+
+//        new Fabulous.Builder(this)
+//                .setFab(fab)
+//
+//                .setMenuId(R.menu.menu_asset_options)
+//                .setMenuPattern(new LinearPattern())
+//                .build();
+//
 
         viewPager = findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -101,7 +244,6 @@ public class AssetActivity extends AppCompatActivity {
         adapter.addFragment(fragmentDetails, "lo");
         adapter.addFragment(fragmentIssues, "li");
         //adapter.addFragment(fragmentChartView,"");
-
 
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
@@ -250,5 +392,47 @@ public class AssetActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Snackbar.make(fab, item.getTitle(), Snackbar.LENGTH_SHORT).show();
+        return super.onOptionsItemSelected(item);
+    }
+
+    public class LinearPattern implements FabulousPattern {
+        private static final int MAIN_FAB_ANIMATION_DURATION = 200;
+
+        @NotNull
+        @Override
+        public AnimatorSet getClosingAnimation(@NotNull View element, float destX, float destY) {
+            AnimatorSet anim = new AnimatorSet();
+            ObjectAnimator fabX = ObjectAnimator.ofFloat(element, View.X, destX);
+            fabX.setDuration(MAIN_FAB_ANIMATION_DURATION);
+            ObjectAnimator fabY = ObjectAnimator.ofFloat(element, View.Y, destY);
+            fabY.setDuration(MAIN_FAB_ANIMATION_DURATION);
+
+            anim.play(fabX).with(fabY);
+            return anim;
+        }
+
+        @NotNull
+        @Override
+        public AnimatorSet getOpeningAnimation(@NotNull View element, float destX, float destY) {
+            AnimatorSet anim = new AnimatorSet();
+            ObjectAnimator fabX = ObjectAnimator.ofFloat(element, View.X, destX);
+            fabX.setDuration(MAIN_FAB_ANIMATION_DURATION);
+            ObjectAnimator fabY = ObjectAnimator.ofFloat(element, View.Y, destY);
+            fabY.setDuration(MAIN_FAB_ANIMATION_DURATION);
+
+            anim.play(fabX).with(fabY);
+            return anim;
+        }
+
+        @NotNull
+        @Override
+        public FabulousPosition getFinalPosition(@NotNull View subMenu, float fabX, float fabY, int position, int menuSize) {
+            return new FabulousPosition(fabX, fabY - ((position + 1) * 200));
+        }
     }
 }
