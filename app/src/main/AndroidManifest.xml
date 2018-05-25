@@ -65,6 +65,10 @@
         <activity
             android:name=".Views.Engineer.Scanner"
             android:label="@string/title_activity_scanner"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Engineer.Assignments.Assignments"
+            android:label="@string/title_activity_assignments"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

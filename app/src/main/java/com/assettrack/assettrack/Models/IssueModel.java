@@ -25,6 +25,34 @@ public class IssueModel {
     private String engineername;
     private boolean isChecked;
 
+    private AssetModel assetModel;
+    private EngineerModel engineerModel;
+    private CustomerModel customerModel;
+
+    public AssetModel getAssetModel() {
+        return assetModel;
+    }
+
+    public void setAssetModel(AssetModel assetModel) {
+        this.assetModel = assetModel;
+    }
+
+    public EngineerModel getEngineerModel() {
+        return engineerModel;
+    }
+
+    public void setEngineerModel(EngineerModel engineerModel) {
+        this.engineerModel = engineerModel;
+    }
+
+    public CustomerModel getCustomerModel() {
+        return customerModel;
+    }
+
+    public void setCustomerModel(CustomerModel customerModel) {
+        this.customerModel = customerModel;
+    }
+
     public boolean isChecked() {
         return isChecked;
     }

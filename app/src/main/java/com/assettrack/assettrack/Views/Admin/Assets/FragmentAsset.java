@@ -200,6 +200,8 @@ public class FragmentAsset extends Fragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
 
                     assetModels = AssetParser.parse(jsonArray);
+
+
                     //}
                 } catch (Exception nm) {
 

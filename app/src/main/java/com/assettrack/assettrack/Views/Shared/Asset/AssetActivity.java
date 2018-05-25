@@ -32,13 +32,7 @@ import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
 import com.fueled.fabulous.FabulousPattern;
 import com.fueled.fabulous.FabulousPosition;
-import com.nightonke.boommenu.BoomButtons.BoomButton;
-import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
-import com.nightonke.boommenu.BoomButtons.HamButton;
-import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomMenuButton;
-import com.nightonke.boommenu.OnBoomListener;
-import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,127 +54,127 @@ public class AssetActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private BoomMenuButton bmb;
 
-    void setBmb() {
-        bmb = findViewById(R.id.bmb);
-        bmb.setNormalColor(R.color.colorAccent);
-        bmb.setRippleEffect(true);
-
-        bmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
-        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
-
-        HamButton.Builder buildero = new HamButton.Builder()
-
-                .listener(new OnBMClickListener() {
-                    @Override
-                    public void onBoomButtonClick(int index) {
-
-
-                    }
-                })
-                // .button().setClickable(true)
-                .normalImageRes(R.drawable.code_bar)
-                .normalText("Add New Asset")
-                .containsSubText(true)
-                .rippleEffect(true)
-                .rotateImage(true)
-
-                .subNormalText("Add a new asset to be able to track and manage");
-        bmb.addBuilder(buildero);
-
-
-        //for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
-        HamButton.Builder builder = new HamButton.Builder()
-
-                .listener(new OnBMClickListener() {
-                    @Override
-                    public void onBoomButtonClick(int index) {
-
-
-                    }
-                })
-                // .button().setClickable(true)
-                .normalImageRes(R.drawable.code_bar)
-                .normalText("Scan Bar code")
-                .containsSubText(true)
-                .rippleEffect(true)
-                .rotateImage(true)
-
-                .subNormalText("Find asset by scanning a bar code");
-        bmb.addBuilder(builder);
-
-
-        HamButton.Builder builder1 = new HamButton.Builder()
-                .normalImageRes(R.drawable.code)
-                .containsSubText(true)
-                .rippleEffect(true)
-                .normalText("Enter Asset Code")
-                .rotateImage(true)
-                .listener(new OnBMClickListener() {
-                    @Override
-                    public void onBoomButtonClick(int index) {
-
-                    }
-                })
-                //.rotateImage(true)
-
-
-                .subNormalText("Find asset by its unique code");
-
-
-        bmb.addBuilder(builder1);
-
-        HamButton.Builder builder2 = new HamButton.Builder()
-                .normalImageRes(R.drawable.ic_search_black_24dp)
-                .normalText("Assets List")
-                .containsSubText(true)
-                .rippleEffect(true)
-                .subNormalText("List all assets registered")
-                .listener(new OnBMClickListener() {
-                    @Override
-                    public void onBoomButtonClick(int index) {
-
-
-                    }
-                });
-        bmb.addBuilder(builder2);
-        bmb.setAutoBoomImmediately(false);
-
-        bmb.setOnBoomListener(new OnBoomListener() {
-            @Override
-            public void onClicked(int index, BoomButton boomButton) {
-                // startScan();
-            }
-
-            @Override
-            public void onBackgroundClick() {
-
-                // img_fab.setRotation(45);
-                bmb.setAutoBoomImmediately(true);
-            }
-
-            @Override
-            public void onBoomWillHide() {
-                // img_fab.setRotation(45);
-                bmb.setAutoHide(true);
-            }
-
-            @Override
-            public void onBoomDidHide() {
-
-            }
-
-            @Override
-            public void onBoomWillShow() {
-                // img_fab.setRotation(45);
-            }
-
-            @Override
-            public void onBoomDidShow() {
-
-            }
-        });
-        //}
-    }
+//    void setBmb() {
+//        bmb = findViewById(R.id.bmb);
+//        bmb.setNormalColor(R.color.colorAccent);
+//        bmb.setRippleEffect(true);
+//
+//        bmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+//        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
+//
+//        HamButton.Builder buildero = new HamButton.Builder()
+//
+//                .listener(new OnBMClickListener() {
+//                    @Override
+//                    public void onBoomButtonClick(int index) {
+//
+//
+//                    }
+//                })
+//                // .button().setClickable(true)
+//                .normalImageRes(R.drawable.code_bar)
+//                .normalText("Add New Asset")
+//                .containsSubText(true)
+//                .rippleEffect(true)
+//                .rotateImage(true)
+//
+//                .subNormalText("Add a new asset to be able to track and manage");
+//        bmb.addBuilder(buildero);
+//
+//
+//        //for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+//        HamButton.Builder builder = new HamButton.Builder()
+//
+//                .listener(new OnBMClickListener() {
+//                    @Override
+//                    public void onBoomButtonClick(int index) {
+//
+//
+//                    }
+//                })
+//                // .button().setClickable(true)
+//                .normalImageRes(R.drawable.code_bar)
+//                .normalText("Scan Bar code")
+//                .containsSubText(true)
+//                .rippleEffect(true)
+//                .rotateImage(true)
+//
+//                .subNormalText("Find asset by scanning a bar code");
+//        bmb.addBuilder(builder);
+//
+//
+//        HamButton.Builder builder1 = new HamButton.Builder()
+//                .normalImageRes(R.drawable.code)
+//                .containsSubText(true)
+//                .rippleEffect(true)
+//                .normalText("Enter Asset Code")
+//                .rotateImage(true)
+//                .listener(new OnBMClickListener() {
+//                    @Override
+//                    public void onBoomButtonClick(int index) {
+//
+//                    }
+//                })
+//                //.rotateImage(true)
+//
+//
+//                .subNormalText("Find asset by its unique code");
+//
+//
+//        bmb.addBuilder(builder1);
+//
+//        HamButton.Builder builder2 = new HamButton.Builder()
+//                .normalImageRes(R.drawable.ic_search_black_24dp)
+//                .normalText("Assets List")
+//                .containsSubText(true)
+//                .rippleEffect(true)
+//                .subNormalText("List all assets registered")
+//                .listener(new OnBMClickListener() {
+//                    @Override
+//                    public void onBoomButtonClick(int index) {
+//
+//
+//                    }
+//                });
+//        bmb.addBuilder(builder2);
+//        bmb.setAutoBoomImmediately(false);
+//
+//        bmb.setOnBoomListener(new OnBoomListener() {
+//            @Override
+//            public void onClicked(int index, BoomButton boomButton) {
+//                // startScan();
+//            }
+//
+//            @Override
+//            public void onBackgroundClick() {
+//
+//                // img_fab.setRotation(45);
+//                bmb.setAutoBoomImmediately(true);
+//            }
+//
+//            @Override
+//            public void onBoomWillHide() {
+//                // img_fab.setRotation(45);
+//                bmb.setAutoHide(true);
+//            }
+//
+//            @Override
+//            public void onBoomDidHide() {
+//
+//            }
+//
+//            @Override
+//            public void onBoomWillShow() {
+//                // img_fab.setRotation(45);
+//            }
+//
+//            @Override
+//            public void onBoomDidShow() {
+//
+//            }
+//        });
+//        //}
+//    }
 
 
     @Override

@@ -1,6 +1,7 @@
 package com.assettrack.assettrack.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -86,8 +87,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             holder.txtDate.setVisibility(View.VISIBLE);
 
             IssueModel issueModel = issueModels.get(position);
-            holder.txtCustomerName.setText("Asset : " + issueModel.getFailure_desc());
-            holder.txtDate.setText("START : " + issueModel.getStartdate() + " END : " + issueModel.getClosedate());
+            holder.txtCustomerName.setTypeface(holder.txtCustomerName.getTypeface(), Typeface.BOLD);
+            holder.txtCustomerName.setText("Asset : " + issueModel.getFailure_desc() + " Status " + issueModel.getStatename());
+            holder.txtDate.setText("Start : " + issueModel.getStartdate() + " End : " + issueModel.getClosedate());
             holder.txtCustomerLocation.setText("Client : " + issueModel.getCustomers_id());
 
         }

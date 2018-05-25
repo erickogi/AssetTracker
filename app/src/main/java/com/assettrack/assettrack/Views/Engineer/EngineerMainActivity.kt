@@ -12,21 +12,27 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
 import com.androidnetworking.error.ANError
 import com.assettrack.assettrack.Constatnts.APiConstants
+import com.assettrack.assettrack.Constatnts.GLConstants
+import com.assettrack.assettrack.Constatnts.GLConstants.Companion.assetModel
+import com.assettrack.assettrack.Data.Parsers.SingleAssetParser
 import com.assettrack.assettrack.Data.PrefManager
 import com.assettrack.assettrack.Data.Request
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener
 import com.assettrack.assettrack.R
+import com.assettrack.assettrack.Views.Engineer.Assignments.Assignments
 import com.assettrack.assettrack.Views.Engineer.ListAsset.AssetList
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
+import com.assettrack.assettrack.Views.Shared.Asset.AssetActivity
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder
 import com.google.android.gms.vision.barcode.Barcode
@@ -34,6 +40,7 @@ import com.nightonke.boommenu.BoomMenuButton
 import com.special.ResideMenu.ResideMenu
 import com.special.ResideMenu.ResideMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 class EngineerMainActivity : AppCompatActivity() {
     private var resideMenu: ResideMenu? = null
@@ -87,11 +94,13 @@ class EngineerMainActivity : AppCompatActivity() {
 
     private lateinit var prefManager: PrefManager
 
+    private var scrollView: ScrollView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         prefManager = PrefManager(this)
+        scrollView = findViewById(R.id.scroll)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -132,6 +141,8 @@ class EngineerMainActivity : AppCompatActivity() {
                 .withBackfacingCamera()
                  .withText("Scanning...")
                 .withResultListener { barcode ->
+
+                    searchAsset(barcode.rawValue)
 //
 
 
@@ -142,6 +153,24 @@ class EngineerMainActivity : AppCompatActivity() {
         materialBarcodeScanner.startScan()
 
     }
+
+    private fun getAssetByCode() {
+        Request.getRequest(APiConstants.assetByCode, prefManager.getToken(), object : RequestListener {
+            override fun onError(error: ANError) {
+
+            }
+
+            override fun onError(error: String) {
+
+            }
+
+            override fun onSuccess(response: String) {
+
+
+            }
+        })
+    }
+
     private fun startDialog() {
 
         val layoutInflaterAndroid = LayoutInflater.from(this)
@@ -154,6 +183,7 @@ class EngineerMainActivity : AppCompatActivity() {
                 .setPositiveButton("Search") { dialogBox, id ->
                     // ToDo get user input here
 
+                    //getAssetByCode()
                 }
 
                 .setNegativeButton("Dismiss"
@@ -202,7 +232,9 @@ class EngineerMainActivity : AppCompatActivity() {
     }
 
     fun assignments(view: View) {
-
+        var intent = Intent(this, Assignments::class.java)
+        intent.putExtra("state", 2)
+        startActivity(intent)
     }
 
     internal inner class CustomListener(private val dialog: Dialog) : View.OnClickListener {
@@ -219,7 +251,7 @@ class EngineerMainActivity : AppCompatActivity() {
 
 
 
-            searchAsset(edtCode.text)
+            searchAsset(edtCode.text.toString())
 
 
         }
@@ -227,7 +259,7 @@ class EngineerMainActivity : AppCompatActivity() {
 
     }
 
-    private fun searchAsset(text: Editable?) {
+    private fun searchAsset(code: String) {
         progress = ProgressDialog(this)
         progress.setMessage("Working ...")
         progress.setCancelable(false)
@@ -236,22 +268,63 @@ class EngineerMainActivity : AppCompatActivity() {
         progress.show()
 
         var params: HashMap<String, String> = HashMap()
-        var url = APiConstants.searchasset
+        params.put("Code", code)
+        var url = APiConstants.assetByCode + "" + code
 
-        Request.postRequest(url, params, prefManager.getToken(), object : RequestListener {
+        Request.getRequest(url, prefManager.getToken(), object : RequestListener {
             override fun onError(error: ANError) {
 
-                progress.dismiss()
+                if (progress != null && progress.isShowing) {
+                    progress.setMessage(error.message)
+                    progress.dismiss()
+                }
 
             }
 
             override fun onError(error: String) {
 
-                progress.dismiss()
-
+                if (progress != null && progress.isShowing) {
+                    progress.setMessage(error)
+                    progress.dismiss()
+                }
             }
 
             override fun onSuccess(response: String) {
+
+                if (progress != null && progress.isShowing) {
+                    progress.setMessage(response)
+                    progress.dismiss()
+                }
+
+                Log.d("getData", response)
+
+                try {
+
+                    val jsonObject = JSONObject(response)
+                    //if(!jsonObject.getBoolean("error")){
+                    //val jsonArray = jsonObject.getJSONArray("data")
+
+                    if (!jsonObject.isNull("data") && jsonObject.getJSONObject("data").length() > 0) {
+
+                        val assetModels = SingleAssetParser.parse(jsonObject.getJSONObject("data"))
+                        GLConstants.id = assetModel?.id.toString()
+                        GLConstants.assetModel = assetModels
+                        val intent = Intent(this@EngineerMainActivity, AssetActivity::class.java)
+                        intent.putExtra("data", assetModels)
+                        intent.putExtra("state", true)
+                        startActivity(intent)
+                    } else {
+
+
+                        snack("Product not found")
+                    }
+
+
+                    //}
+                } catch (nm: Exception) {
+
+                    Log.d("getData", nm.toString())
+                }
 
 
             }
@@ -260,6 +333,12 @@ class EngineerMainActivity : AppCompatActivity() {
 
     }
 
+    private fun snack(msg: String) {
+        scrollView?.rootView?.let {
+            Snackbar.make(it, msg, Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show()
+        }
+    }
 
     private fun checkPerrmission(): Boolean {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED

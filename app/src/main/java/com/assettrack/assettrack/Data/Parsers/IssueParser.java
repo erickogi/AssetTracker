@@ -16,7 +16,6 @@ public class IssueParser {
         try {
             for (int a = 0; a < response.length(); a++) {
                 JSONObject object = response.getJSONObject(a);
-
                 IssueModel issueModel = new IssueModel();
                 issueModel.setAsset_code(object.optString("asset_code"));
                 issueModel.setWork_tickets(object.optString("work_tickets"));
@@ -38,7 +37,6 @@ public class IssueParser {
                 issueModel.setUpdated_at(object.optString("updated_at"));
                 issueModel.setStatename(object.optString("statename"));
                 issueModel.setEngineername(object.optString("engineername"));
-
 
                 issueModels.add(issueModel);
             }

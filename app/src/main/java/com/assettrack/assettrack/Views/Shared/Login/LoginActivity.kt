@@ -201,7 +201,7 @@ class LoginActivity : AppCompatActivity() {
                     returnsrole = if (!js.getBoolean("error")) {
                         val userModel: UserModel = UserParser.parse(response)
                         prefManager.setUserData(userModel)
-                        prefManager.setIsLoggedIn(true, 1)
+                        prefManager.setIsLoggedIn(true, userModel.getRole())
                         userModel.getRole()
                     } else {
                         0

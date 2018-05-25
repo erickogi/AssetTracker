@@ -210,5 +210,6 @@
     <string name="title_activity_manage_clients">Clients</string>
     <string name="title_activity_manage_issues">Issues</string>
     <string name="title_activity_scanner">Scanner</string>
+    <string name="title_activity_assignments">Assignments</string>
 
 </resources>
