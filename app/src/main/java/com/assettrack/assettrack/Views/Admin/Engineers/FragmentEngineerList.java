@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.ListAdapter;
+import com.assettrack.assettrack.Adapters.V1.EngineerAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.AllEngineerParser;
 import com.assettrack.assettrack.Data.PrefManager;
@@ -51,7 +53,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class FragmentEngineerList extends Fragment {
-    ListAdapter listAdapter;
+    EngineerAdapter listAdapter;
     String searchtext = "";
     private ArrayList<EngineerModel> engineerModels;
     private ProgressDialog progressDialog;
@@ -63,7 +65,23 @@ public class FragmentEngineerList extends Fragment {
     private RecyclerView recyclerView;
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private ActionMode mActionMode;
+    private Fragment fragment;
 
+    void setUpView() {
+        if (fragment != null) {
+            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null).commit();
+        }
+
+    }
+
+    void popOutFragments() {
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
+    }
 
     private int STATUS_ID;
     private ActionMode.Callback callback = new ActionMode.Callback() {
@@ -295,10 +313,15 @@ public class FragmentEngineerList extends Fragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             // ArrayList<EngineerModel> engineerModels, int status, Context context, OnclickRecyclerListener onclickRecyclerListener
 
-            listAdapter = new ListAdapter(engineerModels, 1, getActivity(), new OnclickRecyclerListener() {
+            listAdapter = new EngineerAdapter(  getActivity(),engineerModels, new OnclickRecyclerListener() {
                 @Override
                 public void onClickListener(int position) {
-
+                    fragment=new FragmentView();
+                    Bundle args=new Bundle();
+                    args.putSerializable("data",engineerModels.get(position));
+                    fragment.setArguments(args);
+                    popOutFragments();
+                    setUpView();
                 }
 
                 @Override

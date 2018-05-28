@@ -1,15 +1,26 @@
 package com.assettrack.assettrack.Models;
 
-public class CustomerModel {
+import java.io.Serializable;
 
-    private int id;
-    private String name;
-    private String address;
-    private String telephone;
-    private String physical_address;
-    private String created_at;
-    private String updated_at;
+public class CustomerModel implements Serializable {
+
+    private int id=0;
+    private String name="";
+    private String address="";
+    private String telephone="";
+    private String physical_address="";
+    private String created_at="";
+    private String updated_at="";
     private boolean isChecked;
+    private int assetCount;
+
+    public int getAssetCount() {
+        return assetCount;
+    }
+
+    public void setAssetCount(int assetCount) {
+        this.assetCount = assetCount;
+    }
 
     public boolean isChecked() {
         return isChecked;

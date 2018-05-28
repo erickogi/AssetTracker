@@ -211,5 +211,24 @@
     <string name="title_activity_manage_issues">Issues</string>
     <string name="title_activity_scanner">Scanner</string>
     <string name="title_activity_assignments">Assignments</string>
+    <string name="statuslbl">Status : </string>
+    <string name="asset">Asset :</string>
+    <string name="here_is_the_asset_name">Here is the asset name</string>
+    <string name="customer">Customer :</string>
+    <string name="here_is_the_customer_name">Here is the customer name</string>
+    <string name="installed_by">Installed By</string>
+    <string name="engineer_s_name_here">Engineer\'s Name Here</string>
+    <string name="customer_name">Customer name</string>
+    <string name="physical_address">Physical Address</string>
+    <string name="location_here">Location here</string>
+    <string name="email_address">Email Address</string>
+    <string name="customer_s_email_address">Customer\'s Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="customer_s_phone_number">Customer\'s Phone Number</string>
+    <string name="assets_count">Assets Count</string>
+    <string name="emp_id">Emp Id :</string>
+    <string name="designation">Designation</string>
+    <string name="engineer_s_name">Engineer\'s Name</string>
+    <string name="customer_default_status">Active</string>
 
 </resources>

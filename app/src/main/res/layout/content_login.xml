@@ -9,6 +9,7 @@
     tools:context=".Views.Shared.Login.LoginActivity"
     tools:showIn="@layout/activity_login">
     <LinearLayout
+        android:gravity="center"
         android:id="@+id/login_layout"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
@@ -43,8 +44,9 @@
             android:textSize="16sp" />
 
         <View
+            android:layout_marginTop="4dp"
             android:layout_width="fill_parent"
-            android:layout_height="1px"
+            android:layout_height="2px"
             android:background="@color/white_greyish" />
 
         <EditText
@@ -64,8 +66,9 @@
             android:textSize="16sp" />
 
         <View
+            android:layout_marginTop="4dp"
             android:layout_width="fill_parent"
-            android:layout_height="1px"
+            android:layout_height="2px"
             android:background="@color/white_greyish" />
 
         <LinearLayout

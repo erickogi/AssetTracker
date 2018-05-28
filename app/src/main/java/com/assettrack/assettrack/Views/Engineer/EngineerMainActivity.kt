@@ -107,13 +107,13 @@ class EngineerMainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
         fab.hide()
-        setResideMenu()
+       // setResideMenu()
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+       // menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
@@ -208,6 +208,12 @@ class EngineerMainActivity : AppCompatActivity() {
 
         startActivity(Intent(this, AssetList::class.java))
 
+    }
+    fun logOutClicked(view: View){
+        val prefManager = PrefManager(this)
+        prefManager.setIsLoggedIn(false, 2)
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     private fun searchByCode() {

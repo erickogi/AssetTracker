@@ -9,6 +9,7 @@ class APiConstants {
         var login: String = baseUrl + "auth/login"
         var register: String = baseUrl + "auth/"
         var allAssets: String = baseUrl + "assets"
+        var allAssetsByCustomer: String = baseUrl + "assets"
         var assetByCode: String = baseUrl + "showasset/"
         var allCustomers: String = baseUrl + "customers"
         var allEngineers: String = baseUrl + "engineers"
@@ -22,10 +23,14 @@ class APiConstants {
         //assets/
         var customerlist: String = baseUrl + "allcustomerlist"
         var updateAsset: String = baseUrl + "assets/"
+        var updateIssue: String = baseUrl + "issue/"
         var updateCustomer: String = baseUrl + "customer/"
-        var updateEngineer: String = baseUrl + "customer/"
-        var createAsset: String = baseUrl + "asset/store"
-        var createIssue: String = baseUrl + "issue/store"
+        var updateEngineer: String = baseUrl + "engineer/"
+        var createAsset: String = baseUrl + "asset/create"
+        var createIssue: String = baseUrl + "issue/create"
+        var createCustomer: String= baseUrl+"customer/store"
+        var createEngineer: String= baseUrl+"newuser"
+
 
     }
 

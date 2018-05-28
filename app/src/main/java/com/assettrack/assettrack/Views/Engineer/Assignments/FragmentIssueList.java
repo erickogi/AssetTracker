@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.ListAdapter;
+import com.assettrack.assettrack.Adapters.V1.IssueAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.IssueParser;
 import com.assettrack.assettrack.Data.PrefManager;
@@ -49,7 +50,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class FragmentIssueList extends Fragment {
-    ListAdapter listAdapter;
+    IssueAdapter listAdapter;
     String searchtext = "";
     private View view;
     private EditText edtSearch;
@@ -186,6 +187,7 @@ public class FragmentIssueList extends Fragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
 
                     issueModels = IssueParser.parse(jsonArray);
+                    initUI(issueModels);
 
 
                     //}
@@ -297,7 +299,7 @@ public class FragmentIssueList extends Fragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             // ArrayList<EngineerModel> engineerModels, int status, Context context, OnclickRecyclerListener onclickRecyclerListener
 
-            listAdapter = new ListAdapter(issueModels, 2, new OnclickRecyclerListener() {
+            listAdapter = new IssueAdapter(getActivity(),issueModels,  new OnclickRecyclerListener() {
                 @Override
                 public void onClickListener(int position) {
 
@@ -353,7 +355,7 @@ public class FragmentIssueList extends Fragment {
 
                     popupMenu(adapterPosition, view, issueModels.get(adapterPosition));
                 }
-            }, getActivity());
+            });
             // listAdapter.notifyDataSetChanged();
 
             recyclerView.setAdapter(listAdapter);

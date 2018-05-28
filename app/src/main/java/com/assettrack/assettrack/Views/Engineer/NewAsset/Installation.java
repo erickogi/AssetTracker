@@ -18,6 +18,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
+import com.google.gson.Gson;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -254,6 +255,11 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
         params.put("RecieversDesignation", assetModel.getReceiver_designation());
         params.put("Security", assetModel.getWarranty());
         params.put("RecieversComment", assetModel.getReceiver_comments());
+
+        Gson gson = new Gson();
+        String json = gson.toJson(assetModel.getParts());
+
+        params.put("assetparts", json);
 
         PrefManager prefManager = new PrefManager(Installation.this);
         Request.Companion.postRequest(APiConstants.Companion.getCreateAsset(), params, prefManager.getToken(), new RequestListener() {

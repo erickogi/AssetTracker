@@ -40,36 +40,54 @@
                     android:layout_alignParentStart="true"
                     android:background="@drawable/ic_person_black_24dp"
                     android:padding="10dp" />
-
                 <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_toRightOf="@+id/profile"
-                    android:orientation="vertical">
+                    android:layout_toEndOf="@+id/profile"
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Logged In As : Eric "
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="3dp"
-                        android:background="@color/lightgray" />
+                        <TextView
+                            android:id="@+id/txt_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Logged In As : Eric "
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="eric@zalego.co.ke"
-                        android:textColor="@android:color/darker_gray" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="3dp"
+                            android:background="@color/lightgray" />
+
+                        <TextView
+                            android:id="@+id/txt_user_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="eric@zalego.co.ke"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                    <Button
+                        android:onClick="logOutClicked"
+                        android:background="@color/colorPrimaryLight"
+                        android:text="Logout"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
+
 
 
             </RelativeLayout>
@@ -110,7 +128,8 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:onClick="scan">
+                    android:onClick="scan"
+                    android:focusable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -156,7 +175,8 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:onClick="entercode">
+                    android:onClick="entercode"
+                    android:focusable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -258,7 +278,8 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:onClick="addNewAsset">
+                    android:onClick="addNewAsset"
+                    android:focusable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"

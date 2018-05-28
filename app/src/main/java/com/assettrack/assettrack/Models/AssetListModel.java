@@ -2,12 +2,12 @@ package com.assettrack.assettrack.Models;
 
 public class AssetListModel {
 
-    private String lable;
-    private String value;
-    private String code;
-    private String customers;
-    private String custdesc;
-    private CustomerModel customerModels;
+    private String lable="";
+    private String value="";
+    private String code="";
+    private String customers="";
+    private String custdesc="";
+    private CustomerModel customerModels=new CustomerModel();
 
     public String getLable() {
         return lable;

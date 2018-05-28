@@ -5,40 +5,68 @@ import java.util.ArrayList;
 
 public class AssetModel implements Serializable {
     private int id;
-    private String asset_name;
-    private String asset_code;
-    private String asset_image;
+    private String asset_name="";
+    private String asset_code="";
+    private String asset_image="aa";
     private int state;
-    private String warranty;
-    private String warranty_duration;
-    private String model;
-    private String serial;
-    private String manufacturer;
-    private String yr_of_manufacture;
-    private String nextservicedate;
-    private String customers_id;
-    private String contact_person_position;
-    private String department;
-    private String roomsizestatus;
-    private String room_meets_specification;
-    private String room_explanation;
-    private String engineer_id;
-    private String trainees;
-    private String trainee_position;
-    private String engineer_remarks;
-    private String installation_date;
-    private String recieversDate;
-    private String recievers_name;
-    private String receiver_designation;
-    private String receiver_comments;
-    private String created_at;
-    private String updated_at;
-    private String statename;
-    private String nextservice;
+    private String warranty="";
+    private String warranty_duration="";
+    private String model="";
+    private String serial="";
+    private String manufacturer="";
+    private String yr_of_manufacture="";
+    private String nextservicedate="";
+    private String customers_id="";
+    private String contact_person_position="";
+    private String department="";
+    private String roomsizestatus="";
+    private String room_meets_specification="";
+    private String room_explanation="";
+    private String engineer_id="";
+    private String trainees="";
+    private String trainee_position="";
+    private String engineer_remarks="";
+    private String installation_date="";
+    private String recieversDate="";
+    private String recievers_name="";
+    private String receiver_designation="";
+    private String receiver_comments="";
+    private String created_at="";
+    private String updated_at="";
+    private String statename="";
+    private String nextservice="";
+    private String lastservicedate="";
+
 
     private boolean isChecked;
 
-    private ArrayList<Parts> parts;
+    private ArrayList<Parts> parts =new ArrayList<>();
+    private CustomerModel customerModel=new CustomerModel();
+    private EngineerModel engineerModel=new EngineerModel();
+
+    public String getLastservicedate() {
+        return lastservicedate;
+    }
+
+    public void setLastservicedate(String lastservicedate) {
+        this.lastservicedate = lastservicedate;
+    }
+
+    public CustomerModel getCustomerModel() {
+        return customerModel;
+    }
+
+    public void setCustomerModel(CustomerModel customerModel) {
+        this.customerModel = customerModel;
+    }
+
+    public EngineerModel getEngineerModel() {
+        return engineerModel;
+    }
+
+    public void setEngineerModel(EngineerModel engineerModel) {
+        this.engineerModel = engineerModel;
+    }
 
     public boolean isChecked() {
         return isChecked;

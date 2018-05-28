@@ -20,6 +20,7 @@ import com.assettrack.assettrack.Models.AssetModel
 import com.assettrack.assettrack.Models.EngineerModel
 import com.assettrack.assettrack.Models.IssueModel
 import com.assettrack.assettrack.R
+import com.assettrack.assettrack.Views.Admin.Engineers.FragmentEdit
 import kotlinx.android.synthetic.main.activity_manage_issues.*
 import java.util.*
 
@@ -36,7 +37,9 @@ class ActivityManageIssues : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            createIssue()
+            fragment= FragmentNewIssues()
+            popOutFragments()
+            setFragment()
         }
         fragment = FragmentIssueList()
         val bundle = Bundle()
@@ -285,5 +288,16 @@ class ActivityManageIssues : AppCompatActivity() {
 
     }
 
+    internal fun setFragment() {
+        // fragment = new FragmentSearch();
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
+    }
 
+    internal fun popOutFragments() {
+        val fragmentManager = this.supportFragmentManager
+        for (i in 0 until fragmentManager.backStackEntryCount) {
+            fragmentManager.popBackStack()
+        }
+    }
 }

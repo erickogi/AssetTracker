@@ -88,9 +88,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
             IssueModel issueModel = issueModels.get(position);
             holder.txtCustomerName.setTypeface(holder.txtCustomerName.getTypeface(), Typeface.BOLD);
-            holder.txtCustomerName.setText("Asset : " + issueModel.getFailure_desc() + " Status " + issueModel.getStatename());
+            holder.txtCustomerName.setText("Asset : " + issueModel.getAssetModel().getAsset_name()+ " Status " + issueModel.getIssue_status());
+
+
             holder.txtDate.setText("Start : " + issueModel.getStartdate() + " End : " + issueModel.getClosedate());
-            holder.txtCustomerLocation.setText("Client : " + issueModel.getCustomers_id());
+            holder.txtCustomerLocation.setText("Client : " + issueModel.getCustomerModel().getName());
 
         }
     }

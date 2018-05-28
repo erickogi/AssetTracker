@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.AssetListAdapter;
+import com.assettrack.assettrack.Adapters.V1.AssetAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Constatnts.GLConstants;
 import com.assettrack.assettrack.Data.Parsers.AssetParser;
@@ -54,7 +55,7 @@ import java.util.Objects;
 import static com.assettrack.assettrack.Constatnts.GLConstants.Companion;
 
 public class FragmentAsset extends Fragment {
-    AssetListAdapter listAdapter;
+    AssetAdapter listAdapter;
     ArrayList<AssetModel> assetModels;
     private RecyclerView recyclerView;
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
@@ -201,6 +202,8 @@ public class FragmentAsset extends Fragment {
 
                     assetModels = AssetParser.parse(jsonArray);
 
+                    initUI(STATUS_ID,assetModels);
+
 
                     //}
                 } catch (Exception nm) {
@@ -314,7 +317,7 @@ public class FragmentAsset extends Fragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-            listAdapter = new AssetListAdapter(getContext(), assetModels, 1, new OnclickRecyclerListener() {
+            listAdapter = new AssetAdapter(getContext(), assetModels , new OnclickRecyclerListener() {
                 @Override
                 public void onClickListener(int position) {
                     Companion.setId(String.valueOf(assetModels.get(position).getId()));

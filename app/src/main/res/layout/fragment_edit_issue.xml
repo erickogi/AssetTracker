@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:padding="4dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputLayout
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:hint="Start Date"
+
+                   android:layout_height="wrap_content">
+                   <android.support.design.widget.TextInputEditText
+                       android:layout_width="match_parent"
+                       android:inputType="datetime"
+                       android:id="@+id/edt_start"
+                       android:focusableInTouchMode="false"
+
+
+                       android:layout_height="match_parent" />
+
+
+               </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:hint="End Date"
+
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:inputType="datetime"
+                        android:id="@+id/edt_end"
+                        android:focusableInTouchMode="false"
+
+
+                        android:layout_height="match_parent" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+
+                android:hint="Failure description"
+
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:id="@+id/edt_fix"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+
+                android:hint="Solution description"
+
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:id="@+id/edt_soln"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+
+                android:hint="Engineer's Comment"
+
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:id="@+id/edt_engineer_remarks"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+
+                android:hint="Customer Comments"
+
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:id="@+id/edt_customer_remarks"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+
+                android:hint="Safety"
+
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+
+                    android:id="@+id/edt_safety"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+
+                    android:hint="Travel Hours"
+
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:inputType="number"
+
+                        android:id="@+id/edt_travel_hours"
+                        android:layout_height="match_parent" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+
+                    android:hint="Labour Hours"
+
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:inputType="number"
+
+                        android:id="@+id/edt_labour_hours"
+                        android:layout_height="match_parent" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+
+                android:hint="Next Service Date"
+
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="text"
+                    android:focusableInTouchMode="false"
+
+                    android:id="@+id/edt_next_service_date"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:textColor="@color/white"
+                android:id="@+id/btn_save"
+                android:background="@color/colorPrimary"
+                android:text="Save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

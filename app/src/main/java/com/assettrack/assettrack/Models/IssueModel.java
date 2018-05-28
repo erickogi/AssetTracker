@@ -1,33 +1,35 @@
 package com.assettrack.assettrack.Models;
 
-public class IssueModel {
+import java.io.Serializable;
 
-    private int id;
-    private String work_tickets;
-    private String assets_id;
-    private String asset_code;
-    private String startdate;
-    private String closedate;
-    private String nextdueservice;
-    private String travel_hours;
-    private String labour_hours;
-    private String failure_desc;
-    private String failure_soln;
-    private String issue_status;
-    private String safety;
-    private String engineer_id;
-    private String engineer_comment;
-    private String customers_id;
-    private String customer_comment;
-    private String created_at;
-    private String updated_at;
-    private String statename;
-    private String engineername;
-    private boolean isChecked;
+public class IssueModel implements Serializable{
 
-    private AssetModel assetModel;
-    private EngineerModel engineerModel;
-    private CustomerModel customerModel;
+    private int id=0;
+    private String work_tickets="";
+    private String assets_id="";
+    private String asset_code="";
+    private String startdate="";
+    private String closedate="";
+    private String nextdueservice="";
+    private String travel_hours="";
+    private String labour_hours="";
+    private String failure_desc="";
+    private String failure_soln="";
+    private int issue_status=0;
+    private String safety="";
+    private String engineer_id="";
+    private String engineer_comment="";
+    private String customers_id="";
+    private String customer_comment="";
+    private String created_at="";
+    private String updated_at="";
+    private String statename="";
+    private String engineername="";
+    private boolean isChecked=false;
+
+    private AssetModel assetModel=new AssetModel();
+    private EngineerModel engineerModel=new EngineerModel();
+    private CustomerModel customerModel=new CustomerModel();
 
     public AssetModel getAssetModel() {
         return assetModel;
@@ -149,11 +151,11 @@ public class IssueModel {
         this.failure_soln = failure_soln;
     }
 
-    public String getIssue_status() {
+    public int getIssue_status() {
         return issue_status;
     }
 
-    public void setIssue_status(String issue_status) {
+    public void setIssue_status(int issue_status) {
         this.issue_status = issue_status;
     }
 

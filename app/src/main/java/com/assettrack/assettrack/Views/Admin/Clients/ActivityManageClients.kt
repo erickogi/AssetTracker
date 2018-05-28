@@ -23,7 +23,10 @@ class ActivityManageClients : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            startEditDialog(CustomerModel())
+           // startEditDialog(CustomerModel())
+            fragment=FragmentEdit()
+            popOutFragments()
+            setFragment()
         }
 
         fragment = FragmentClientList()
@@ -159,6 +162,19 @@ class ActivityManageClients : AppCompatActivity() {
     private fun addNew(customerModel: CustomerModel) {
 
 
+    }
+
+    internal fun setFragment() {
+        // fragment = new FragmentSearch();
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
+    }
+
+    internal fun popOutFragments() {
+        val fragmentManager = this.supportFragmentManager
+        for (i in 0 until fragmentManager.backStackEntryCount) {
+            fragmentManager.popBackStack()
+        }
     }
 
 }

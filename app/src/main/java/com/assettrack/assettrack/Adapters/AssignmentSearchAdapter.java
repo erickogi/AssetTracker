@@ -21,7 +21,7 @@ public class AssignmentSearchAdapter extends RecyclerView.Adapter<AssignmentSear
     private ArrayList<AssetModel> modelList;
     private ArrayList<EngineerModel> engineerModels;
     private OnclickRecyclerListener onclickRecyclerListener;
-    private int status;
+    private int status=0;
 
     public AssignmentSearchAdapter(Context context, ArrayList<AssetModel> modelList, OnclickRecyclerListener listener) {
         this.context = context;

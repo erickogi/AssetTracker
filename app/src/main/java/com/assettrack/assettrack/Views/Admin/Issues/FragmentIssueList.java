@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.ListAdapter;
+import com.assettrack.assettrack.Adapters.V1.IssueAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.IssueParser;
 import com.assettrack.assettrack.Data.PrefManager;
@@ -48,7 +50,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class FragmentIssueList extends Fragment {
-    ListAdapter listAdapter;
+    IssueAdapter listAdapter;
     String searchtext = "";
     private View view;
     private EditText edtSearch;
@@ -62,6 +64,24 @@ public class FragmentIssueList extends Fragment {
     private ArrayList<IssueModel> issueModels;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
+
+    private Fragment fragment;
+
+    void setUpView() {
+        if (fragment != null) {
+            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null).commit();
+        }
+
+    }
+
+    void popOutFragments() {
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
+    }
     private ActionMode.Callback callback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -291,10 +311,15 @@ public class FragmentIssueList extends Fragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             // ArrayList<EngineerModel> engineerModels, int status, Context context, OnclickRecyclerListener onclickRecyclerListener
 
-            listAdapter = new ListAdapter(issueModels, 2, new OnclickRecyclerListener() {
+            listAdapter = new IssueAdapter(getActivity(),issueModels, new OnclickRecyclerListener() {
                 @Override
                 public void onClickListener(int position) {
-
+                    fragment=new FragmentView();
+                    Bundle args=new Bundle();
+                    args.putSerializable("data",issueModels.get(position));
+                    fragment.setArguments(args);
+                    popOutFragments();
+                    setUpView();
                 }
 
                 @Override
@@ -347,7 +372,7 @@ public class FragmentIssueList extends Fragment {
 
                     popupMenu(adapterPosition, view, issueModels.get(adapterPosition));
                 }
-            }, getActivity());
+            });
             // listAdapter.notifyDataSetChanged();
 
             recyclerView.setAdapter(listAdapter);

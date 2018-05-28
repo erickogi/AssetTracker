@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.assettrack.assettrack.R
+
 import kotlinx.android.synthetic.main.activity_manage_engineers.*
 
 class ActivityManageEngineers : AppCompatActivity() {
@@ -16,8 +17,9 @@ class ActivityManageEngineers : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            fragment= FragmentEdit()
+            popOutFragments()
+            setFragment()
         }
 
         fragment = FragmentEngineerList()
@@ -28,6 +30,19 @@ class ActivityManageEngineers : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
 
+    }
+
+    internal fun setFragment() {
+        // fragment = new FragmentSearch();
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
+    }
+
+    internal fun popOutFragments() {
+        val fragmentManager = this.supportFragmentManager
+        for (i in 0 until fragmentManager.backStackEntryCount) {
+            fragmentManager.popBackStack()
+        }
     }
 
 }

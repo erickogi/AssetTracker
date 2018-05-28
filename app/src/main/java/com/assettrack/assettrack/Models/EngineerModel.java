@@ -1,20 +1,31 @@
 package com.assettrack.assettrack.Models;
 
-public class EngineerModel {
+import java.io.Serializable;
+
+public class EngineerModel implements Serializable{
 
     private int id;
-    private String firstname;
-    private String lastname;
-    private String employeeid;
+    private String firstname="";
+    private String lastname="";
+    private String employeeid="";
     private int role;
-    private String email;
-    private String phoneNumber;
-    private String designation;
-    private String created_at;
-    private String updated_at;
-    private String full_name;
-    private String rolename;
+    private String email="";
+    private String phoneNumber="";
+    private String designation="";
+    private String created_at="";
+    private String updated_at="";
+    private String full_name="";
+    private String rolename="";
+    private String password="";
     private boolean isChecked;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public boolean isChecked() {
         return isChecked;
