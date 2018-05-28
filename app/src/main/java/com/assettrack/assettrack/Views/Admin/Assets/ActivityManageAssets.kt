@@ -1,5 +1,6 @@
 package com.assettrack.assettrack.Views.Admin.Assets
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,8 @@ import com.assettrack.assettrack.Utils.DrawerClass
 import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients
 import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers
 import com.assettrack.assettrack.Views.Admin.Issues.ActivityManageIssues
+import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
+import com.assettrack.assettrack.Views.Shared.Asset.AssetActivity
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
 import kotlinx.android.synthetic.main.activity_manage_assets.*
 
@@ -24,6 +27,16 @@ class ActivityManageAssets : AppCompatActivity() {
 
     internal lateinit var bottomNavigation: AHBottomNavigation
     internal var fragment: Fragment? = null
+    
+
+    public fun  setFab(icon:Int,isVisible: Boolean ){
+        fab.setImageResource(icon)
+        if(isVisible){
+            fab.show()
+        }else{
+            fab.hide()
+        }
+    }
 
 
     private fun setDrawerMenu(toolbar: Toolbar) {
@@ -84,7 +97,9 @@ class ActivityManageAssets : AppCompatActivity() {
     fun manageAssets() {
         startActivity(Intent(this, ActivityManageAssets::class.java))
     }
-
+    public fun popOut(){
+        popOutFragments()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_assets)
@@ -92,8 +107,10 @@ class ActivityManageAssets : AppCompatActivity() {
         setDrawerMenu(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            var intent = Intent(this, Installation::class.java)
+            intent.putExtra("state", 2)
+            startActivity(intent)
+
         }
 
         fab.hide()

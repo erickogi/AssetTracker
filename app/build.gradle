@@ -102,6 +102,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
 
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
 
 }
 

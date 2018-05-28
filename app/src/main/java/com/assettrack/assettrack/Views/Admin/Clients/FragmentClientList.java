@@ -43,6 +43,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListene
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Views.Admin.Assets.ActivityManageAssets;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -145,6 +146,8 @@ public class FragmentClientList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+
+        ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp,true);
 
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);

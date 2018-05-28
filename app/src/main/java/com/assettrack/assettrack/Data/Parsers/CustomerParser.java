@@ -19,13 +19,14 @@ public class CustomerParser {
                 JSONObject custObject = response.getJSONObject(a);
 
                 CustomerModel customerModel = new CustomerModel();
-                customerModel.setId(custObject.getInt("id"));
-                customerModel.setAddress(custObject.getString("address"));
-                customerModel.setName(custObject.getString("name"));
-                customerModel.setTelephone(custObject.getString("telephone"));
-                customerModel.setPhysical_address(custObject.getString("physical_address"));
-                customerModel.setCreated_at(custObject.getString("created_at"));
-                customerModel.setUpdated_at(custObject.getString("updated_at"));
+                customerModel.setId(custObject.optInt("id"));
+                customerModel.setAddress(custObject.optString("address"));
+                customerModel.setName(custObject.optString("name"));
+                customerModel.setTelephone(custObject.optString("telephone"));
+                customerModel.setPhysical_address(custObject.optString("physical_address"));
+                customerModel.setCreated_at(custObject.optString("created_at"));
+                customerModel.setUpdated_at(custObject.optString("updated_at"));
+                customerModel.setAssetCount(custObject.optInt("assetcount"));
 
                 customerModels.add(customerModel);
 

@@ -9,7 +9,8 @@ class APiConstants {
         var login: String = baseUrl + "auth/login"
         var register: String = baseUrl + "auth/"
         var allAssets: String = baseUrl + "assets"
-        var allAssetsByCustomer: String = baseUrl + "assets"
+
+        var allAssetsByCustomer: String = baseUrl + "siglecustomer/"
         var assetByCode: String = baseUrl + "showasset/"
         var allCustomers: String = baseUrl + "customers"
         var allEngineers: String = baseUrl + "engineers"

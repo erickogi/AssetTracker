@@ -42,7 +42,6 @@ public class IssueParser {
                 issueModel.setStatename(object.optString("statename"));
                 issueModel.setEngineername(object.optString("engineername"));
 
-                issueModels.add(issueModel);
 
                 EngineerModel engineerModel=new EngineerModel();
 
@@ -135,6 +134,7 @@ public class IssueParser {
                             Parts part = new Parts();
                             part.setAssets_id(jsonPart.optString("assets_id"));
                             part.setId(jsonPart.optString("id"));
+                            part.setDescription(jsonPart.optString("description"));
                             part.setCreated_at(jsonPart.optString("created_at"));
                             part.setUpdated_at(jsonPart.optString("updated_at"));
 
@@ -147,12 +147,18 @@ public class IssueParser {
 
                     }
 
+
+
                 }catch (Exception nm){
                     nm.printStackTrace();
                 }
+                issueModel.setAssetModel(assetModel);
 
+
+                issueModels.add(issueModel);
 
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

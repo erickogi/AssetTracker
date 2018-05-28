@@ -114,7 +114,7 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
 
         } else {
 
-            snack("null");
+            //snack("null");
         }
 
     }

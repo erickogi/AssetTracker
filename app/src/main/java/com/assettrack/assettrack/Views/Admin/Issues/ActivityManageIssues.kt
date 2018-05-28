@@ -3,6 +3,7 @@ package com.assettrack.assettrack.Views.Admin.Issues
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -31,12 +32,20 @@ class ActivityManageIssues : AppCompatActivity() {
     internal var engineerModel: EngineerModel? = null
     internal var assetModel: AssetModel? = null
 
+    var  fab: FloatingActionButton?=null
+    var  toolbar: android.support.v7.widget.Toolbar?=null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_issues)
+        toolbar=findViewById(R.id.toolbar)
+        fab=findViewById(R.id.fab)
+
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+
+        fab?.setOnClickListener { view ->
             fragment= FragmentNewIssues()
             popOutFragments()
             setFragment()
@@ -50,7 +59,17 @@ class ActivityManageIssues : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
 
     }
-
+    public fun  setFab(icon:Int,isVisible: Boolean ){
+        fab?.setImageResource(icon)
+        if(isVisible){
+            fab?.show()
+        }else{
+            fab?.hide()
+        }
+    }
+    public fun popOut(){
+        popOutFragments()
+    }
     fun createIssue() {
 
     }

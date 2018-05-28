@@ -62,6 +62,8 @@ public class FragmentView extends Fragment {
         
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
+        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+
         Bundle args=getArguments();
         if(args!=null){
             try{

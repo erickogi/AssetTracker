@@ -1,6 +1,7 @@
 package com.assettrack.assettrack.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class IssueModel implements Serializable{
 
@@ -27,9 +28,19 @@ public class IssueModel implements Serializable{
     private String engineername="";
     private boolean isChecked=false;
 
+    private ArrayList<Parts> parts=new ArrayList<>();
+
     private AssetModel assetModel=new AssetModel();
     private EngineerModel engineerModel=new EngineerModel();
     private CustomerModel customerModel=new CustomerModel();
+
+    public ArrayList<Parts> getParts() {
+        return parts;
+    }
+
+    public void setParts(ArrayList<Parts> parts) {
+        this.parts = parts;
+    }
 
     public AssetModel getAssetModel() {
         return assetModel;

@@ -139,6 +139,7 @@ public class FragmentIssueList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp,true);
 
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);

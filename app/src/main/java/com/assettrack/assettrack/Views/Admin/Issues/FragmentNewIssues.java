@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.AssignmentSearchAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
@@ -35,14 +36,17 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class FragmentNewIssues extends Fragment {
     private View view;
+    MaterialDialog m;
     EditText assetId,engId;
     private Button btnSubmit;
     private int assetid,engid;
@@ -89,6 +93,7 @@ public class FragmentNewIssues extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
+        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
 
         avi = view.findViewById(R.id.avi);
         avi.hide();
@@ -117,25 +122,82 @@ public class FragmentNewIssues extends Fragment {
         if(assetModel==null||engineerModel==null){
             snack("No data loaded");
         }else {
-//            HashMap<String,String> params=new HashMap<>();
-//            params.put("Asset",String.valueOf(assetModel.getId()));
-//            params.put("Engineer",""+engineerModel.getEmployeeid());
-//            params.put("AssetCode",assetModel.getAsset_code());
-//            params.put("CustomerName",assetModel.getCustomerModel().getName());
-//            params.put("CustomerId",""+assetModel.getCustomers_id());
-//            params.put("StartDate","2018-01-01 12:12:12"
-//                                                    params.put("CloseDate:2018-01-02 12:12:12
-//                                                            params.put("NextdueService:2018-01-02
-//                                                                    params.put("TravelHours:
-//                                                                            params.put("LabourHours:
-//                                                                                    params.put("FailureDesc:
-//                                                                                            params.put("FailurSolution:
-//                                                                                                    params.put("EngineerComment:
-//                                                                                                            params.put("CustomerComment:
-//                                                                                                                    params.put("Safety:
-//                                                                                                                            params.put("Status:
-//                                                                                                                                    params.put("PartsState:
-//                                                                                                                                            params.put("workticketparts:[{" partnumber":1," description":" A4"," quantity":2," state":1}]
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Uploading....");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            HashMap<String,String> params=new HashMap<>();
+            params.put("Asset",String.valueOf(assetModel.getId()));
+            params.put("Engineer",""+engineerModel.getId());
+            params.put("AssetCode",assetModel.getAsset_code());
+            params.put("CustomerName",assetModel.getCustomerModel().getName());
+            params.put("CustomerId",""+assetModel.getCustomers_id());
+            params.put("StartDate","");
+            params.put("CloseDate","");
+            params.put("NextdueService","");
+            params.put("TravelHours","");
+            params.put("LabourHours","");
+            params.put("FailureDesc","");
+            params.put("FailurSolution","");
+            params.put("EngineerComment","");
+
+            params.put("CustomerComment","");
+            params.put("Safety","");
+            params.put("Status","");
+            params.put("PartsState","");
+            params.put("workticketparts","");
+
+            Request.Companion.postRequest(APiConstants.Companion.getCreateIssue() , params, prefManager.getToken(), new RequestListener() {
+                @Override
+                public void onError(@NotNull ANError error) {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    Log.d("saveIssue", error.toString());
+                    snack(error.getMessage());
+
+                }
+
+                @Override
+                public void onError(@NotNull String error) {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    Log.d("saveIssue", error);
+                    snack(error);
+
+                }
+
+                @Override
+                public void onSuccess(@NotNull String response) {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    Log.d("saveIssue", response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (!jsonObject.optBoolean("errror")) {
+                            snack("Issue Created Successfully");
+                            ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
+                            popOutFragments();
+
+                            //finish();
+                        } else {
+                            snack("Error saving asset");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        snack("Error saving asset");
+                    }
+
+                }
+            });
+
+
+
         }
     }
 
@@ -150,6 +212,7 @@ public class FragmentNewIssues extends Fragment {
     }
 
     private ArrayList<EngineerModel> initData() {
+        avi.show();
         engineerModels = new ArrayList<>();
 
        String url = APiConstants.Companion.getAllEngineers();
@@ -157,33 +220,38 @@ public class FragmentNewIssues extends Fragment {
             @Override
             public void onError(@NotNull ANError error) {
                 snack(error.getMessage());
-                Log.d("getData", error.getErrorBody());
+                avi.hide();
+                Log.d("getDataEng", error.getErrorBody());
             }
 
             @Override
             public void onError(@NotNull String error) {
-
+                avi.hide();
                snack(error);
-                Log.d("getData", error);
+                Log.d("getDataEng", error);
 
             }
 
             @Override
             public void onSuccess(@NotNull String response) {
 
-                Log.d("getData", response);
+                Log.d("getDataEng", response);
 
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     //if(!jsonObject.getBoolean("error")){
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
-
+                    avi.hide();
                     engineerModels = AllEngineerParser.parse(jsonArray);
+                    Iterator iterator=engineerModels.iterator();
+                    while (iterator.hasNext()){
+                        Log.d("hasNext",iterator.next().toString());
+                    }
                     //}
                 } catch (Exception nm) {
                     snack("Error getting Engineers");
-
+                    avi.hide();
                     Log.d("getData", nm.toString());
                 }
 
@@ -196,6 +264,7 @@ public class FragmentNewIssues extends Fragment {
     }
 
     private ArrayList<AssetModel> getData() {
+        avi.show();
         assetModels = new ArrayList<>();
         HashMap<String, String> params = new HashMap<>();
 
@@ -207,14 +276,14 @@ public class FragmentNewIssues extends Fragment {
         Request.Companion.getRequest(url, prefManager.getToken(), new RequestListener() {
             @Override
             public void onError(@NotNull ANError error) {
-
+                avi.hide();
                 Log.d("getData", error.getErrorBody());
                 snack(error.getMessage());
             }
 
             @Override
             public void onError(@NotNull String error) {
-
+                avi.hide();
                snack(error);
                 Log.d("getData", error);
 
@@ -258,94 +327,74 @@ public class FragmentNewIssues extends Fragment {
 
 
 
-        assetId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        assetId.setOnClickListener(v -> m=   new MaterialDialog.Builder(getActivity())
+                   .title("Assets")
+                  .adapter(new AssignmentSearchAdapter(getActivity(), assetModels, new OnclickRecyclerListener() {
+                       @Override
+                       public void onClickListener(int position) {
+                           assetId.setText(assetModels.get(position).getAsset_name());
+                   assetModel=assetModels.get(position);
+                   m.dismiss();
+//
+                       }
 
-                searchAdapter=new AssignmentSearchAdapter(getActivity(), assetModels, new OnclickRecyclerListener() {
-                    @Override
-                    public void onClickListener(int position) {
-                        assetId.setText(assetModels.get(position).getAsset_name());
-                        assetModel=assetModels.get(position);
+                       @Override
+                       public void onLongClickListener(int position) {
 
-                    }
+                       }
 
-                    @Override
-                    public void onLongClickListener(int position) {
+                       @Override
+                       public void onCheckedClickListener(int position) {
 
-                    }
+                       }
 
-                    @Override
-                    public void onCheckedClickListener(int position) {
+                       @Override
+                       public void onMoreClickListener(int position) {
 
-                    }
+                       }
 
-                    @Override
-                    public void onMoreClickListener(int position) {
+                       @Override
+                       public void onClickListener(int adapterPosition, @NotNull View view) {
 
-                    }
+                       }
+                   }), null)
+                   .show());
+        engId.setOnClickListener(v -> {
 
-                    @Override
-                    public void onClickListener(int adapterPosition, @NotNull View view) {
-
-                    }
-                });
-                searchAdapter.notifyDataSetChanged();
-                mStaggeredLayoutManager =new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                //mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mStaggeredLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-                searchAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(searchAdapter);
-
-
-
-            }
-        });
-        engId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchAdapter=new AssignmentSearchAdapter(1,engineerModels, new OnclickRecyclerListener() {
-                    @Override
-                    public void onClickListener(int position) {
-
-                        engineerModel=engineerModels.get(position);
+          m=new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))
+                    .title("Engineer")
+                    // second parameter is an optional layout manager. Must be a LinearLayoutManager or GridLayoutManager.
+                    .adapter(new AssignmentSearchAdapter(1, engineerModels, new OnclickRecyclerListener() {
+                        @Override
+                        public void onClickListener(int position) {
+                            engineerModel=engineerModels.get(position);
                         engId.setText(engineerModel.getFull_name());
+                        m.dismiss();
 
-                    }
+                        }
 
-                    @Override
-                    public void onLongClickListener(int position) {
+                        @Override
+                        public void onLongClickListener(int position) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onCheckedClickListener(int position) {
+                        @Override
+                        public void onCheckedClickListener(int position) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onMoreClickListener(int position) {
+                        @Override
+                        public void onMoreClickListener(int position) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onClickListener(int adapterPosition, @NotNull View view) {
+                        @Override
+                        public void onClickListener(int adapterPosition, @NotNull View view) {
 
-                    }
-                });
+                        }
+                    }), null)
+                    .show();
 
-                searchAdapter.notifyDataSetChanged();
-                mStaggeredLayoutManager =new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                //mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mStaggeredLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-                searchAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(searchAdapter);
-
-            }
         });
 
 

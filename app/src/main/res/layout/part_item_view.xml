@@ -9,8 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:id="@+id/asset_background"
-        android:background="@drawable/corner_border_transaparent"
-        android:layout_width="match_parent"
+       android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_marginTop="8dp"

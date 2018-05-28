@@ -102,7 +102,7 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
         btnAddTrrainees = view.findViewById(R.id.btn_add);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-//
+//ActivityManageEngineers
         initData();
         if (traineesList != null) {
             intData();
@@ -129,7 +129,7 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
 
         } else {
 
-            snack("null");
+           // snack("null");
         }
     }
 

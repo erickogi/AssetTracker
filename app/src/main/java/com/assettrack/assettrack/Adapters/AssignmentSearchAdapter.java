@@ -2,6 +2,7 @@ package com.assettrack.assettrack.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,15 +51,18 @@ public class AssignmentSearchAdapter extends RecyclerView.Adapter<AssignmentSear
         holder.txtDate.setVisibility(View.VISIBLE);
         if (status == 0) {
             AssetModel customerModel = modelList.get(position);
-            holder.txtDate.setVisibility(View.VISIBLE);
+            holder.txtDate.setVisibility(View.GONE);
             holder.txtDate.setText(customerModel.getInstallation_date());
             holder.txtCustomerName.setText(customerModel.getAsset_name());
             holder.txtCustomerLocation.setText(customerModel.getAsset_code());
-        } else if (status == 1) {
-            EngineerModel customerModel = engineerModels.get(position);
-            holder.txtDate.setVisibility(View.GONE);
-            holder.txtCustomerName.setText(customerModel.getFull_name());
-            holder.txtCustomerLocation.setText(customerModel.getDesignation());
+        } else {
+
+            EngineerModel engineerModel = engineerModels.get(position);
+            Log.d("debugig",engineerModel.getFull_name());
+
+            holder.txtDate.setVisibility(View.VISIBLE);
+            holder.txtCustomerName.setText(engineerModel.getFull_name());
+            holder.txtCustomerLocation.setText(engineerModel.getDesignation());
         }
 
 
@@ -66,7 +70,14 @@ public class AssignmentSearchAdapter extends RecyclerView.Adapter<AssignmentSear
 
     @Override
     public int getItemCount() {
-        return (null != modelList ? modelList.size() : 0);
+
+        if(engineerModels!=null){
+            return engineerModels.size();
+        }else if(modelList!=null){
+            return modelList.size();
+        }else {
+            return 0;
+        }
     }
 
     public void updateList(ArrayList<AssetModel> newList) {

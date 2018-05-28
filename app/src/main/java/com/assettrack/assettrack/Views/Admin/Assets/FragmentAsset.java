@@ -202,7 +202,7 @@ public class FragmentAsset extends Fragment {
 
                     assetModels = AssetParser.parse(jsonArray);
 
-                    initUI(STATUS_ID,assetModels);
+                    //initUI(STATUS_ID,assetModels);
 
 
                     //}
@@ -307,6 +307,7 @@ public class FragmentAsset extends Fragment {
 
     private void initUI(int status, ArrayList<AssetModel> assetModels) {
 
+        ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp,true);
 
         recyclerView = view.findViewById(R.id.recyclerView);
 

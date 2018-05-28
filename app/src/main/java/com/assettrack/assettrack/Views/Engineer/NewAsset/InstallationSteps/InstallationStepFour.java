@@ -205,7 +205,7 @@ public class InstallationStepFour extends Fragment implements BlockingStep, Imag
 
         } else {
 
-            snack("null");
+           // snack("null");
         }
 
     }

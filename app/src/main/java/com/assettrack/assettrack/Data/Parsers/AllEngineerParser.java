@@ -1,5 +1,7 @@
 package com.assettrack.assettrack.Data.Parsers;
 
+import android.util.Log;
+
 import com.assettrack.assettrack.Models.EngineerModel;
 
 import org.json.JSONArray;
@@ -33,10 +35,12 @@ public class AllEngineerParser {
                 engineerModel.setFull_name(object.optString("full_name"));
                 engineerModel.setRolename(object.optString("rolename"));
 
+                Log.d("parse",engineerModel.getFull_name());
                 engineerModels.add(engineerModel);
 
             }
         } catch (JSONException e) {
+            Log.d("parse",e.toString());
             e.printStackTrace();
         }
 

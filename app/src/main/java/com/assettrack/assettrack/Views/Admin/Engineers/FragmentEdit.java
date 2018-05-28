@@ -22,6 +22,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -66,6 +67,8 @@ public class FragmentEdit extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
 
+        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
         Bundle args=getArguments();
         if(args!=null){
@@ -99,7 +102,7 @@ public class FragmentEdit extends Fragment {
             email.setText(engineerModel.getEmail());
             sname.setText(engineerModel.getLastname());
             phone.setText(engineerModel.getPhoneNumber());
-            idd.setText(engineerModel.getId());
+            idd.setText(engineerModel.getEmployeeid());
             speciality.setText(engineerModel.getDesignation());
         }
 
@@ -230,6 +233,8 @@ public class FragmentEdit extends Fragment {
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
                         popOutFragments();
+                        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
+
                         //finish();
                     } else {
                         snack("Error updating asset");
@@ -299,6 +304,8 @@ public class FragmentEdit extends Fragment {
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
                         popOutFragments();
+                        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
+
                         //finish();
                     } else {
                         snack("Error updating asset");

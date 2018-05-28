@@ -1,6 +1,7 @@
 package com.assettrack.assettrack.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class CustomerModel implements Serializable {
 
@@ -13,6 +14,16 @@ public class CustomerModel implements Serializable {
     private String updated_at="";
     private boolean isChecked;
     private int assetCount;
+
+    private ArrayList<AssetModel> assetModels=new ArrayList<>();
+
+    public ArrayList<AssetModel> getAssetModels() {
+        return assetModels;
+    }
+
+    public void setAssetModels(ArrayList<AssetModel> assetModels) {
+        this.assetModels = assetModels;
+    }
 
     public int getAssetCount() {
         return assetCount;

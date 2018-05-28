@@ -24,6 +24,8 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients;
+import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -68,6 +70,8 @@ public class FragmentEdit extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
+
+        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
 
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
         Bundle args=getArguments();
@@ -255,6 +259,8 @@ public class FragmentEdit extends Fragment {
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
                         popOutFragments();
+                        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
+
                         //finish();
                     } else {
                         snack("Error updating issue");

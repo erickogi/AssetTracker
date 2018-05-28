@@ -7,10 +7,45 @@ public class Parts implements Serializable {
 
     private String id;
     private String assets_id;
+    private String work_ticket;
+    private String partnumber;
+    private String quantity;
+    private String state;
     private String description;
     private String created_at;
     private String updated_at;
 
+    public String getWork_ticket() {
+        return work_ticket;
+    }
+
+    public void setWork_ticket(String work_ticket) {
+        this.work_ticket = work_ticket;
+    }
+
+    public String getPartnumber() {
+        return partnumber;
+    }
+
+    public void setPartnumber(String partnumber) {
+        this.partnumber = partnumber;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getId() {
         return id;
