@@ -29,7 +29,7 @@ public class AssetModel implements Serializable {
     private String installation_date="";
     private String recieversDate="";
     private String recievers_name="";
-    private String receiver_designation="";
+    private String receiver_designation = "null";
     private String receiver_comments="";
     private String created_at="";
     private String updated_at="";

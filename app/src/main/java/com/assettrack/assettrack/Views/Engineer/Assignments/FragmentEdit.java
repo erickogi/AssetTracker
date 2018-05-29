@@ -1,6 +1,7 @@
-package com.assettrack.assettrack.Views.Admin.Issues;
+package com.assettrack.assettrack.Views.Engineer.Assignments;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,19 +32,23 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    TextInputEditText edtStart, edtEnd, edtFix, edtSoln, edtEngRemarks, edtCustRemarks, edtSafety,
+            edtTravelHours, edtLabourHours, edtNextServiceDate;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
     private View view;
     private Button btnEdit;
-    TextInputEditText edtStart,edtEnd,edtFix,edtSoln,edtEngRemarks,edtCustRemarks,edtSafety,
-            edtTravelHours,edtLabourHours,edtNextServiceDate;
     private Button btnSave;
 
-    private IssueModel issueModel=null;
+    private IssueModel issueModel = null;
     private Fragment fragment;
+    private String date;
+    private String time;
+    private int isWhich = 0;
 
     void setUpView() {
         if (fragment != null) {
@@ -59,36 +65,28 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             fragmentManager.popBackStack();
         }
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_edit_issue,container,false);
-    }
-
-    private String date;
-    private String time;
-    private int isWhich = 0;
-
-    private void snack(String msg) {
-        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
-                .setAction("Action", null).show();
+        return inflater.inflate(R.layout.fragment_edit_issue, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view=view;
+        this.view = view;
 
-        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+        //((A) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
 
-        prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
-        Bundle args=getArguments();
-        if(args!=null){
-            try{
-                issueModel=(IssueModel) getArguments().getSerializable("data");
-            }catch (Exception nm){
+        prefManager = new PrefManager(Objects.requireNonNull(getActivity()));
+        Bundle args = getArguments();
+        if (args != null) {
+            try {
+                issueModel = (IssueModel) getArguments().getSerializable("data");
+            } catch (Exception nm) {
                 nm.printStackTrace();
-                issueModel=null;
+                issueModel = null;
             }
         }
         edtStart = view.findViewById(R.id.edt_start);
@@ -97,11 +95,15 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         edtSoln = view.findViewById(R.id.edt_soln);
         edtEngRemarks = view.findViewById(R.id.edt_engineer_remarks);
         edtCustRemarks = view.findViewById(R.id.edt_customer_remarks);
-        edtSafety=view.findViewById(R.id.edt_safety);
-        edtTravelHours=view.findViewById(R.id.edt_travel_hours);
-        edtLabourHours=view.findViewById(R.id.edt_labour_hours);
-        edtNextServiceDate=view.findViewById(R.id.edt_next_service_date);
-        btnSave=view.findViewById(R.id.btn_save);
+        edtSafety = view.findViewById(R.id.edt_safety);
+        edtTravelHours = view.findViewById(R.id.edt_travel_hours);
+        edtLabourHours = view.findViewById(R.id.edt_labour_hours);
+        edtNextServiceDate = view.findViewById(R.id.edt_next_service_date);
+        btnSave = view.findViewById(R.id.btn_save);
+
+        edtStart.setEnabled(false);
+        edtEnd.setEnabled(false);
+        edtEnd.setVisibility(View.GONE);
 
         edtNextServiceDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,21 +112,20 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
                 datePicker();
             }
         });
-        edtStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isWhich = 0;
-                datePicker();
-            }
-        });
-        edtEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isWhich = 1;
-                datePicker();
-            }
-        });
-
+//        edtStart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isWhich=0;
+//                datePicker();
+//            }
+//        });
+//        edtEnd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isWhich=1;
+//                datePicker();
+//            }
+//        });
 
 
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +135,7 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             }
         });
 
-        if(issueModel!=null){
+        if (issueModel != null) {
             edtStart.setText(issueModel.getStartdate());
             edtEnd.setText(issueModel.getClosedate());
             edtFix.setText(issueModel.getFailure_desc());
@@ -152,17 +153,18 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
     }
 
     private void update() {
-        if (edtStart.getText().toString().isEmpty() || edtStart.getText().toString().equals("null")) {
-            edtStart.setError("Required");
-            edtStart.requestFocus();
-            return;
-        }
-
-        if (edtEnd.getText().toString().isEmpty() || edtEnd.getText().toString().equals("null")) {
-            edtEnd.setError("Required");
-            edtEnd.requestFocus();
-            return;
-        }
+//        if (edtStart.getText().toString().isEmpty()||edtStart.getText().toString().equals("null")) {
+//            edtStart.setError("Required");
+//            edtStart.requestFocus();
+//            snack("");
+//            return;
+//        }
+//
+//        if (edtEnd.getText().toString().isEmpty()||edtEnd.getText().toString().equals("null")) {
+//            edtEnd.setError("Required");
+//            edtEnd.requestFocus();
+//            return;
+//        }
 
         if (edtFix.getText().toString().isEmpty() || edtFix.getText().toString().equals("null")) {
             edtFix.setError("Required");
@@ -207,9 +209,9 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         }
 
 
-        IssueModel issueModelnew=issueModel;
+        IssueModel issueModelnew = issueModel;
         issueModelnew.setStartdate(edtStart.getText().toString());
-        issueModelnew.setClosedate(edtEnd.getText().toString());
+        issueModelnew.setClosedate("2018-12-12 12:12:12");
         issueModelnew.setFailure_desc(edtFix.getText().toString());
         issueModelnew.setFailure_soln(edtSoln.getText().toString());
         issueModelnew.setEngineer_comment(edtEngRemarks.getText().toString());
@@ -219,8 +221,6 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         issueModelnew.setNextdueservice(edtNextServiceDate.getText().toString());
 
         updateIssues(issueModelnew);
-
-
 
 
     }
@@ -250,7 +250,6 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             jsonObject.put("EngineerComment", issueModel.getEngineer_comment());
             jsonObject.put("CustomerId", issueModel.getCustomers_id());
             jsonObject.put("CustomerComment", issueModel.getCustomer_comment());
-
 
 
         } catch (Exception nm) {
@@ -290,9 +289,10 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
-                        popOutFragments();
-                        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
-                        Objects.requireNonNull(getActivity()).finish();
+                        alertDialog("Do you wish to close this issue now ?", issueModel);
+                        //popOutFragments();
+                        // ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
+
 
                         //finish();
                     } else {
@@ -305,6 +305,101 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
 
             }
         });
+    }
+
+    private void alertDialog(final String message, IssueModel issueModel) {
+        final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+
+                        startIssue(2, issueModel.getWork_tickets());
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.dismiss();
+
+                        break;
+                }
+            }
+        };
+
+
+        if (getActivity() != null) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(message).setPositiveButton("Okay", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener)
+                    .show();
+        }
+
+    }
+
+    private void startIssue(int i, String work_tickets) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Closing....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        String url = APiConstants.Companion.getUpdateWorkticket();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("code", "" + i);
+        params.put("workticket", work_tickets);
+
+        // Log.d("getData",url+"\n"+params.toString()+"\n"+prefManager.getToken());
+        Request.Companion.postRequest(url, params, prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setMessage(error.getMessage());
+                    progressDialog.dismiss();
+                }
+                Log.d("getDataaa", error.getErrorBody());
+                snack(error.getMessage());
+            }
+
+            @Override
+            public void onError(@NotNull String error) {
+
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setMessage(error);
+                    progressDialog.dismiss();
+                }
+                Log.d("getDataaa", error);
+                snack(error);
+            }
+
+            @Override
+            public void onSuccess(@NotNull String response) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setMessage(response);
+                    progressDialog.dismiss();
+                }
+                Log.d("getDataaa", response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.optBoolean("error")) {
+                        snack("Issue Closed Successfully");
+                        Objects.requireNonNull(getActivity()).finish();
+                    } else {
+                        snack("Error closing issue");
+                    }
+                } catch (JSONException nm) {
+                    nm.printStackTrace();
+                    snack("Error closing issue");
+                }
+            }
+        });
+
+    }
+
+    private void snack(String msg) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
+                .setAction("Action", null).show();
     }
 
     @Override

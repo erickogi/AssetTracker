@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -22,7 +21,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.AssignmentSearchAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
-import com.assettrack.assettrack.Constatnts.GLConstants;
 import com.assettrack.assettrack.Data.Parsers.AllEngineerParser;
 import com.assettrack.assettrack.Data.Parsers.AssetParser;
 import com.assettrack.assettrack.Data.PrefManager;
@@ -181,10 +179,10 @@ public class FragmentNewIssues extends Fragment {
                         JSONObject jsonObject = new JSONObject(response);
                         if (!jsonObject.optBoolean("errror")) {
                             snack("Issue Created Successfully");
-                            ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
-                            popOutFragments();
+                            //((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
+                            // popOutFragments();
 
-                            //finish();
+                            Objects.requireNonNull(getActivity()).finish();
                         } else {
                             snack("Error saving asset");
                         }

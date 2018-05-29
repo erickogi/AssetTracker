@@ -253,7 +253,7 @@ public class InstallationStepFour extends Fragment implements BlockingStep, Imag
     @Nullable
     @Override
     public VerificationError verifyStep() {
-        edtScan.setText("7678678");
+        // edtScan.setText("7678678");
 
         if (verify()) {
             return null;

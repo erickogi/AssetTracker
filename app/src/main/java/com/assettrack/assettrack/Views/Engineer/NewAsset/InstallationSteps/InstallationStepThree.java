@@ -27,15 +27,17 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 import stream.customalert.CustomAlertDialogue;
 
-public class InstallationStepThree extends Fragment implements BlockingStep {
+public class InstallationStepThree extends Fragment implements BlockingStep, DatePickerDialog.OnDateSetListener {
 
 
     private TextInputEditText edtEngRemarks, edtCustRemarks, edtDateInst;
@@ -196,8 +198,21 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
     }
 
     void datePicker() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(InstallationStepThree.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        dpd.setThemeDark(false);
+        dpd.vibrate(true);
+        dpd.dismissOnPause(true);
+        dpd.showYearPickerFirst(true);
 
-        pvTime.show();
+        dpd.setTitle("Pick a date");
+        dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+
+        dpd.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "DatePicker");
+        //pvTime.show();
     }
 
 
@@ -350,8 +365,8 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
 //        lineText.add("Name & Position");
 
 
-        ArrayList<String> boxHint = new ArrayList<>();
-        boxHint.add("Qty");
+        //ArrayList<String> boxHint = new ArrayList<>();
+        //boxHint.add("Qty");
 
 //        ArrayList<String> boxText = new ArrayList<>();
 //        boxText.add("BoxText");
@@ -359,8 +374,7 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
 
         CustomAlertDialogue.Builder alert = new CustomAlertDialogue.Builder(getActivity())
                 .setStyle(CustomAlertDialogue.Style.INPUT)
-                .setTitle("Accessories")
-                .setMessage("Accessories( Include any spare parts and startup kits that came with equipment) ")
+                .setTitle("Trainees")
                 .setPositiveText("Submit")
                 .setPositiveColor(R.color.positive)
                 .setPositiveTypeface(Typeface.DEFAULT_BOLD)
@@ -387,7 +401,7 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
                 .setOnNegativeClicked((view, dialog) -> dialog.dismiss())
                 .setLineInputHint(lineHint)
                 // .setLineInputText(lineText)
-                .setBoxInputHint(boxHint)
+                //.setBoxInputHint(boxHint)
                 // .setBoxInputText(boxText)
                 .setDecorView(Objects.requireNonNull(getActivity()).getWindow().getDecorView())
                 .build();
@@ -395,4 +409,15 @@ public class InstallationStepThree extends Fragment implements BlockingStep {
     }
 
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = (dayOfMonth + "/" + (++monthOfYear) + "/" + year);
+        // txtDate.setText(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        date = format.format(calendar.getTime());
+        edtDateInst.setText(date);
+
+    }
 }

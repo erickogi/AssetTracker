@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -19,10 +20,8 @@ import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
-import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.R;
-import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -35,7 +34,8 @@ public class FragmentEdit extends Fragment {
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
     private View view;
-    private EditText name, sname, email, phone, speciality, idd,password;
+    TextInputEditText password;
+    private EditText name, sname, email, phone, speciality, idd;
     private Button btnSave;
 
     private EngineerModel engineerModel=null;
@@ -144,9 +144,9 @@ public class FragmentEdit extends Fragment {
             return;
         }
         if (password.getText().toString().isEmpty()) {
-            password.setError("Required");
+            // password.setError("Required");
             password.requestFocus();
-            return;
+            // return;
         }
 
 
@@ -166,6 +166,7 @@ public class FragmentEdit extends Fragment {
         engineerModelnew.setLastname(sname.getText().toString());
         engineerModelnew.setPhoneNumber(phone.getText().toString());
         engineerModelnew.setPassword(password.getText().toString());
+        engineerModelnew.setRole(2);
 
         if(engineerModel!=null){
             updateEngineer(engineerModelnew);
@@ -190,11 +191,21 @@ public class FragmentEdit extends Fragment {
             params.put("firstName", engineerModel.getFirstname());
             params.put("lastName", engineerModel.getLastname());
             params.put("Email", engineerModel.getEmail());
+            params.put("phoneNumber", engineerModel.getPhoneNumber());
             params.put("Speciality", engineerModel.getDesignation());
             params.put("Designation", engineerModel.getPhoneNumber());
             params.put("role", ""+engineerModel.getRole());
             params.put("password",""+ engineerModel.getPassword());
+            params.put("password_confirmation", "" + engineerModel.getPassword());
 
+//            firstName:John
+//            lastName:Wanyoike
+//            EmployeeId:21212
+//            role:1
+//            Email:john@sickholiday.com
+//            password:123456
+//            Designation:IT Programming
+//            password_confirmation:123456
 
         } catch (Exception nm) {
             nm.printStackTrace();
@@ -234,8 +245,9 @@ public class FragmentEdit extends Fragment {
                         snack("Updated Successfully");
                         popOutFragments();
                         ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
-
-                        //finish();
+                        // getActivity().getSupportFragmentManager().popBackStack();
+                        getActivity().finish();
+                        //getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentEdit.this).commit();
                     } else {
                         snack("Error updating asset");
                     }
@@ -262,6 +274,7 @@ public class FragmentEdit extends Fragment {
             jsonObject.put("firstName", engineerModel.getFirstname());
             jsonObject.put("lastName", engineerModel.getLastname());
             jsonObject.put("Email", engineerModel.getEmail());
+            jsonObject.put("PhoneNumber", engineerModel.getPhoneNumber());
             jsonObject.put("Speciality", engineerModel.getDesignation());
             jsonObject.put("Designation", engineerModel.getPhoneNumber());
             jsonObject.put("role", engineerModel.getRole());

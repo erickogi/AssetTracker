@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.util.Objects;
 
 /**
  * Created by Eric on 2/28/2018.
@@ -32,7 +36,8 @@ public class FragmentAssetDetails extends Fragment {
     private ImageView imageView;
 
     private TextView edtAssetName, edtWarranty, edtWarrantyDuration, edtModel, edtStatus,
-            edtSerialNo, edtManufacturer, edtYrOfManufacture, edtServiceContract, edtCustomerName;
+            edtSerialNo, edtManufacturer, edtYrOfManufacture, edtServiceContract, edtCustomerName,
+            edt_installation_by, edt_installation_date, edt_lsd_date, edt_nsd_date;
 
 
     @Nullable
@@ -64,6 +69,12 @@ public class FragmentAssetDetails extends Fragment {
 //        txtLastmaintainedby=view.findViewById(R.id.txt_last_maintenance_by);
 
 
+        edt_installation_by = view.findViewById(R.id.edt_installation_by);
+        edt_installation_date = view.findViewById(R.id.edt_installation_date);
+        edt_lsd_date = view.findViewById(R.id.edt_lsd_date);
+        edt_nsd_date = view.findViewById(R.id.edt_nsd_date);
+
+
         edtScan = view.findViewById(R.id.edt_scan_code);
         edtStatus = view.findViewById(R.id.edt_status);
         edtAssetName = view.findViewById(R.id.edt_asset_name);
@@ -75,6 +86,7 @@ public class FragmentAssetDetails extends Fragment {
         edtManufacturer = view.findViewById(R.id.edt_manufacturer);
         edtYrOfManufacture = view.findViewById(R.id.edt_manufacture_yr);
         edtServiceContract = view.findViewById(R.id.edt_contact);
+
 
         //rgWarranty=view.findViewById(R.id.rgrp_warranty);
         //rbNo=view.findViewById(R.id.rbtn_warranty_no);
@@ -90,7 +102,7 @@ public class FragmentAssetDetails extends Fragment {
         edtCustRemarks = view.findViewById(R.id.edt_customer_remarks);
 
 
-        setViewV1(((AssetActivity) getActivity()).asset);
+        setViewV1(((AssetActivity) Objects.requireNonNull(getActivity())).asset);
 
 
     }
@@ -99,7 +111,7 @@ public class FragmentAssetDetails extends Fragment {
         if (assetModels != null) {
             if (assetModels.getCustomers_id() != null) {
                 // customerID=assetModel.getCustomer_id();
-                edtCustomerName.setText(assetModels.getCustomers_id());
+                edtCustomerName.setText(assetModels.getCustomerModel().getName());
 
             }
 
@@ -132,7 +144,12 @@ public class FragmentAssetDetails extends Fragment {
 //                edtServiceContract.setText(assetModels.getContract());
 //            }
             if (assetModels.getAsset_image() != null) {
-                Glide.with(getContext()).load(assetModels.getAsset_image()).into(img);
+                RequestOptions options = (new RequestOptions())
+                        .placeholder(R.drawable.imagepicker_image_placeholder)
+                        .error(R.drawable.fixed_asset)
+                        .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+                Glide.with(Objects.requireNonNull(getActivity())).load(assetModels.getAsset_image()).apply(options).into(img);
             }
             if (assetModels.getEngineer_remarks() != null) {
                 //customerID=assetModel.getCustomer_id();
@@ -155,6 +172,25 @@ public class FragmentAssetDetails extends Fragment {
                 edtStatus.setText(assetModels.getStatename());
 
             }
+
+
+            try {
+                edt_installation_by.setText(assetModels.getEngineerModel().getFull_name());
+                edt_installation_date.setText(assetModels.getInstallation_date());
+                edt_lsd_date.setText(assetModels.getLastservicedate());
+                edt_nsd_date.setText(assetModels.getNextservicedate());
+            } catch (Exception nm) {
+                nm.printStackTrace();
+            }
+
+
+
+
+
+
+
+
+
         }
     }
 

@@ -22,7 +22,7 @@ class DrawerClass {
 
         try {
 
-            return thumnail;
+            return thumnail
 
         } catch (nm: Exception) {
             return thumnail
@@ -124,17 +124,17 @@ class DrawerClass {
                             engineers,
                             issues,
                             DividerDrawerItem(),
-                            account,
+                            // account,
 
 
-                            settings,
+                            // settings,
 
                             logout,
                             // invalidate,
-                            DividerDrawerItem(),
+                            DividerDrawerItem()
                             //logout,
                             //share
-                            help
+                            //help
                             // about
 
 

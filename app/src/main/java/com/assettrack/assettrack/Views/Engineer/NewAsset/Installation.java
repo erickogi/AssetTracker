@@ -18,7 +18,6 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
-import com.google.gson.Gson;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -226,43 +225,47 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
         progressDialog.setCancelable(false);
         progressDialog.show();
         AssetModel assetModel = GLConstants.Companion.getAssetModel();
+        if (assetModel != null) {
+            assetModel.setEngineer_id("" + new PrefManager(Installation.this).getUserData().getId());
+        }
+        Log.d("createAssetdata", assetModel.getSerial());
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("id", "" + assetModel.getId());
-        params.put("Name", assetModel.getAsset_name());
-        params.put("Code", assetModel.getAsset_code());
-        params.put("State", "" + assetModel.getState());
-        params.put("Warranty", assetModel.getWarranty());
-        params.put("WarrantyDuration", assetModel.getWarranty_duration());
-        params.put("Model", assetModel.getModel());
-        params.put("Serial", assetModel.getSerial());
-        params.put("Manufacturer", assetModel.getManufacturer());
-        params.put("ManufacturerYear", assetModel.getYr_of_manufacture());
-        params.put("NextService", assetModel.getNextservice());
-        params.put("Customer", assetModel.getCustomers_id());
-        params.put("ContactPosition", assetModel.getContact_person_position());
-        params.put("Department", assetModel.getDepartment());
-        params.put("RoomStatus", assetModel.getRoomsizestatus());
-        params.put("RoomSpecs", assetModel.getRoom_meets_specification());
-        params.put("RoomExplanation", assetModel.getRoom_explanation());
-        params.put("Engineer", assetModel.getEngineer_id());
-        params.put("Trainees", assetModel.getTrainees());
-        params.put("TraineesPosition", assetModel.getTrainee_position());
-        params.put("EngineerRemarks", assetModel.getEngineer_remarks());
-        params.put("InstalationDate", assetModel.getInstallation_date());
-        params.put("RecieversDate", assetModel.getRecieversDate());
-        params.put("RecieversName", assetModel.getRecievers_name());
-        params.put("RecieversDesignation", assetModel.getReceiver_designation());
-        params.put("Security", assetModel.getWarranty());
-        params.put("RecieversComment", assetModel.getReceiver_comments());
 
-        Gson gson = new Gson();
-        String json = gson.toJson(assetModel.getParts());
+//        HashMap<String, String> params = new HashMap<>();
+//        params.put("id", "" + assetModel.getId());
+//        params.put("Name", assetModel.getAsset_name());
+//        params.put("Code", assetModel.getAsset_code());
+//        params.put("State", "" + assetModel.getState());
+//        params.put("Warranty", assetModel.getWarranty());
+//        params.put("WarrantyDuration", assetModel.getWarranty_duration());
+//        params.put("Model", assetModel.getModel());
+//        params.put("Serial", assetModel.getSerial());
+//        params.put("Manufacturer", assetModel.getManufacturer());
+//        params.put("ManufacturerYear", assetModel.getYr_of_manufacture());
+//        params.put("NextService", assetModel.getNextservice());
+//        params.put("Customer", assetModel.getCustomers_id());
+//        params.put("ContactPosition", assetModel.getContact_person_position());
+//        params.put("Department", assetModel.getDepartment());
+//        params.put("RoomStatus", assetModel.getRoomsizestatus());
+//        params.put("RoomSpecs", assetModel.getRoom_meets_specification());
+//        params.put("RoomExplanation", assetModel.getRoom_explanation());
+//        params.put("Engineer", assetModel.getEngineer_id());
+//        params.put("Trainees", assetModel.getTrainees());
+//        params.put("TraineesPosition", assetModel.getTrainee_position());
+//        params.put("EngineerRemarks", assetModel.getEngineer_remarks());
+//        params.put("InstalationDate", assetModel.getInstallation_date());
+//        params.put("RecieversDate", assetModel.getRecieversDate());
+//        params.put("RecieversName", assetModel.getRecievers_name());
+//        params.put("RecieversDesignation", assetModel.getReceiver_designation());
+//        params.put("Security", assetModel.getWarranty());
+//        params.put("RecieversComment", assetModel.getReceiver_comments());
 
-        params.put("assetparts", json);
+        // params.put("assetparts", "");
+
+
 
         PrefManager prefManager = new PrefManager(Installation.this);
-        Request.Companion.postRequest(APiConstants.Companion.getCreateAsset(), params, prefManager.getToken(), new RequestListener() {
+        Request.Companion.assetUpload(APiConstants.Companion.getCreateAsset(), assetModel, assetModel.getAsset_image(), prefManager.getToken(), new RequestListener() {
             @Override
             public void onError(@NotNull ANError error) {
                 Log.d("updateAsset", error.toString());
@@ -275,10 +278,13 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
             @Override
             public void onError(@NotNull String error) {
                 Log.d("createAsset", error);
-                snack(error);
+                snack("Created Successfully");
+
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+
+                finish();
             }
 
             @Override
@@ -295,6 +301,7 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
                         finish();
                     } else {
                         snack("Error updating asset");
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

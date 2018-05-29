@@ -14,14 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.assettrack.assettrack.Constatnts.GLConstants;
-import com.assettrack.assettrack.Models.AccessoriesModel;
 import com.assettrack.assettrack.Models.AssetModel;
+import com.assettrack.assettrack.Models.Parts;
 import com.assettrack.assettrack.R;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
@@ -124,19 +125,19 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
                 .setAction("Action", null).show();
     }
 
-    void intData(ArrayList<AccessoriesModel> accessoriesModel) {
+    void intData(ArrayList<Parts> accessoriesModel) {
 
 
-//        accessories = new String[accessoriesModel.size()];
-//        for (int a = 0; a < accessoriesModel.size(); a++) {
-//
-//            accessories[a] = accessoriesModel.get(a).getName();
-//        }
-//
-//        if (accessories != null && accessories.length > 0) {
-//            ArrayAdapter adapter = new ArrayAdapter(Objects.requireNonNull(getContext()), android.R.layout.simple_list_item_1, accessories);
-//        recyclerView.setAdapter(adapter);
-//        }
+        accessories = new String[accessoriesModel.size()];
+        for (int a = 0; a < accessoriesModel.size(); a++) {
+
+            accessories[a] = accessoriesModel.get(a).getDescription();
+        }
+
+        if (accessories != null && accessories.length > 0) {
+            ArrayAdapter adapter = new ArrayAdapter(Objects.requireNonNull(getContext()), android.R.layout.simple_list_item_1, accessories);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     void initActions() {
@@ -159,19 +160,21 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
                             if (accessoriesList.size() > 0) {
                                 accessoriesList.remove(i);
                             }
-                            ArrayList<AccessoriesModel> accessoriesModels = new ArrayList<>();
+                            ArrayList<Parts> accessoriesModels = new ArrayList<>();
 //
-//                            try {
-//                                for (String a : accessoriesList) {
-//                                    AccessoriesModel accessoriesModel = new AccessoriesModel();
-//                                    accessoriesModel.setName(a);
-//                                    accessoriesModel.setId(a);
-//                                }
-//                                GLConstants.Companion.getAssetModel().setAccessoriesModels(accessoriesModels);
-//
-//                            } catch (Exception nm) {
-//                                nm.printStackTrace();
-//                            }
+                            try {
+                                for (String a : accessoriesList) {
+                                    Parts accessoriesModel = new Parts();
+                                    accessoriesModel.setDescription(a);
+                                    accessoriesModel.setId("0");
+
+                                    accessoriesModels.add(accessoriesModel);
+                                }
+                                Objects.requireNonNull(GLConstants.Companion.getAssetModel()).setParts(accessoriesModels);
+
+                            } catch (Exception nm) {
+                                nm.printStackTrace();
+                            }
                             intData(accessoriesModels);
                             dialog.dismiss();
 
@@ -274,20 +277,23 @@ public class InstallationStepTwo extends Fragment implements BlockingStep {
                                 if (inputList.size() > 1) {
                                     pos = inputList.get(1);
                                 }
-                                ArrayList<AccessoriesModel> accessoriesModels = new ArrayList<>();
+                                ArrayList<Parts> accessoriesModels = new ArrayList<>();
 
-//                                try {
-//                                    for (String a : accessoriesList) {
-//                                        AccessoriesModel accessoriesModel = new AccessoriesModel();
-//                                        accessoriesModel.setName(a);
-//                                        accessoriesModel.setId(a);
-//                                    }
-//                                    GLConstants.Companion.getAssetModel().setAccessoriesModels(accessoriesModels);
-//
-//                                } catch (Exception nm) {
-//                                    nm.printStackTrace();
-//                                }
+
                                 accessoriesList.add(name + "  " + pos);
+                                try {
+                                    for (String a : accessoriesList) {
+                                        Parts accessoriesModel = new Parts();
+                                        accessoriesModel.setDescription(a);
+                                        accessoriesModel.setId("0");
+
+                                        accessoriesModels.add(accessoriesModel);
+                                    }
+                                    Objects.requireNonNull(GLConstants.Companion.getAssetModel()).setParts(accessoriesModels);
+
+                                } catch (Exception nm) {
+                                    nm.printStackTrace();
+                                }
                                 intData(accessoriesModels);
                             }
                         }

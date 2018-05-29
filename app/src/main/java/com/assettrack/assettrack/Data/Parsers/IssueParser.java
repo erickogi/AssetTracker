@@ -7,7 +7,6 @@ import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.Models.Parts;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ public class IssueParser {
             for (int a = 0; a < response.length(); a++) {
                 JSONObject object = response.optJSONObject(a);
                 IssueModel issueModel = new IssueModel();
+                issueModel.setId(object.optInt("id"));
                 issueModel.setAsset_code(object.optString("asset_code"));
                 issueModel.setWork_tickets(object.optString("work_tickets"));
                 issueModel.setAssets_id(object.optString("assets_id"));

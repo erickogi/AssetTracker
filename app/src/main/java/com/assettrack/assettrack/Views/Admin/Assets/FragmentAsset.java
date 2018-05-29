@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
-import com.assettrack.assettrack.Adapters.AssetListAdapter;
 import com.assettrack.assettrack.Adapters.V1.AssetAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Constatnts.GLConstants;
@@ -307,7 +306,7 @@ public class FragmentAsset extends Fragment {
 
     private void initUI(int status, ArrayList<AssetModel> assetModels) {
 
-        ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp,true);
+        ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
 

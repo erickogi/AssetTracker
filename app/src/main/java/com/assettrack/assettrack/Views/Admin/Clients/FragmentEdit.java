@@ -1,7 +1,6 @@
 package com.assettrack.assettrack.Views.Admin.Clients;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +21,6 @@ import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
-import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -208,6 +206,7 @@ public class FragmentEdit extends Fragment {
                         snack("Saved Successfully");
                         popOutFragments();
                         ((ActivityManageClients) Objects.requireNonNull(getActivity())).popOut();
+                        Objects.requireNonNull(getActivity()).finish();
 
                         //finish();
                     } else {

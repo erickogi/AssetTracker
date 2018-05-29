@@ -24,12 +24,14 @@ import com.assettrack.assettrack.Adapters.TimeLine.OrderStatus;
 import com.assettrack.assettrack.Adapters.TimeLine.Orientation;
 import com.assettrack.assettrack.Adapters.TimeLine.TimeLineAdapter;
 import com.assettrack.assettrack.Adapters.TimeLine.TimeLineModel;
+import com.assettrack.assettrack.Adapters.V1.IssueAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.IssueParser;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
+import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
@@ -96,6 +98,7 @@ public class FragmentAssetIssues extends Fragment implements DatePickerDialog.On
         if (!((AssetActivity) Objects.requireNonNull(getActivity())).editable) {
             fab.hide();
         }
+        fab.hide();
         avi = view.findViewById(R.id.avi);
 
         mOrientation = Orientation.VERTICAL;
@@ -110,20 +113,49 @@ public class FragmentAssetIssues extends Fragment implements DatePickerDialog.On
     }
 
     private void initData(ArrayList<IssueModel> issueModels) {
-        List<TimeLineModel> timeLineModels = getTimeline2(issueModels);
-        timeLineAdapter = new TimeLineAdapter(timeLineModels, mOrientation, true, new OnclickRecyclerListener() {
+//        List<TimeLineModel> timeLineModels = getTimeline2(issueModels);
+//        timeLineAdapter = new TimeLineAdapter(timeLineModels, mOrientation, true, new OnclickRecyclerListener() {
+//            @Override
+//            public void onClickListener(int position) {
+//                startDialog(timeLineModels.get(position));
+//            }
+//
+//            @Override
+//            public void onLongClickListener(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onClickListener(int adapterPosition, View view) {
+//
+//            }
+//
+//            @Override
+//            public void onCheckedClickListener(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onMoreClickListener(int position) {
+//
+//            }
+//        });
+        IssueAdapter listAdapter = new IssueAdapter(getActivity(), issueModels, new OnclickRecyclerListener() {
             @Override
             public void onClickListener(int position) {
-                startDialog(timeLineModels.get(position));
+
+
+                startDialog(issueModels.get(position));
+//                fragment=new FragmentView();
+//                Bundle args=new Bundle();
+//                args.putSerializable("data",issueModels.get(position));
+//                fragment.setArguments(args);
+//                popOutFragments();
+//                setUpView();
             }
 
             @Override
             public void onLongClickListener(int position) {
-
-            }
-
-            @Override
-            public void onClickListener(int adapterPosition, View view) {
 
             }
 
@@ -135,9 +167,84 @@ public class FragmentAssetIssues extends Fragment implements DatePickerDialog.On
             @Override
             public void onMoreClickListener(int position) {
 
+
+            }
+
+            @Override
+            public void onClickListener(int adapterPosition, View view) {
+
+                //  popupMenu(adapterPosition, view, issueModels.get(adapterPosition));
             }
         });
-        recyclerView.setAdapter(timeLineAdapter);
+        listAdapter.notifyDataSetChanged();
+
+        recyclerView.setAdapter(listAdapter);
+    }
+
+    private void startDialog(IssueModel issueModel) {
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+        View mView = layoutInflaterAndroid.inflate(R.layout.fragment_view_issue, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getContext());
+        alertDialogBuilderUserInput.setView(mView);
+        alertDialogBuilderUserInput.setTitle("Issue Details");
+        //alertDialogBuilderUserInput.setIcon(R.drawable.ic_add_black_24dp);
+        Button btnEdit;
+
+        TextView edtStart, edtEnd, edtFix, edtSoln, edtEngRemarks, edtCustRemarks, edtSafety,
+                edtTravelHours, edtLabourHours, edtNextServiceDate;
+
+        edtStart = mView.findViewById(R.id.edt_start);
+        edtEnd = mView.findViewById(R.id.edt_end);
+        edtFix = mView.findViewById(R.id.edt_fix);
+        edtSoln = mView.findViewById(R.id.edt_soln);
+        edtEngRemarks = mView.findViewById(R.id.edt_engineer_remarks);
+        edtCustRemarks = mView.findViewById(R.id.edt_customer_remarks);
+        edtSafety = mView.findViewById(R.id.edt_safety);
+        edtTravelHours = mView.findViewById(R.id.edt_travel_hours);
+        edtLabourHours = mView.findViewById(R.id.edt_labour_hours);
+        edtNextServiceDate = mView.findViewById(R.id.edt_next_service_date);
+
+        btnEdit = mView.findViewById(R.id.btn_edit);
+        btnEdit.setVisibility(View.GONE);
+
+        if (issueModel != null) {
+            edtStart.setText(issueModel.getStartdate());
+            edtEnd.setText(issueModel.getClosedate());
+            edtFix.setText(issueModel.getFailure_desc());
+            edtSoln.setText(issueModel.getFailure_soln());
+            edtEngRemarks.setText(issueModel.getEngineer_comment());
+            edtCustRemarks.setText(issueModel.getCustomer_comment());
+            edtSafety.setText(issueModel.getSafety());
+            edtTravelHours.setText(issueModel.getTravel_hours());
+            edtLabourHours.setText(issueModel.getLabour_hours());
+            edtNextServiceDate.setText(issueModel.getNextdueservice());
+
+        }
+
+        // final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+//                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogBox, int id) {
+//                        // ToDo get user input here
+//
+//                        dialogBox.dismiss();
+//
+//                    }
+//                })
+
+                .setNegativeButton("Okay",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
+
     }
 
     private List<TimeLineModel> getTimeline2(ArrayList<IssueModel> issueModels) {
@@ -200,6 +307,17 @@ public class FragmentAssetIssues extends Fragment implements DatePickerDialog.On
                             JSONArray jsonArray = data.optJSONArray("issues");
 
                             ArrayList<IssueModel> issueModels = IssueParser.parse(jsonArray);
+                            try {
+                                AssetModel assetModel = ((AssetActivity) Objects.requireNonNull(getActivity())).asset;
+                                if (assetModel != null && issueModels != null) {
+                                    for (int a = 0; a < issueModels.size(); a++) {
+                                        issueModels.get(a).getAssetModel().setAsset_name(assetModel.getAsset_name());
+                                        issueModels.get(a).getCustomerModel().setName(assetModel.getCustomerModel().getName());
+                                    }
+                                }
+                            } catch (Exception nm) {
+                                nm.printStackTrace();
+                            }
                             initData(issueModels);
                         }
                     }

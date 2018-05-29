@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
 
@@ -22,13 +21,13 @@ public class FragmentView extends Fragment {
     // private Button btnEdit;
 
     private IssueModel issueModel;
-    private Fragment fragment;
+
     private Button btnEdit;
     TextView edtStart,edtEnd,edtFix,edtSoln,edtEngRemarks,edtCustRemarks,edtSafety,
     edtTravelHours,edtLabourHours,edtNextServiceDate;
 
 
-
+    private Fragment fragment;
 
     void setUpView() {
         if (fragment != null) {

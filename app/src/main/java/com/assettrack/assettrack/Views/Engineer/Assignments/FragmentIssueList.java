@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -30,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
-import com.assettrack.assettrack.Adapters.ListAdapter;
 import com.assettrack.assettrack.Adapters.V1.IssueAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.IssueParser;
@@ -64,6 +64,23 @@ public class FragmentIssueList extends Fragment {
     private ArrayList<IssueModel> issueModels;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
+    private Fragment fragment;
+
+    void setUpView() {
+        if (fragment != null) {
+            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null).commit();
+        }
+
+    }
+
+    void popOutFragments() {
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
+    }
     private ActionMode.Callback callback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -303,6 +320,30 @@ public class FragmentIssueList extends Fragment {
                 @Override
                 public void onClickListener(int position) {
 
+                    int state = issueModels.get(position).getIssue_status();
+
+                    switch (state) {
+                        case 0:
+
+                            startIssue(issueModels.get(position));
+
+                            break;
+
+                        case 1:
+
+                            updateIssue(issueModels.get(position));
+                            break;
+
+                        case 2:
+                            alertDialog("This issue is already closed", issueModels.get(position));
+
+                            break;
+
+                        default:
+
+                            break;
+                    }
+
                 }
 
                 @Override
@@ -370,6 +411,115 @@ public class FragmentIssueList extends Fragment {
         }
 
     }
+
+    private void closeIssue() {
+        PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
+        popupMenu.inflate(R.menu.menu_asset_options);
+
+    }
+
+    private void updateIssue(IssueModel issueModel) {
+
+        popOutFragments();
+        fragment = new FragmentEdit();
+        Bundle args = new Bundle();
+        args.putSerializable("data", issueModel);
+        fragment.setArguments(args);
+        setUpView();
+    }
+
+    private void startIssue(IssueModel issueModel) {
+
+
+        alertDialog("Do you wish to start this issue ?", issueModel);
+
+    }
+
+    private void alertDialog(final String message, IssueModel issueModel) {
+        final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+
+                        if (issueModel.getIssue_status() != 2) {
+                            startIssue(1, issueModel.getWork_tickets());
+                        } else {
+                            dialog.dismiss();
+                        }
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.dismiss();
+
+                        break;
+                }
+            }
+        };
+
+
+        if (getActivity() != null) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(message).setPositiveButton("Okay", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener)
+                    .show();
+        }
+
+    }
+
+    private void startIssue(int i, String work_tickets) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("working....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        String url = APiConstants.Companion.getUpdateWorkticket();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("code", "" + i);
+        params.put("workticket", work_tickets);
+
+        // Log.d("getData",url+"\n"+params.toString()+"\n"+prefManager.getToken());
+        Request.Companion.postRequest(url, params, prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setMessage(error.getMessage());
+                    progressDialog.dismiss();
+                }
+                Log.d("getDataaa", error.getErrorBody());
+            }
+
+            @Override
+            public void onError(@NotNull String error) {
+
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setMessage(error);
+                    progressDialog.dismiss();
+                }
+                Log.d("getDataaa", error);
+
+            }
+
+            @Override
+            public void onSuccess(@NotNull String response) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setMessage(response);
+                    progressDialog.dismiss();
+                }
+                Log.d("getDataaa", response);
+
+
+                initUI(new ArrayList<>());
+                initData();
+            }
+        });
+
+    }
+
 
     private void popupMenu(int pos, View view, IssueModel issueModel) {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);

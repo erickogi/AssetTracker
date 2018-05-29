@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:layout_above="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -187,19 +188,19 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:textColor="@color/white"
-                android:id="@+id/btn_save"
-                android:background="@color/colorPrimary"
-                android:text="Save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-
 
         </LinearLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="Save"
+        android:textColor="@color/white" />
+
 
 </RelativeLayout>

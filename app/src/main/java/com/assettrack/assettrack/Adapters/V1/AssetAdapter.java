@@ -1,27 +1,20 @@
 package com.assettrack.assettrack.Adapters.V1;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.assettrack.assettrack.Adapters.ViewHolders.AssetViewHolder;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Models.AssetModel;
-import com.assettrack.assettrack.Models.CustomerModel;
-import com.assettrack.assettrack.Models.EngineerModel;
-import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import static com.assettrack.assettrack.R.drawable.fixed_asset;
@@ -33,10 +26,15 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
     private OnclickRecyclerListener onclickRecyclerListener;
 
     private Context context;
+    private RequestOptions options;
 
     public AssetAdapter(Context context, ArrayList<AssetModel> assetModels, OnclickRecyclerListener onclickRecyclerListener) {
         this.assetModels = assetModels;
         this.context = context;
+        this.options = (new RequestOptions())
+                .placeholder(R.drawable.imagepicker_image_placeholder)
+                .error(R.drawable.fixed_asset)
+                .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
         this.onclickRecyclerListener = onclickRecyclerListener;
     }
@@ -75,7 +73,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
             holder.engineer.setText(assetModel.getEngineerModel().getFull_name());
             holder.lsd.setText(assetModel.getLastservicedate());
             holder.nsd.setText(assetModel.getNextservicedate());
-            Glide.with(context).load(assetModel.getAsset_image()).into(holder.assetImg).onLoadFailed(context.getResources().getDrawable(fixed_asset));
+            Glide.with(context).load(assetModel.getAsset_image()).apply(options).into(holder.assetImg).onLoadFailed(context.getResources().getDrawable(fixed_asset));
         }
 
 

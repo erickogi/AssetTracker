@@ -20,6 +20,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ScrollView
+import android.widget.TextView
 import com.androidnetworking.error.ANError
 import com.assettrack.assettrack.Constatnts.APiConstants
 import com.assettrack.assettrack.Constatnts.GLConstants
@@ -92,6 +93,10 @@ class EngineerMainActivity : AppCompatActivity() {
 
     }
 
+    var userName: TextView? = null
+    var userEmail: TextView? = null
+
+
     private lateinit var prefManager: PrefManager
 
     private var scrollView: ScrollView? = null
@@ -102,11 +107,16 @@ class EngineerMainActivity : AppCompatActivity() {
         prefManager = PrefManager(this)
         scrollView = findViewById(R.id.scroll)
 
+        userEmail = findViewById(R.id.txt_user_email)
+        userName = findViewById(R.id.txt_user_name)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
         fab.hide()
+
+        userName?.text = "" + prefManager.getUserData().getFull_name()
+        userEmail?.text = "" + prefManager.getUserData().getEmail()
        // setResideMenu()
 
     }
@@ -233,6 +243,9 @@ class EngineerMainActivity : AppCompatActivity() {
     fun addNewAsset(view: View) {
         var intent = Intent(this, Installation::class.java)
         intent.putExtra("state", 2)
+        // GLConstants.id = assetModel?.id.toString()
+        GLConstants.assetModel = null
+
         startActivity(intent)
         //
     }
@@ -256,6 +269,7 @@ class EngineerMainActivity : AppCompatActivity() {
             }
 
 
+            dialog.dismiss()
 
             searchAsset(edtCode.text.toString())
 
@@ -268,7 +282,7 @@ class EngineerMainActivity : AppCompatActivity() {
     private fun searchAsset(code: String) {
         progress = ProgressDialog(this)
         progress.setMessage("Working ...")
-        progress.setCancelable(false)
+        progress.setCancelable(true)
         progress.isIndeterminate
         progress.setTitle("Search asset")
         progress.show()
@@ -280,7 +294,7 @@ class EngineerMainActivity : AppCompatActivity() {
         Request.getRequest(url, prefManager.getToken(), object : RequestListener {
             override fun onError(error: ANError) {
 
-                if (progress != null && progress.isShowing) {
+                if (progress.isShowing) {
                     progress.setMessage(error.message)
                     progress.dismiss()
                 }
@@ -289,7 +303,7 @@ class EngineerMainActivity : AppCompatActivity() {
 
             override fun onError(error: String) {
 
-                if (progress != null && progress.isShowing) {
+                if (progress.isShowing) {
                     progress.setMessage(error)
                     progress.dismiss()
                 }
@@ -297,10 +311,7 @@ class EngineerMainActivity : AppCompatActivity() {
 
             override fun onSuccess(response: String) {
 
-                if (progress != null && progress.isShowing) {
-                    progress.setMessage(response)
-                    progress.dismiss()
-                }
+
 
                 Log.d("getData", response)
 
@@ -315,20 +326,32 @@ class EngineerMainActivity : AppCompatActivity() {
                         val assetModels = SingleAssetParser.parse(jsonObject.getJSONObject("data"))
                         GLConstants.id = assetModel?.id.toString()
                         GLConstants.assetModel = assetModels
+
+                        if (progress.isShowing) {
+                            progress.setMessage(response)
+                            progress.dismiss()
+                        }
                         val intent = Intent(this@EngineerMainActivity, AssetActivity::class.java)
                         intent.putExtra("data", assetModels)
                         intent.putExtra("state", true)
                         startActivity(intent)
                     } else {
 
-
-                        snack("Product not found")
+                        if (progress.isShowing) {
+                            progress.setMessage(response)
+                            progress.dismiss()
+                        }
+                        alertDialog("Asset not found")
+                        snack("Asset not found")
                     }
 
 
                     //}
                 } catch (nm: Exception) {
-
+                    if (progress.isShowing) {
+                        progress.setMessage(response)
+                        progress.dismiss()
+                    }
                     Log.d("getData", nm.toString())
                 }
 
@@ -336,6 +359,26 @@ class EngineerMainActivity : AppCompatActivity() {
             }
 
         })
+
+    }
+
+    private fun alertDialog(message: String) {
+        val dialogClickListener = DialogInterface.OnClickListener { dialog, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE ->
+
+                    dialog.dismiss()
+            // startIssue(2, issueModel.work_tickets)
+                DialogInterface.BUTTON_NEGATIVE -> dialog.dismiss()
+            }
+        }
+
+
+        val builder = AlertDialog.Builder(this)
+
+        builder.setMessage(message).setPositiveButton("Okay", dialogClickListener)
+                // .setNegativeButton("No", dialogClickListener)
+                .show()
 
     }
 
