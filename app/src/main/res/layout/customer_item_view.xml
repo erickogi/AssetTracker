@@ -53,7 +53,6 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:textColor="@color/black"
-                        android:id="@+id/txt_id_lbl"
                         android:textStyle="italic|bold"
                         android:text="Id : "
                         android:layout_width="wrap_content"
@@ -114,7 +113,6 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"
 
-                            android:id="@+id/txt_location_lbl"
                             android:text="Location"
                             android:layout_weight="1"
                             android:layout_width="0dp"
@@ -144,7 +142,6 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
 
-                    android:id="@+id/txt_email_lbl"
                     android:text="@string/email_address"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -168,7 +165,6 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
 
-                    android:id="@+id/txt_phone_lbl"
                     android:text="@string/phone_number"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -201,7 +197,6 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
 
-                        android:id="@+id/txt_count_lbl"
                         android:text="@string/assets_count"
 
                         android:layout_width="wrap_content"
@@ -227,7 +222,6 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
 
-                        android:id="@+id/txt_created_on_lbl"
                         android:text="Created On"
                         android:layout_weight="1"
                         android:layout_width="wrap_content"

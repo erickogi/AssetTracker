@@ -429,7 +429,6 @@
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:id="@+id/camera"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_margin="6dp">
@@ -554,7 +553,6 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/layout2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
@@ -1167,7 +1165,6 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/edt_accesories"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"

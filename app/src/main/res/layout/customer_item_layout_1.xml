@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/r"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_alertview"
@@ -18,7 +17,6 @@
         android:orientation="horizontal">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/customer_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="9"

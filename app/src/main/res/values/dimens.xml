@@ -19,11 +19,6 @@
     <dimen name="text_title_message_space">6dp</dimen>
     <dimen name="text_title_size">20sp</dimen>
 
-    <dimen name="photo_thumbnail_size">98dp</dimen>
-    <dimen name="photo_thumbnail_spacing">2dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
-
     <dimen name="imagepicker_item_padding">1dp</dimen>
 
     <dimen name="imagepicker_padding_small">4dp</dimen>
@@ -34,14 +29,6 @@
     <dimen name="imagepicker_margin_medium">8dp</dimen>
     <dimen name="imagepicker_margin_large">16dp</dimen>
     <dimen name="imagepicker_size_toolbar_icon">24dp</dimen>
-
-    <dimen name="editor_size">35dp</dimen>
-    <dimen name="normal_margin">8dp</dimen>
-    <dimen name="large_margin">16dp</dimen>
-
-
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
 
     <dimen name="bottom_navigation_elevation">8dp</dimen>
@@ -65,11 +52,8 @@
     <dimen name="bottom_navigation_notification_width">16dp</dimen>
     <dimen name="bottom_navigation_padding_left">12dp</dimen>
     <dimen name="bottom_navigation_padding_right">12dp</dimen>
-    <dimen name="bottom_navigation_small_active_max_width">168dp</dimen>
-    <dimen name="bottom_navigation_small_active_min_width">96dp</dimen>
     <dimen name="bottom_navigation_small_inactive_max_width">96dp</dimen>
     <dimen name="bottom_navigation_small_inactive_min_width">64dp</dimen>
-    <dimen name="bottom_navigation_small_margin_bottom">16dp</dimen>
     <dimen name="bottom_navigation_small_margin_top">16dp</dimen>
     <dimen name="bottom_navigation_small_margin_top_active">6dp</dimen>
     <dimen name="bottom_navigation_small_selected_width_difference">10dp</dimen>

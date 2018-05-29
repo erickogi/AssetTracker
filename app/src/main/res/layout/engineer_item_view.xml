@@ -116,7 +116,6 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"
 
-                            android:id="@+id/txt_phone_lbl"
                             android:text="@string/phone_number"
                             android:layout_weight="1"
                             android:layout_width="0dp"
@@ -146,7 +145,6 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
 
-                    android:id="@+id/txt_designation_lbl"
                     android:text="@string/designation"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -170,7 +168,6 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
 
-                    android:id="@+id/txt_created_on_lbl"
                     android:text="Created On"
                     android:layout_weight="1"
                     android:layout_width="0dp"

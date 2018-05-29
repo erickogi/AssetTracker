@@ -69,6 +69,13 @@ public class FragmentAsset extends Fragment {
     private SearchView search;
     private ActionMode mActionMode;
     private int STATUS_ID;
+
+
+    int count = 0;
+    int lastPage = 1;
+    int currentPage = 1;
+
+
     private ActionMode.Callback callback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -126,7 +133,7 @@ public class FragmentAsset extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-
+        assetModels = new ArrayList<>();
         prefManager = new PrefManager(Objects.requireNonNull(getActivity()));
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
@@ -144,7 +151,7 @@ public class FragmentAsset extends Fragment {
     }
 
     private ArrayList<AssetModel> getData() {
-        assetModels = new ArrayList<>();
+
         HashMap<String, String> params = new HashMap<>();
 
 
@@ -153,7 +160,9 @@ public class FragmentAsset extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
-        progressDialog.show();
+        if (currentPage == 1) {
+            progressDialog.show();
+        }
         String url = APiConstants.Companion.getAllAssets();
         if (STATUS_ID == GLConstants.Companion.getWORKING()) {
             url = APiConstants.Companion.getWorkingAssets();
@@ -164,7 +173,7 @@ public class FragmentAsset extends Fragment {
         }
 
         Log.d("getData", url + "\n" + params.toString() + "\n" + prefManager.getToken());
-        Request.Companion.getRequest(url, prefManager.getToken(), new RequestListener() {
+        Request.Companion.getRequest(url + "?page=" + currentPage++, prefManager.getToken(), new RequestListener() {
             @Override
             public void onError(@NotNull ANError error) {
                 if (progressDialog != null && progressDialog.isShowing()) {
@@ -198,8 +207,11 @@ public class FragmentAsset extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     //if(!jsonObject.getBoolean("error")){
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    lastPage = jsonObject.getInt("last_page");
+                    count = jsonObject.getInt("total");
 
-                    assetModels = AssetParser.parse(jsonArray);
+
+                    assetModels.addAll(AssetParser.parse(jsonArray));
 
                     //initUI(STATUS_ID,assetModels);
 
@@ -387,9 +399,27 @@ public class FragmentAsset extends Fragment {
             listAdapter.notifyDataSetChanged();
 
             setEmptyState(listAdapter.getItemCount() < 1);
-            ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setCount(listAdapter.getItemCount(), STATUS_ID);
+            ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setCount(count, STATUS_ID);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    // boolean   isBottomReached = !recyclerView!!.canScrollVertically(1)
+                    boolean isBottomReached = !recyclerView.canScrollVertically(1);
+                    if (isBottomReached && lastPage > currentPage++) {
+                        getData();
+                        // Toast.makeText(getContext(),"Bottom reached",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             //  (activity as Ac).methodName()
             //  (ActivityManageAssets).
+
 
         } else {
             Log.d("Loohj", "assetmodels is null");
