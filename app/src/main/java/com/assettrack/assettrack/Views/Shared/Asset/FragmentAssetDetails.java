@@ -184,13 +184,6 @@ public class FragmentAssetDetails extends Fragment {
             }
 
 
-
-
-
-
-
-
-
         }
     }
 

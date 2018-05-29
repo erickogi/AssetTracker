@@ -6,10 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.assettrack.assettrack.Adapters.ViewHolders.AssetViewHolder;
 import com.assettrack.assettrack.Adapters.ViewHolders.IssueViewHolder;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Models.IssueModel;
@@ -51,13 +48,16 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueViewHolder> {
         if(issueModel!=null){
             switch (issueModel.getIssue_status()){
                 case 0:
-               //     holder.issue_background.setBackgroundResource(R.color.transparent);
+                    holder.status.setTextColor(context.getResources().getColor(R.color.green));
                     break;
                 case 1:
-               //     holder.issue_background.setBackgroundResource(R.color.orange_color_picker);
+                    holder.status.setTextColor(context.getResources().getColor(R.color.yello));
                     break;
+                case 2:
+                    holder.status.setTextColor(context.getResources().getColor(R.color.orange_color_picker));
                     default:
-                //        holder.issue_background.setBackgroundResource(R.color.transparent);
+                        holder.status.setTextColor(context.getResources().getColor(R.color.orange_color_picker));
+                        break;
 
             }
             holder.assetName.setText(issueModel.getAssetModel().getAsset_name());

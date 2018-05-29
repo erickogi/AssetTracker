@@ -1,28 +1,21 @@
 package com.assettrack.assettrack.Views.Admin.Engineers;
 
-import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.assettrack.assettrack.Adapters.V1.AssetAdapter;
-import com.assettrack.assettrack.Data.PrefManager;
-import com.assettrack.assettrack.Models.AssetModel;
-import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.R;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class FragmentView extends Fragment {
@@ -81,7 +74,20 @@ public class FragmentView extends Fragment {
         idd = view.findViewById(R.id.txt_eng_id);
         // name=view.findViewById(R.id.txt_customer_name);
         btnEdit=view.findViewById(R.id.btn_edit);
-
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto: " + email.getText().toString()));
+                startActivity(Intent.createChooser(emailIntent, "Email Client"));
+            }
+        });
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone.getText().toString(), null)));
+            }
+        });
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

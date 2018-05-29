@@ -2,6 +2,7 @@ package com.assettrack.assettrack.Views.Admin.Clients;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,17 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.V1.AssetAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
-import com.assettrack.assettrack.Constatnts.GLConstants;
-import com.assettrack.assettrack.Data.Parsers.AssetParser;
 import com.assettrack.assettrack.Data.Parsers.SIngleCustomerParser;
-import com.assettrack.assettrack.Data.Parsers.SingleAssetParser;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
@@ -34,18 +31,13 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
-import com.assettrack.assettrack.Views.Admin.Assets.ActivityManageAssets;
-import com.assettrack.assettrack.Views.Shared.Asset.AssetActivity;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import static com.assettrack.assettrack.Constatnts.GLConstants.Companion;
 
 public class FragmentView extends Fragment {
     AssetAdapter listAdapter;
@@ -110,6 +102,21 @@ public class FragmentView extends Fragment {
         phone = view.findViewById(R.id.txt_customer_phone_no);
         address = view.findViewById(R.id.txt_customer_location);
         btnEdit=view.findViewById(R.id.btn_edit);
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto: " + email.getText().toString()));
+                startActivity(Intent.createChooser(emailIntent, "Email Client"));
+            }
+        });
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone.getText().toString(), null)));
+            }
+        });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override

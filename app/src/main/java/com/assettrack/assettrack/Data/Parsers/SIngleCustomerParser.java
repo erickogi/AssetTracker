@@ -4,7 +4,6 @@ import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.Models.CustomerModel;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -18,13 +17,13 @@ public class SIngleCustomerParser {
         try {
 
 
-            customerModel.setId(response.getInt("id"));
-            customerModel.setAddress(response.getString("address"));
-            customerModel.setName(response.getString("name"));
-            customerModel.setTelephone(response.getString("telephone"));
-            customerModel.setPhysical_address(response.getString("physical_address"));
-            customerModel.setCreated_at(response.getString("created_at"));
-            customerModel.setUpdated_at(response.getString("updated_at"));
+            customerModel.setId(response.optInt("id"));
+            customerModel.setAddress(response.optString("address"));
+            customerModel.setName(response.optString("name"));
+            customerModel.setTelephone(response.optString("telephone"));
+            customerModel.setPhysical_address(response.optString("physical_address"));
+            customerModel.setCreated_at(response.optString("created_at"));
+            customerModel.setUpdated_at(response.optString("updated_at"));
             customerModel.setAssetCount(response.optInt("assetcount"));
 
 
@@ -41,10 +40,7 @@ public class SIngleCustomerParser {
             }
 
 
-
-
-
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

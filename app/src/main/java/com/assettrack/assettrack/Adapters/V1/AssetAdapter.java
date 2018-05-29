@@ -56,14 +56,16 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
 
             switch (assetModel.getState()){
                 case 0:
-               // holder.asset_background.setBackgroundResource(R.color.green);
+                    holder.status.setTextColor(context.getResources().getColor(R.color.green));
                 break;
                 case 1:
-                //    holder.asset_background.setBackgroundResource(R.color.orange_color_picker);
+                    holder.status.setTextColor(context.getResources().getColor(R.color.red));
                     break;
                 case 2:
-                //    holder.asset_background.setBackgroundResource(R.color.red);
+                    holder.status.setTextColor(context.getResources().getColor(R.color.orange_color_picker));
                     break;
+                default:
+                    holder.status.setTextColor(context.getResources().getColor(R.color.green));
 
             }
             holder.status.setText(assetModel.getStatename());

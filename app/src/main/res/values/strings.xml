@@ -211,7 +211,7 @@
     <string name="title_activity_manage_issues">Issues</string>
     <string name="title_activity_scanner">Scanner</string>
     <string name="title_activity_assignments">Assignments</string>
-    <string name="statuslbl">Status : </string>
+    <string name="statuslbl">Status :   </string>
     <string name="asset">Asset :</string>
     <string name="here_is_the_asset_name">Here is the asset name</string>
     <string name="customer">Customer :</string>

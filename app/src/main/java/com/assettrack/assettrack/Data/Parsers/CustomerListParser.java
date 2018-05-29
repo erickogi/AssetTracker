@@ -18,8 +18,8 @@ public class CustomerListParser {
                 JSONObject custObject = response.getJSONObject(a);
 
                 CustomerModel customerModel = new CustomerModel();
-                customerModel.setId(custObject.getInt("lable"));
-                customerModel.setName(custObject.getString("value"));
+                customerModel.setId(custObject.optInt("lable"));
+                customerModel.setName(custObject.optString("value"));
                 customerModel.setTelephone("");
                 customerModel.setPhysical_address("");
                 customerModel.setCreated_at("");

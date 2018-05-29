@@ -16,8 +16,10 @@ import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.AssetModel;
+import com.assettrack.assettrack.Models.Parts;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
+import com.google.gson.Gson;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -137,6 +139,11 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
             jsonObject.put("RecieversDesignation", assetModel.getReceiver_designation());
             jsonObject.put("RecieversComment", assetModel.getReceiver_comments());
 
+            Gson gson = new Gson();
+            String json = gson.toJson(assetModel.getParts());
+
+
+            jsonObject.put("assetparts", json);
 
         } catch (Exception nm) {
 
@@ -172,6 +179,13 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
 
         params.put("RecieversDesignation", assetModel.getReceiver_designation());
         params.put("RecieversComment", assetModel.getReceiver_comments());
+        Gson gson = new Gson();
+        String json = gson.toJson(assetModel.getParts());
+
+
+        params.put("assetparts", json);
+
+
 
         PrefManager prefManager = new PrefManager(Installation.this);
         Request.Companion.putRequest(APiConstants.Companion.getUpdateAsset() + "" + assetModel.getId() + "/update", jsonObject, prefManager.getToken(), new RequestListener() {
@@ -228,7 +242,9 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
         if (assetModel != null) {
             assetModel.setEngineer_id("" + new PrefManager(Installation.this).getUserData().getId());
         }
-        Log.d("createAssetdata", assetModel.getSerial());
+        for (Parts p : assetModel.getParts()) {
+            Log.d("createAssetParts", p.getDescription());
+        }
 
 
 //        HashMap<String, String> params = new HashMap<>();
