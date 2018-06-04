@@ -31,7 +31,7 @@ public class SIngleCustomerParser {
                 AssetModel assetModel = new AssetModel();
                 JSONArray object = response.optJSONArray("custdesc");
                 if (object!=null){
-                    ArrayList<AssetModel> assetModels=AssetParser.parse(object);
+                    ArrayList<AssetModel> assetModels = AssetParser.parse1(object);
                     customerModel.setAssetModels(assetModels);
                 }
 

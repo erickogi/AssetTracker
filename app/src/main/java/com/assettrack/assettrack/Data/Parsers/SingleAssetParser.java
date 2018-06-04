@@ -66,6 +66,8 @@ public class SingleAssetParser {
             assetModel.setUpdated_at(response.optString("updated_at"));
             assetModel.setStatename(response.optString("statename"));
             assetModel.setNextservice(response.optString("nextservice"));
+            assetModel.setAsset_imageurl(response.optString("imageurl"));
+
 
             ArrayList<Parts> partsArrayList = new ArrayList<>();
 

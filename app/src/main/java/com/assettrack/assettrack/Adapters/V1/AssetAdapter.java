@@ -3,6 +3,7 @@ package com.assettrack.assettrack.Adapters.V1;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +34,16 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
         this.context = context;
         this.options = (new RequestOptions())
                 .placeholder(R.drawable.imagepicker_image_placeholder)
-                .error(R.drawable.fixed_asset)
+                // .error(R.drawable.fixed_asset)
                 .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
         this.onclickRecyclerListener = onclickRecyclerListener;
     }
 
-
+    public void updateList(ArrayList<AssetModel> list) {
+        assetModels = list;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -75,7 +79,10 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
             holder.engineer.setText(assetModel.getEngineerModel().getFull_name());
             holder.lsd.setText(assetModel.getLastservicedate());
             holder.nsd.setText(assetModel.getNextservicedate());
-            Glide.with(context).load(assetModel.getAsset_image()).apply(options).into(holder.assetImg).onLoadFailed(context.getResources().getDrawable(fixed_asset));
+            Log.d("asimg", assetModel.getAsset_imageurl() + "" + assetModel.getAsset_image());
+            //  Glide.with(context).load(assetModel.getAsset_imageurl()+""+assetModel.getAsset_image()).into(holder.imageView);
+
+            Glide.with(context).load(assetModel.getAsset_imageurl() + "" + assetModel.getAsset_image()).apply(options).into(holder.assetImg).onLoadFailed(context.getResources().getDrawable(fixed_asset));
         }
 
 

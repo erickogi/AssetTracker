@@ -4,6 +4,7 @@ class APiConstants {
 
     companion object {
         var baseUrl: String = "http://asset-track.photozuri.com/api/"
+        var baseImgUrl: String = "http://asset-track.photozuri.com/public/img/assets/"
         var searchasset: String = baseUrl + ""
 
         var login: String = baseUrl + "auth/login"
@@ -35,6 +36,15 @@ class APiConstants {
         var createEngineer: String= baseUrl+"newuser"
 
 
+        var seachClientsList: String = baseUrl + "allcustomerlist"
+        var seachAssetsList: String = baseUrl + "allcustomerlist"
+        var seachEngineersList: String = baseUrl + "allcustomerlist"
+        var seachIssuesList: String = baseUrl + "allcustomerlist"
+        //asset/delete/2
+        var deleteAsset: String = baseUrl + "asset/delete/"
+        var deleteCustomer: String = baseUrl + "customer/delete/"
+        var deleteIssue: String = baseUrl + "issue/delete/"
+        var deleteEngineer: String = baseUrl + "user/delete/"
     }
 
 

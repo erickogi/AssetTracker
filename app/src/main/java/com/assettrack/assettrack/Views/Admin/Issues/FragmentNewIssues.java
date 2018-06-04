@@ -91,8 +91,11 @@ public class FragmentNewIssues extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
-        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
-
+        try {
+            ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp, false);
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         avi = view.findViewById(R.id.avi);
         avi.hide();
 

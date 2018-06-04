@@ -124,6 +124,39 @@ class Request {
                     })
         }
 
+        fun deleteRequest(url: String, token: String?, listener: RequestListener) {
+            var mtoken = ""
+            if (token != null) {
+
+                mtoken = token
+
+            }
+
+
+            AndroidNetworking.delete(url)
+
+
+                    .addHeaders("Authorization", "Bearer $mtoken")
+                    .addHeaders("Accept", "application/json")
+
+
+                    .setTag("test")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(object : StringRequestListener {
+                        override fun onResponse(response: String) {
+                            // do anything with response
+                            listener.onSuccess(response)
+
+                        }
+
+                        override fun onError(error: ANError) {
+                            // handle error
+                            listener.onError(error.errorBody)
+                        }
+                    })
+        }
+
         fun assetUpload(url: String, assetModel: AssetModel, path: String, token: String, listener: RequestListener) {
             val gson = Gson()
             val json = gson.toJson(assetModel.parts)

@@ -1,10 +1,8 @@
 package com.assettrack.assettrack.Views.Admin.Assets
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -19,17 +17,15 @@ import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients
 import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers
 import com.assettrack.assettrack.Views.Admin.Issues.ActivityManageIssues
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
-import com.assettrack.assettrack.Views.Shared.Asset.AssetActivity
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
-import kotlinx.android.synthetic.main.activity_manage_assets.*
 
 class ActivityManageAssets : AppCompatActivity() {
 
     internal lateinit var bottomNavigation: AHBottomNavigation
     internal var fragment: Fragment? = null
-    
 
-    public fun  setFab(icon:Int,isVisible: Boolean ){
+
+    fun setFab(icon: Int, isVisible: Boolean) {
         fab.setImageResource(icon)
         if(isVisible){
             fab.show()
@@ -40,9 +36,10 @@ class ActivityManageAssets : AppCompatActivity() {
 
 
     private fun setDrawerMenu(toolbar: Toolbar) {
-        DrawerClass.getDrawer(this@ActivityManageAssets, toolbar, object : DrawerItemListener {
+        val prefManager = PrefManager(this@ActivityManageAssets)
+
+        DrawerClass.getDrawer(prefManager.getUserData().getEmail(), prefManager.getUserData().getFull_name(), this@ActivityManageAssets, toolbar, object : DrawerItemListener {
             override fun logOutClicked() {
-                val prefManager = PrefManager(this@ActivityManageAssets)
                 prefManager.setIsLoggedIn(false, 1)
                 startActivity(Intent(this@ActivityManageAssets, LoginActivity::class.java))
                 finish()
@@ -97,7 +94,8 @@ class ActivityManageAssets : AppCompatActivity() {
     fun manageAssets() {
         startActivity(Intent(this, ActivityManageAssets::class.java))
     }
-    public fun popOut(){
+
+    fun popOut() {
         popOutFragments()
     }
     override fun onCreate(savedInstanceState: Bundle?) {

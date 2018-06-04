@@ -51,7 +51,7 @@ public class AssetViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public boolean onLongClick(View v) {
-        listenerWeakReference.get().onLongClickListener(getAdapterPosition());
+        listenerWeakReference.get().onClickListener(getAdapterPosition(), v);
 
         return true;
     }

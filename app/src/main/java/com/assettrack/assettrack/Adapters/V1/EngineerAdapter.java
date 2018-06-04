@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.assettrack.assettrack.Adapters.ViewHolders.EngineerViewHolder;
-import com.assettrack.assettrack.Adapters.ViewHolders.EngineerViewHolder;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.R;
@@ -30,7 +29,10 @@ public class EngineerAdapter extends RecyclerView.Adapter<EngineerViewHolder> {
         this.onclickRecyclerListener = onclickRecyclerListener;
     }
 
-   
+    public void updateList(ArrayList<EngineerModel> list) {
+        engineerModels = list;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -44,7 +46,7 @@ public class EngineerAdapter extends RecyclerView.Adapter<EngineerViewHolder> {
     public void onBindViewHolder(@NonNull EngineerViewHolder holder, int position) {
         EngineerModel engineerModel=engineerModels.get(position);
         if(engineerModel!=null){
-           // holder.engineer_background.setBackgroundResource(R.color.transparent);
+            // holder.engineer_background.setBackgroundResource(R.color.transparent);
             holder.name.setText(engineerModel.getFull_name());
             holder.phone.setText(engineerModel.getPhoneNumber());
             holder.createdOn.setText(engineerModel.getCreated_at());

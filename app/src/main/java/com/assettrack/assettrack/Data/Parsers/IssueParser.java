@@ -125,6 +125,8 @@ public class IssueParser {
                         assetModel.setUpdated_at(jsonAsset.optString("updated_at"));
                         assetModel.setStatename(jsonAsset.optString("statename"));
                         assetModel.setNextservice(jsonAsset.optString("nextservice"));
+                        assetModel.setAsset_imageurl(object.optString("imageurl"));
+
 
                         ArrayList<Parts> partsArrayList = new ArrayList<>();
 

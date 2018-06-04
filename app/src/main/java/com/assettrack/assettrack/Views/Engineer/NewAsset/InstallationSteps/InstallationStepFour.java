@@ -354,6 +354,17 @@ public class InstallationStepFour extends Fragment implements BlockingStep, Imag
         Bitmap bitmap = file;
         String file_name = filename;
         img.setImageBitmap(file);
+        RequestOptions options = (new RequestOptions())
+                .placeholder(R.drawable.imagepicker_image_placeholder)
+                // .error(R.drawable.fixed_asset)
+                .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+        try {
+            Glide.with(Objects.requireNonNull(getActivity())).load(uri).apply(options).into(img);
+
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         img.setVisibility(View.VISIBLE);
         btnImage.setVisibility(View.GONE);
 

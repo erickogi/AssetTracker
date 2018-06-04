@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -33,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
-import com.assettrack.assettrack.Adapters.ListAdapter;
 import com.assettrack.assettrack.Adapters.V1.EngineerAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.AllEngineerParser;
@@ -43,6 +43,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListene
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.EngineerModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -56,6 +57,7 @@ public class FragmentEngineerList extends Fragment {
     EngineerAdapter listAdapter;
     String searchtext = "";
     private ArrayList<EngineerModel> engineerModels;
+    private ArrayList<EngineerModel> engineerModelsSearch;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
     private View view;
@@ -66,6 +68,8 @@ public class FragmentEngineerList extends Fragment {
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private ActionMode mActionMode;
     private Fragment fragment;
+    private SwipeRefreshLayout swipe_refresh_layout;
+
 
     void setUpView() {
         if (fragment != null) {
@@ -141,15 +145,49 @@ public class FragmentEngineerList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp,true);
+        try {
+            ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp, true);
 
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
         prefManager = new PrefManager(getActivity());
 
+        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
+
+            swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+            swipe_refresh_layout.setBackgroundResource(android.R.color.white);
+            swipe_refresh_layout.setColorSchemeResources(android.R.color.white, android.R.color.holo_purple, android.R.color.white);
+            swipe_refresh_layout.setRefreshing(true);
+
+
+            initData();
+
+            //initData();
+        } else {
+            snack("Please check your internet connection");
+            swipe_refresh_layout.setRefreshing(false);
+
+        }
+        swipe_refresh_layout.setOnRefreshListener(() -> {
+
+            swipe_refresh_layout.setRefreshing(true);
+            if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                initData();
+            } else {
+                swipe_refresh_layout.setRefreshing(false);
+
+                snack("Check your internet connection");
+            }
+
+
+        });
+
         initUI(new ArrayList<>());
         initSearchView();
-        initData();
 
 
     }
@@ -225,7 +263,7 @@ public class FragmentEngineerList extends Fragment {
 
 
             search.setOnClickListener(v -> search.setIconified(false));
-            search.setQueryHint("Search asset list");
+            search.setQueryHint("Search engineers list");
 
             if (manager != null) {
                 search.setSearchableInfo(manager.getSearchableInfo(getActivity().getComponentName()));
@@ -247,18 +285,31 @@ public class FragmentEngineerList extends Fragment {
 
                     if (!newText.isEmpty()) {
 
-                        try {
-                            new Thread(() -> {
+                        searchtext = newText.toLowerCase();
 
-                            }).start();
+                        engineerModelsSearch = new ArrayList<>();
+                        if (engineerModels != null) {
+                            for (EngineerModel engineerModel : engineerModels) {
+                                if (engineerModel.getFirstname().toLowerCase().contains(searchtext)
+                                        || engineerModel.getLastname().toLowerCase().contains(searchtext)
+                                        || String.valueOf(engineerModel.getEmployeeid()).contains(searchtext)
+                                        || String.valueOf(engineerModel.getRolename()).contains(searchtext)
+                                        || String.valueOf(engineerModel.getPhoneNumber()).contains(searchtext)) {
 
-
-                        } catch (Exception nm) {
-
+                                    engineerModelsSearch.add(engineerModel);
+                                }
+                            }
                         }
-                        searchtext = newText;
+                        if (engineerModelsSearch != null && listAdapter != null) {
+                            listAdapter.updateList(engineerModelsSearch);
+                        }
+                        listAdapter.notifyDataSetChanged();
+
 
                     } else {
+                        if (listAdapter != null && engineerModels != null) {
+                            listAdapter.updateList(engineerModels);
+                        }
 
                         searchtext = "";
 
@@ -283,10 +334,32 @@ public class FragmentEngineerList extends Fragment {
                     String newText = edtSearch.getText().toString();
                     if (!newText.isEmpty()) {
 
+                        searchtext = newText.toLowerCase();
 
-                        searchtext = newText;
+                        engineerModelsSearch = new ArrayList<>();
+                        if (engineerModels != null) {
+                            for (EngineerModel engineerModel : engineerModels) {
+                                if (engineerModel.getFirstname().toLowerCase().contains(searchtext)
+                                        || engineerModel.getLastname().toLowerCase().contains(searchtext)
+                                        || String.valueOf(engineerModel.getEmployeeid()).contains(searchtext)
+                                        || String.valueOf(engineerModel.getRolename()).contains(searchtext)
+                                        || String.valueOf(engineerModel.getPhoneNumber()).contains(searchtext)) {
+
+                                    engineerModelsSearch.add(engineerModel);
+                                }
+                            }
+                        }
+                        if (engineerModelsSearch != null && listAdapter != null) {
+                            listAdapter.updateList(engineerModelsSearch);
+                            listAdapter.notifyDataSetChanged();
+
+                        }
+
 
                     } else {
+                        if (listAdapter != null && engineerModels != null) {
+                            listAdapter.updateList(engineerModels);
+                        }
 
                         searchtext = "";
 
@@ -382,7 +455,9 @@ public class FragmentEngineerList extends Fragment {
             listAdapter.notifyDataSetChanged();
 
             setEmptyState(listAdapter.getItemCount() < 1);
-
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
 
         } else {
             Log.d("Loohj", "assetmodels is null");
@@ -395,8 +470,8 @@ public class FragmentEngineerList extends Fragment {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
         popupMenu.inflate(R.menu.menu_asset_options);
 
-        popupMenu.getMenu().getItem(3).setVisible(false);
-        popupMenu.getMenu().getItem(5).setVisible(false);
+        // popupMenu.getMenu().getItem(3).setVisible(false);
+        // popupMenu.getMenu().getItem(5).setVisible(false);
         popupMenu.getMenu().getItem(4).setVisible(false);
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -435,6 +510,7 @@ public class FragmentEngineerList extends Fragment {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
 
+                    deleteItem(engineerModel);
                     listAdapter.notifyDataSetChanged();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -595,6 +671,7 @@ public class FragmentEngineerList extends Fragment {
             jsonObject.put("LastName", engineerModel.getLastname());
             jsonObject.put("Email", engineerModel.getEmail());
             jsonObject.put("Speciality", engineerModel.getDesignation());
+            jsonObject.put("Designation", engineerModel.getDesignation());
             jsonObject.put("PhoneNumber", engineerModel.getPhoneNumber());
             jsonObject.put("Role", engineerModel.getRole());
 
@@ -734,6 +811,49 @@ public class FragmentEngineerList extends Fragment {
 
 
     }
+
+    private void deleteItem(EngineerModel engineerModel) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Deleting....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+
+        Request.Companion.deleteRequest(APiConstants.Companion.getDeleteEngineer() + "" + engineerModel.getId(), prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+                snack(error.getMessage());
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onError(@NotNull String error) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(error);
+            }
+
+            @Override
+            public void onSuccess(@NotNull String response) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(response);
+                if (listAdapter != null) {
+                    listAdapter.notifyDataSetChanged();
+                    initData();
+                }
+
+            }
+        });
+
+    }
+
 
 }
 

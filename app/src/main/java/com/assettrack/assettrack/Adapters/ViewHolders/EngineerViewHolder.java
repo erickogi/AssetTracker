@@ -40,7 +40,7 @@ public class EngineerViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public boolean onLongClick(View v) {
-        listenerWeakReference.get().onLongClickListener(getAdapterPosition());
+        listenerWeakReference.get().onClickListener(getAdapterPosition(), v);
 
         return true;
     }

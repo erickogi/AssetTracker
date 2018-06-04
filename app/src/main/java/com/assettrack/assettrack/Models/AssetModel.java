@@ -8,6 +8,7 @@ public class AssetModel implements Serializable {
     private String asset_name="";
     private String asset_code="";
     private String asset_image="aa";
+    private String asset_imageurl = "aa";
     private int state;
     private String warranty="";
     private String warranty_duration="";
@@ -43,6 +44,14 @@ public class AssetModel implements Serializable {
     private ArrayList<Parts> parts =new ArrayList<>();
     private CustomerModel customerModel=new CustomerModel();
     private EngineerModel engineerModel=new EngineerModel();
+
+    public String getAsset_imageurl() {
+        return asset_imageurl;
+    }
+
+    public void setAsset_imageurl(String asset_imageurl) {
+        this.asset_imageurl = asset_imageurl;
+    }
 
     public String getLastservicedate() {
         return lastservicedate;

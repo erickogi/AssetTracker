@@ -21,7 +21,6 @@ import com.assettrack.assettrack.Utils.MyToast
 import com.assettrack.assettrack.Utils.NetworkUtils
 import com.assettrack.assettrack.Views.Admin.Assets.ActivityManageAssets
 import com.assettrack.assettrack.Views.Engineer.EngineerMainActivity
-import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.util.*
 
@@ -36,7 +35,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         setSupportActionBar(toolbar)
-        prefManager = PrefManager(this)
+        try {
+
+            prefManager = PrefManager(this)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -67,7 +68,10 @@ class LoginActivity : AppCompatActivity() {
             hj.printStackTrace()
         }
 
+        } catch (hf: Exception) {
 
+            hf.printStackTrace()
+        }
     }
 
     private fun snack(msg: String) {
@@ -76,8 +80,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun loginClicked(view: View) {
-        login(edtID, edtPassword)
+        try {
+            login(edtID, edtPassword)
+        } catch (hf: Exception) {
 
+            hf.printStackTrace()
+        }
 
 
 
@@ -99,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
         val builder = MaterialDialog.Builder(this@LoginActivity)
                 .title("Verifying you")
                 .content("Please Wait")
-                .cancelable(false)
+                .cancelable(true)
                 .progress(true, 0)
 
 
@@ -194,6 +202,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(response: String) {
+                    dialog?.dismiss()
 
 
                     Log.d("ktlogin", response)

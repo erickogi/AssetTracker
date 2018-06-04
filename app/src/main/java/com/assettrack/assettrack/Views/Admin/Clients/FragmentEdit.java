@@ -65,8 +65,12 @@ public class FragmentEdit extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+        try {
+            ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp, false);
 
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
         Bundle args=getArguments();
         if(args!=null){

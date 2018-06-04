@@ -11,6 +11,7 @@ import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 
 class DrawerClass {
@@ -32,7 +33,7 @@ class DrawerClass {
     }
     companion object {
 
-        fun getDrawer(activity: Activity, toolbar: Toolbar, itemListener: DrawerItemListener) {
+        fun getDrawer(email: String?, name: String?, activity: Activity, toolbar: Toolbar, itemListener: DrawerItemListener) {
              lateinit var result: Drawer
             //private val activity: Activity? = null
 
@@ -85,15 +86,15 @@ class DrawerClass {
                     .withSelectionListEnabledForSingleProfile(false)
                     .withDividerBelowHeader(true)
 
-                    // .withHeaderBackground(R.drawable.headermain)
-                    //                .addProfiles(
-                    //                        new ProfileDrawerItem().withName(userModel.getUserName()).withEmail(userModel.getEmail())
-                    //
-                    //                                //.withSelectedTextColorRes(R.color.colorPrimaryDark)
-                    //                                .withIcon(getBitmap(activity, userModel.getPhoto()))
-                    //
-                    //
-                    //                )
+                    //  .withHeaderBackground(R.drawable.dvf)
+                    .addProfiles(
+                            ProfileDrawerItem().withName(name).withEmail(email)
+
+                                    //.withSelectedTextColorRes(R.color.colorPrimaryDark)
+                                    .withIcon(R.drawable.fixed_asset)
+
+
+                    )
                     .withOnAccountHeaderListener { view, profile, currentProfile -> false }
                     .build()
 
@@ -111,12 +112,13 @@ class DrawerClass {
                     .withToolbar(toolbar)
                     // .withSliderBackgroundDrawableRes(R.drawable.headermain)
 
-                    // .withAccountHeader(headerResult)
+                    .withAccountHeader(headerResult)
                     .withActionBarDrawerToggle(true)
                     .withActionBarDrawerToggleAnimated(true)
                     .withCloseOnClick(true)
                     //.withSelectedItem(-1)
                     .addDrawerItems(
+                            //drawerEmptyItem,
                             // favorites,
                             assets, // payments, //new DividerDrawerItem(),
                             //messages,

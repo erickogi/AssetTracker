@@ -1,5 +1,6 @@
 package com.assettrack.assettrack.Adapters.ViewHolders;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -15,6 +16,7 @@ public class IssueViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public RelativeLayout issue_background;
     public TextView status,statusLbl,workTicket,workTicketLbl,customerName,customerNameLbl,assetName,assetNameLbl,
     engineerName,engineerNameLbl,start,startLbl,close,closeLbl;
+    private SwipeRefreshLayout swipe_refresh_layout;
 
 
     public IssueViewHolder(View itemView, OnclickRecyclerListener onclickRecyclerListener) {
@@ -43,7 +45,7 @@ public class IssueViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public boolean onLongClick(View v) {
-        listenerWeakReference.get().onLongClickListener(getAdapterPosition());
+        listenerWeakReference.get().onClickListener(getAdapterPosition(), v);
 
         return true;
     }

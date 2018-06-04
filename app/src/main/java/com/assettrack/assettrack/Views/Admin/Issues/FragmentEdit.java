@@ -79,10 +79,15 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
 
-        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+        try {
+            prefManager = new PrefManager(Objects.requireNonNull(getActivity()));
 
-        prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
-        Bundle args=getArguments();
+            ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp, false);
+
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
+        Bundle args = getArguments();
         if(args!=null){
             try{
                 issueModel=(IssueModel) getArguments().getSerializable("data");

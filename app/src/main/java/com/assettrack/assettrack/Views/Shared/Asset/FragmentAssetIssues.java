@@ -89,12 +89,7 @@ public class FragmentAssetIssues extends Fragment implements DatePickerDialog.On
 
         prefManager = new PrefManager(Objects.requireNonNull(getActivity()));
         fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDialog();
-            }
-        });
+        fab.setOnClickListener(v -> startDialog());
         if (!((AssetActivity) Objects.requireNonNull(getActivity())).editable) {
             fab.hide();
         }

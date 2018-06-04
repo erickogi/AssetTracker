@@ -8,8 +8,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -31,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
-import com.assettrack.assettrack.Adapters.ListAdapter;
 import com.assettrack.assettrack.Adapters.V1.IssueAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.IssueParser;
@@ -41,6 +42,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListene
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -62,8 +64,11 @@ public class FragmentIssueList extends Fragment {
     private int STATUS_ID;
 
     private ArrayList<IssueModel> issueModels;
+    private ArrayList<IssueModel> issueModelsSearch;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
+    private SwipeRefreshLayout swipe_refresh_layout;
+
 
     private Fragment fragment;
 
@@ -145,7 +150,36 @@ public class FragmentIssueList extends Fragment {
         edtSearch = view.findViewById(R.id.edt_search);
 
         prefManager = new PrefManager(getActivity());
+        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
+            swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+            swipe_refresh_layout.setBackgroundResource(android.R.color.white);
+            swipe_refresh_layout.setColorSchemeResources(android.R.color.white, android.R.color.holo_purple, android.R.color.white);
+            swipe_refresh_layout.setRefreshing(true);
+
+
+            initData();
+
+            //initData();
+        } else {
+            snack("Please check your internet connection");
+            swipe_refresh_layout.setRefreshing(false);
+
+        }
+        swipe_refresh_layout.setOnRefreshListener(() -> {
+
+            swipe_refresh_layout.setRefreshing(true);
+            if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                initData();
+            } else {
+                swipe_refresh_layout.setRefreshing(false);
+
+                snack("Check your internet connection");
+            }
+
+
+        });
         initUI(new ArrayList<>());
         initSearchView();
         initData();
@@ -217,6 +251,54 @@ public class FragmentIssueList extends Fragment {
         return issueModels;
     }
 
+    private void snack(String msg) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
+                .setAction("Action", null).show();
+    }
+
+    private void deleteItem(IssueModel issueModel) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Deleting....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+
+        Request.Companion.deleteRequest(APiConstants.Companion.getDeleteIssue() + "" + issueModel.getId(), prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+                snack(error.getMessage());
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onError(@NotNull String error) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(error);
+            }
+
+            @Override
+            public void onSuccess(@NotNull String response) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(response);
+                if (listAdapter != null) {
+                    listAdapter.notifyDataSetChanged();
+                    initData();
+                }
+
+            }
+        });
+
+    }
+
+
     private void initSearchView() {
 
         try {
@@ -224,7 +306,7 @@ public class FragmentIssueList extends Fragment {
 
 
             search.setOnClickListener(v -> search.setIconified(false));
-            search.setQueryHint("Search asset list");
+            search.setQueryHint("Search issues list");
 
             if (manager != null) {
                 search.setSearchableInfo(manager.getSearchableInfo(getActivity().getComponentName()));
@@ -246,19 +328,32 @@ public class FragmentIssueList extends Fragment {
 
                     if (!newText.isEmpty()) {
 
-                        try {
-                            new Thread(() -> {
+                        searchtext = newText.toLowerCase();
 
-                            }).start();
+                        issueModelsSearch = new ArrayList<>();
+                        if (issueModels != null) {
+                            for (IssueModel issueModel : issueModels) {
+                                if (issueModel.getCustomerModel().getName().toLowerCase().contains(searchtext)
+                                        || issueModel.getAssetModel().getAsset_name().toLowerCase().contains(searchtext)
+                                        || String.valueOf(issueModel.getWork_tickets()).contains(searchtext)
+                                        || String.valueOf(issueModel.getEngineer_id()).contains(searchtext)
+                                        || String.valueOf(issueModel.getCustomers_id()).contains(searchtext)) {
 
-
-                        } catch (Exception nm) {
-
+                                    issueModelsSearch.add(issueModel);
+                                }
+                            }
                         }
-                        searchtext = newText;
+                        if (listAdapter != null && issueModelsSearch != null) {
+                            listAdapter.updateList(issueModelsSearch);
+                            listAdapter.notifyDataSetChanged();
+                        }
+
 
                     } else {
 
+                        if (listAdapter != null) {
+                            listAdapter.updateList(issueModels);
+                        }
                         searchtext = "";
 
                     }
@@ -282,12 +377,33 @@ public class FragmentIssueList extends Fragment {
                     String newText = edtSearch.getText().toString();
                     if (!newText.isEmpty()) {
 
+                        searchtext = newText.toLowerCase();
 
-                        searchtext = newText;
+                        issueModelsSearch = new ArrayList<>();
+                        if (issueModels != null) {
+                            for (IssueModel issueModel : issueModels) {
+                                if (issueModel.getCustomerModel().getName().toLowerCase().contains(searchtext)
+                                        || issueModel.getAssetModel().getAsset_name().toLowerCase().contains(searchtext)
+                                        || String.valueOf(issueModel.getWork_tickets()).contains(searchtext)
+                                        || String.valueOf(issueModel.getEngineer_id()).contains(searchtext)
+                                        || String.valueOf(issueModel.getCustomers_id()).contains(searchtext)) {
+
+                                    issueModelsSearch.add(issueModel);
+                                }
+                            }
+                        }
+                        if (issueModels != null && listAdapter != null) {
+                            listAdapter.updateList(issueModelsSearch);
+                            listAdapter.notifyDataSetChanged();
+                        }
+
 
                     } else {
 
-                        searchtext = "";
+                        if (listAdapter != null) {
+                            listAdapter.updateList(issueModels);
+                            searchtext = "";
+                        }
 
                     }
 
@@ -304,7 +420,9 @@ public class FragmentIssueList extends Fragment {
 
     private void initUI(ArrayList<IssueModel> issueModels) {
 
-
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         recyclerView = view.findViewById(R.id.recyclerView);
         if (issueModels != null && issueModels.size() > 0) {
             mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -315,12 +433,16 @@ public class FragmentIssueList extends Fragment {
             listAdapter = new IssueAdapter(getActivity(),issueModels, new OnclickRecyclerListener() {
                 @Override
                 public void onClickListener(int position) {
-                    fragment=new FragmentView();
-                    Bundle args=new Bundle();
-                    args.putSerializable("data",issueModels.get(position));
-                    fragment.setArguments(args);
-                    popOutFragments();
-                    setUpView();
+                    if (issueModels.get(position).getIssue_status() > 0) {
+                        fragment = new FragmentView();
+                        Bundle args = new Bundle();
+                        args.putSerializable("data", issueModels.get(position));
+                        fragment.setArguments(args);
+                        popOutFragments();
+                        setUpView();
+                    } else {
+                        alertDialog("Issue not started yet..", issueModels.get(position));
+                    }
                 }
 
                 @Override
@@ -377,8 +499,12 @@ public class FragmentIssueList extends Fragment {
             // listAdapter.notifyDataSetChanged();
 
             recyclerView.setAdapter(listAdapter);
-            listAdapter.notifyDataSetChanged();
 
+
+            listAdapter.notifyDataSetChanged();
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
             setEmptyState(listAdapter.getItemCount() < 1);
 
 
@@ -393,8 +519,8 @@ public class FragmentIssueList extends Fragment {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
         popupMenu.inflate(R.menu.menu_asset_options);
 
-        popupMenu.getMenu().getItem(3).setVisible(false);
-        popupMenu.getMenu().getItem(5).setVisible(false);
+        // popupMenu.getMenu().getItem(3).setVisible(false);
+        // popupMenu.getMenu().getItem(5).setVisible(false);
         popupMenu.getMenu().getItem(4).setVisible(false);
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -433,6 +559,7 @@ public class FragmentIssueList extends Fragment {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
 
+                    deleteItem(issueModel);
                     listAdapter.notifyDataSetChanged();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -449,6 +576,38 @@ public class FragmentIssueList extends Fragment {
 
             builder.setMessage("You are about to delete this item ").setPositiveButton("Delete", dialogClickListener)
                     .setNegativeButton("Dismiss", dialogClickListener)
+                    .show();
+        }
+
+    }
+
+    private void alertDialog(final String message, IssueModel issueModel) {
+        final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+
+
+                        dialog.dismiss();
+
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.dismiss();
+
+                        break;
+                }
+            }
+        };
+
+
+        if (getActivity() != null) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(message).setPositiveButton("Okay", dialogClickListener)
+                    //.setNegativeButton("No", dialogClickListener)
                     .show();
         }
 

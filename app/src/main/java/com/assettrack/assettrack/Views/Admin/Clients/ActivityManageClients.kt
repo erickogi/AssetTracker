@@ -13,15 +13,13 @@ import android.widget.EditText
 import android.widget.TextView
 import com.assettrack.assettrack.Models.CustomerModel
 import com.assettrack.assettrack.R
-import kotlinx.android.synthetic.main.activity_manage_assets.*
-import kotlinx.android.synthetic.main.activity_manage_clients.*
 
 class ActivityManageClients : AppCompatActivity() {
     internal var fragment: Fragment? = null
     var  fab: FloatingActionButton?=null
     var  toolbar: android.support.v7.widget.Toolbar?=null
 
-    public fun popOut(){
+    fun popOut() {
         popOutFragments()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +27,7 @@ class ActivityManageClients : AppCompatActivity() {
         setContentView(R.layout.activity_manage_clients)
 
         toolbar=findViewById(R.id.toolbar)
-        fab=findViewById(R.id.fab)
+        fab = this.findViewById(R.id.fab)
         setSupportActionBar(toolbar)
 
         fab?.setOnClickListener { view ->
@@ -49,7 +47,8 @@ class ActivityManageClients : AppCompatActivity() {
 
 
     }
-    public fun  setFab(icon:Int,isVisible: Boolean ){
+
+    fun setFab(icon: Int, isVisible: Boolean) {
         fab?.setImageResource(icon)
         if(isVisible){
             fab?.show()

@@ -146,10 +146,10 @@ public class FragmentAssetDetails extends Fragment {
             if (assetModels.getAsset_image() != null) {
                 RequestOptions options = (new RequestOptions())
                         .placeholder(R.drawable.imagepicker_image_placeholder)
-                        .error(R.drawable.fixed_asset)
+                        .error(R.drawable.imagepicker_image_placeholder)
                         .centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
-                Glide.with(Objects.requireNonNull(getActivity())).load(assetModels.getAsset_image()).apply(options).into(img);
+                Glide.with(Objects.requireNonNull(getActivity())).load(assetModels.getAsset_imageurl() + "" + assetModels.getAsset_image()).apply(options).into(img);
             }
             if (assetModels.getEngineer_remarks() != null) {
                 //customerID=assetModel.getCustomer_id();

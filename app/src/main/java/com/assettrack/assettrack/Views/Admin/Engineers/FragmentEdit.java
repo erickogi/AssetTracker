@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +68,12 @@ public class FragmentEdit extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
 
-        ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+        try {
+            ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp, false);
 
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
         Bundle args=getArguments();
         if(args!=null){
@@ -144,7 +149,7 @@ public class FragmentEdit extends Fragment {
             return;
         }
         if (password.getText().toString().isEmpty()) {
-            // password.setError("Required");
+            password.setError("Required");
             password.requestFocus();
             // return;
         }
@@ -165,6 +170,9 @@ public class FragmentEdit extends Fragment {
         engineerModelnew.setEmail(email.getText().toString());
         engineerModelnew.setLastname(sname.getText().toString());
         engineerModelnew.setPhoneNumber(phone.getText().toString());
+        if (TextUtils.isEmpty(password.getText().toString())) {
+            engineerModelnew.setPassword(engineerModel.getPassword());
+        }
         engineerModelnew.setPassword(password.getText().toString());
         engineerModelnew.setRole(2);
 
@@ -193,7 +201,7 @@ public class FragmentEdit extends Fragment {
             params.put("Email", engineerModel.getEmail());
             params.put("phoneNumber", engineerModel.getPhoneNumber());
             params.put("Speciality", engineerModel.getDesignation());
-            params.put("Designation", engineerModel.getPhoneNumber());
+            params.put("Designation", engineerModel.getDesignation());
             params.put("role", ""+engineerModel.getRole());
             params.put("password",""+ engineerModel.getPassword());
             params.put("password_confirmation", "" + engineerModel.getPassword());
@@ -276,7 +284,7 @@ public class FragmentEdit extends Fragment {
             jsonObject.put("Email", engineerModel.getEmail());
             jsonObject.put("PhoneNumber", engineerModel.getPhoneNumber());
             jsonObject.put("Speciality", engineerModel.getDesignation());
-            jsonObject.put("Designation", engineerModel.getPhoneNumber());
+            jsonObject.put("Designation", engineerModel.getDesignation());
             jsonObject.put("role", engineerModel.getRole());
             jsonObject.put("password", engineerModel.getPassword());
 

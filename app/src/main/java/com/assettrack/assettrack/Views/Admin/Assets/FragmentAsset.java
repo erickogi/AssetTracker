@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -40,6 +42,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListene
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Utils.NetworkUtils;
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation;
 import com.assettrack.assettrack.Views.Shared.Asset.AssetActivity;
 
@@ -70,10 +73,12 @@ public class FragmentAsset extends Fragment {
     private ActionMode mActionMode;
     private int STATUS_ID;
 
-
+    private ArrayList<AssetModel> assetModelsSerch;
     int count = 0;
     int lastPage = 1;
     int currentPage = 1;
+
+    private SwipeRefreshLayout swipe_refresh_layout;
 
 
     private ActionMode.Callback callback = new ActionMode.Callback() {
@@ -119,7 +124,6 @@ public class FragmentAsset extends Fragment {
             mActionMode = null;
         }
     };
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -137,19 +141,66 @@ public class FragmentAsset extends Fragment {
         prefManager = new PrefManager(Objects.requireNonNull(getActivity()));
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
+
+
         STATUS_ID = Companion.getWORKING();
         if (getArguments() != null) {
             STATUS_ID = getArguments().getInt("STATUS_ID");
         }
 
 
-        getData();
+        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
+
+            swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+            swipe_refresh_layout.setBackgroundResource(android.R.color.white);
+            swipe_refresh_layout.setColorSchemeResources(android.R.color.white, android.R.color.holo_purple, android.R.color.white);
+            swipe_refresh_layout.setRefreshing(true);
+
+
+            getData();
+        } else {
+            snack("Please check your internet connection");
+        }
+        swipe_refresh_layout.setOnRefreshListener(() -> {
+
+            swipe_refresh_layout.setRefreshing(true);
+            if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                getData();
+            } else {
+                swipe_refresh_layout.setRefreshing(false);
+
+                snack("Check your internet connection");
+            }
+
+
+        });
+
+
         initUI(STATUS_ID, new ArrayList<>());
         initSearchView();
 
 
     }
 
+    void setEmptyState(boolean state) {
+        TextView txtEmpty;
+        txtEmpty = view.findViewById(R.id.empty_view);
+        txtEmpty.setText("Refreshing");
+
+        LinearLayout linearLayoutEmpty = view.findViewById(R.id.empty_layout);
+        if (state) {
+            txtEmpty.setText("No data to display");
+
+            linearLayoutEmpty.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+        } else {
+            txtEmpty.setText("No data display");
+            linearLayoutEmpty.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
+    }
     private ArrayList<AssetModel> getData() {
 
         HashMap<String, String> params = new HashMap<>();
@@ -177,7 +228,6 @@ public class FragmentAsset extends Fragment {
             @Override
             public void onError(@NotNull ANError error) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error.getMessage());
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error.getErrorBody());
@@ -187,7 +237,6 @@ public class FragmentAsset extends Fragment {
             public void onError(@NotNull String error) {
 
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error);
@@ -197,7 +246,7 @@ public class FragmentAsset extends Fragment {
             @Override
             public void onSuccess(@NotNull String response) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(response);
+                    //progressDialog.setMessage(response);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", response);
@@ -229,7 +278,6 @@ public class FragmentAsset extends Fragment {
 
         return assetModels;
     }
-
     private void initSearchView() {
 
         try {
@@ -259,20 +307,30 @@ public class FragmentAsset extends Fragment {
 
                     if (!newText.isEmpty()) {
 
-                        try {
-                            new Thread(() -> {
 
+                        searchtext = newText.toLowerCase();
 
-                            }).start();
+                        assetModelsSerch = new ArrayList<>();
+                        if (assetModels != null) {
+                            for (AssetModel assetModel : assetModels) {
+                                if (assetModel.getAsset_name().toLowerCase().contains(searchtext)
+                                        || assetModel.getCustomerModel().getName().toLowerCase().contains(searchtext)
+                                        || assetModel.getAsset_code().toLowerCase().contains(searchtext)) {
 
-
-                        } catch (Exception nm) {
-
+                                    assetModelsSerch.add(assetModel);
+                                }
+                            }
                         }
-                        searchtext = newText;
+                        if (listAdapter != null && assetModelsSerch != null) {
+                            listAdapter.updateList(assetModelsSerch);
+                            listAdapter.notifyDataSetChanged();
+                        }
+
 
                     } else {
-
+                        if (listAdapter != null && assetModels != null) {
+                            listAdapter.updateList(assetModels);
+                        }
                         searchtext = "";
 
                     }
@@ -297,11 +355,29 @@ public class FragmentAsset extends Fragment {
                     if (!newText.isEmpty()) {
 
 
-                        searchtext = newText;
+                        searchtext = newText.toLowerCase();
+                        assetModelsSerch = new ArrayList<>();
+                        if (assetModels != null) {
+                            for (AssetModel assetModel : assetModels) {
+                                if (assetModel.getAsset_name().toLowerCase().contains(searchtext)
+                                        || assetModel.getCustomerModel().getName().toLowerCase().contains(searchtext)
+                                        || assetModel.getAsset_code().toLowerCase().contains(searchtext)) {
+
+                                    assetModelsSerch.add(assetModel);
+                                }
+                            }
+                        }
+                        if (listAdapter != null && assetModelsSerch != null) {
+                            listAdapter.updateList(assetModelsSerch);
+                            listAdapter.notifyDataSetChanged();
+                        }
 
                     } else {
 
                         searchtext = "";
+                        if (listAdapter != null && assetModels != null) {
+                            listAdapter.updateList(assetModels);
+                        }
 
                     }
 
@@ -315,15 +391,18 @@ public class FragmentAsset extends Fragment {
 
         }
     }
-
     private void initUI(int status, ArrayList<AssetModel> assetModels) {
 
-        ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp, false);
+        try {
+            ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp, false);
 
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         recyclerView = view.findViewById(R.id.recyclerView);
 
 
-        if (assetModels != null && assetModels.size() > 0) {
+        if (assetModels != null) {
             mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(mStaggeredLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -344,6 +423,9 @@ public class FragmentAsset extends Fragment {
 
                 @Override
                 public void onLongClickListener(int position) {
+                    //  popupMenu(position, assetModels.get(position), view);
+
+
 
                 }
 
@@ -398,7 +480,10 @@ public class FragmentAsset extends Fragment {
             recyclerView.setAdapter(listAdapter);
             listAdapter.notifyDataSetChanged();
 
-            setEmptyState(listAdapter.getItemCount() < 1);
+            setEmptyState(listAdapter.getItemCount() > 0);
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
             ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setCount(count, STATUS_ID);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -428,20 +513,22 @@ public class FragmentAsset extends Fragment {
 
     }
 
+
     private void popupMenu(int pos, AssetModel assetModel, View view) {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
         popupMenu.inflate(R.menu.menu_asset_options);
-        if (STATUS_ID == Companion.getWORKING()) {
-            popupMenu.getMenu().getItem(3).setVisible(false);
-        }
-        if (STATUS_ID == Companion.getFAULTY()) {
-            // popupMenu.getMenu().getItem(3).setVisible(false);
-        }
-        if (STATUS_ID == Companion.getWRITTEN_OFF()) {
-            popupMenu.getMenu().getItem(1).setVisible(false);
-            popupMenu.getMenu().getItem(3).setVisible(false);
-            popupMenu.getMenu().getItem(5).setVisible(false);
-        }
+
+//        if (STATUS_ID == Companion.getWORKING()) {
+//            popupMenu.getMenu().getItem(3).setVisible(false);
+//        }
+//        if (STATUS_ID == Companion.getFAULTY()) {
+//            // popupMenu.getMenu().getItem(3).setVisible(false);
+//        }
+//        if (STATUS_ID == Companion.getWRITTEN_OFF()) {
+//            popupMenu.getMenu().getItem(1).setVisible(false);
+//            popupMenu.getMenu().getItem(3).setVisible(false);
+//            popupMenu.getMenu().getItem(5).setVisible(false);
+//        }
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.view:
@@ -485,12 +572,12 @@ public class FragmentAsset extends Fragment {
         });
         popupMenu.show();
     }
-
     private void startDeleteDialog(AssetModel assetModel) {
         final DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
 
+                    deleteItem(assetModel);
                     listAdapter.notifyDataSetChanged();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -512,30 +599,78 @@ public class FragmentAsset extends Fragment {
 
     }
 
-    private void setEmptyState(Boolean b) {
-        LinearLayout linearLayoutEmpty2 = view.findViewById(R.id.empty_layout);
-        TextView txt_empty = view.findViewById(R.id.empty_view);
-        if (b) {
-            linearLayoutEmpty2.setVisibility(View.VISIBLE);
-            //         linearLayoutEmpty.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            txt_empty.setText("No assets found");
-            // swipe_refresh_layout.setRefreshing(true);
+    private void deleteItem(AssetModel assetModel) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Deleting....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
 
-            //   txt_empty.setText("Couldn't load beneficiaries");
+        Request.Companion.deleteRequest(APiConstants.Companion.getDeleteAsset() + "" + assetModel.getId(), prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+                snack(error.getMessage());
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
 
-            Log.d("revisi", "recyclerinvisible");
-        } else {
-            txt_empty.setText("No assets found");
+            @Override
+            public void onError(@NotNull String error) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(error);
+            }
 
-//            linearLayoutEmpty.setVisibility(View.GONE);
-            // swipe_refresh_layout.setRefreshing(false);
-            linearLayoutEmpty2.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+            @Override
+            public void onSuccess(@NotNull String response) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(response);
+                if (listAdapter != null) {
+                    listAdapter.notifyDataSetChanged();
+                    getData();
+                }
 
+            }
+        });
 
-            Log.d("revisi", "recyclervisible");
-        }
     }
+
+    private void setEmptyState(Boolean b) {
+//        LinearLayout linearLayoutEmpty2 = view.findViewById(R.id.empty_layout);
+//        TextView txt_empty = view.findViewById(R.id.empty_view);
+//        if (b) {
+//            linearLayoutEmpty2.setVisibility(View.VISIBLE);
+//            //         linearLayoutEmpty.setVisibility(View.VISIBLE);
+//            recyclerView.setVisibility(View.GONE);
+//            txt_empty.setText("No assets found");
+//            // swipe_refresh_layout.setRefreshing(true);
+//
+//
+//            //   txt_empty.setText("Couldn't load beneficiaries");
+//
+//            Log.d("revisi", "recyclerinvisible");
+//        } else {
+//            txt_empty.setText("No assets found");
+//
+////            linearLayoutEmpty.setVisibility(View.GONE);
+//            // swipe_refresh_layout.setRefreshing(false);
+//            linearLayoutEmpty2.setVisibility(View.GONE);
+//            recyclerView.setVisibility(View.VISIBLE);
+//
+//
+//            Log.d("revisi", "recyclervisible");
+//        }
+    }
+
+    private void snack(String msg) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
 }

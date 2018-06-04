@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
@@ -33,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
-import com.assettrack.assettrack.Adapters.ListAdapter;
 import com.assettrack.assettrack.Adapters.V1.CustomerAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.Parsers.CustomerParser;
@@ -43,7 +43,7 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListene
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
-import com.assettrack.assettrack.Views.Admin.Assets.ActivityManageAssets;
+import com.assettrack.assettrack.Utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -58,6 +58,7 @@ public class FragmentClientList extends Fragment {
     CustomerAdapter listAdapter;
     String searchtext = "";
     private ArrayList<CustomerModel> customerModels;
+    private ArrayList<CustomerModel> customerModelsSerch;
     private View view;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
@@ -68,6 +69,7 @@ public class FragmentClientList extends Fragment {
     private RecyclerView recyclerView;
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private ActionMode mActionMode;
+    private SwipeRefreshLayout swipe_refresh_layout;
 
     private int STATUS_ID;
 
@@ -146,12 +148,47 @@ public class FragmentClientList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        try {
+            ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp, true);
 
-        ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_add_black_24dp,true);
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
+
 
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
         prefManager = new PrefManager(getActivity());
+
+
+        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
+
+            swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+            swipe_refresh_layout.setBackgroundResource(android.R.color.white);
+            swipe_refresh_layout.setColorSchemeResources(android.R.color.white, android.R.color.holo_purple, android.R.color.white);
+            swipe_refresh_layout.setRefreshing(true);
+
+
+            //initData();
+        } else {
+            snack("Please check your internet connection");
+            swipe_refresh_layout.setRefreshing(false);
+
+        }
+        swipe_refresh_layout.setOnRefreshListener(() -> {
+
+            swipe_refresh_layout.setRefreshing(true);
+            if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                initData();
+            } else {
+                swipe_refresh_layout.setRefreshing(false);
+
+                snack("Check your internet connection");
+            }
+
+
+        });
 
         initUI(new ArrayList<>());
         initSearchView();
@@ -231,7 +268,7 @@ public class FragmentClientList extends Fragment {
 
 
             search.setOnClickListener(v -> search.setIconified(false));
-            search.setQueryHint("Search asset list");
+            search.setQueryHint("Search clients list");
 
             if (manager != null) {
                 search.setSearchableInfo(manager.getSearchableInfo(getActivity().getComponentName()));
@@ -253,18 +290,30 @@ public class FragmentClientList extends Fragment {
 
                     if (!newText.isEmpty()) {
 
-                        try {
-                            new Thread(() -> {
+                        searchtext = newText.toLowerCase();
 
-                            }).start();
+                        customerModelsSerch = new ArrayList<>();
+                        if (customerModels != null) {
+                            for (CustomerModel customerModel : customerModels) {
+                                if (customerModel.getName().toLowerCase().contains(searchtext)
+                                        || customerModel.getPhysical_address().toLowerCase().contains(searchtext)
+                                        || String.valueOf(customerModel.getId()).contains(searchtext)) {
 
-
-                        } catch (Exception nm) {
-
+                                    customerModelsSerch.add(customerModel);
+                                }
+                            }
                         }
-                        searchtext = newText;
+                        if (listAdapter != null && customerModelsSerch != null) {
+                            listAdapter.updateList(customerModelsSerch);
+                            listAdapter.notifyDataSetChanged();
+                        }
+
 
                     } else {
+
+                        if (listAdapter != null && customerModels != null) {
+                            listAdapter.updateList(customerModels);
+                        }
 
                         searchtext = "";
 
@@ -287,12 +336,33 @@ public class FragmentClientList extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String newText = edtSearch.getText().toString();
+
                     if (!newText.isEmpty()) {
 
+                        searchtext = newText.toLowerCase();
 
-                        searchtext = newText;
+                        customerModelsSerch = new ArrayList<>();
+                        if (customerModels != null) {
+                            for (CustomerModel customerModel : customerModels) {
+                                if (customerModel.getName().toLowerCase().contains(searchtext)
+                                        || customerModel.getPhysical_address().toLowerCase().contains(searchtext)
+                                        || String.valueOf(customerModel.getId()).contains(searchtext)) {
+
+                                    customerModelsSerch.add(customerModel);
+                                }
+                            }
+                        }
+                        if (listAdapter != null && customerModelsSerch != null) {
+                            listAdapter.updateList(customerModelsSerch);
+                            listAdapter.notifyDataSetChanged();
+                        }
+
 
                     } else {
+
+                        if (listAdapter != null && customerModels != null) {
+                            listAdapter.updateList(customerModels);
+                        }
 
                         searchtext = "";
 
@@ -388,7 +458,9 @@ public class FragmentClientList extends Fragment {
             listAdapter.notifyDataSetChanged();
 
             setEmptyState(listAdapter.getItemCount() < 1);
-
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
 
         } else {
             Log.d("Loohj", "assetmodels is null");
@@ -401,8 +473,8 @@ public class FragmentClientList extends Fragment {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
         popupMenu.inflate(R.menu.menu_asset_options);
 
-        popupMenu.getMenu().getItem(3).setVisible(false);
-        popupMenu.getMenu().getItem(5).setVisible(false);
+//        popupMenu.getMenu().getItem(3).setVisible(false);
+//        popupMenu.getMenu().getItem(5).setVisible(false);
         popupMenu.getMenu().getItem(4).setVisible(false);
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -441,6 +513,7 @@ public class FragmentClientList extends Fragment {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
 
+                    deleteItem(customerModel);
                     listAdapter.notifyDataSetChanged();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -728,4 +801,47 @@ public class FragmentClientList extends Fragment {
 
 
     }
+
+    private void deleteItem(CustomerModel customerModel) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Deleting....");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+
+        Request.Companion.deleteRequest(APiConstants.Companion.getDeleteCustomer() + "" + customerModel.getId(), prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+                snack(error.getMessage());
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onError(@NotNull String error) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(error);
+            }
+
+            @Override
+            public void onSuccess(@NotNull String response) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                snack(response);
+                if (listAdapter != null) {
+                    listAdapter.notifyDataSetChanged();
+                    initData();
+                }
+
+            }
+        });
+
+    }
+
 }

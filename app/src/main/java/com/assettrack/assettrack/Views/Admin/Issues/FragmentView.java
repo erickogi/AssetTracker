@@ -55,8 +55,12 @@ public class FragmentView extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
-        ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+        try {
+            ((ActivityManageIssues) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp, false);
 
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         Bundle args=getArguments();
         if(args!=null){
             try{

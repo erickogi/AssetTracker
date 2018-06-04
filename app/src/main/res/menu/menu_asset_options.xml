@@ -2,12 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:visible="false"
         android:icon="@drawable/ic_list"
         android:id="@+id/view"
         android:orderInCategory="100"
         android:title="View details"
         app:showAsAction="never" />
     <item
+        android:visible="false"
         android:icon="@drawable/ic_edit_black_24dp"
         android:id="@+id/edit"
         android:orderInCategory="100"
@@ -17,7 +19,7 @@
         android:icon="@drawable/ic_delete_forever_blackd_24dp"
         android:id="@+id/delete"
         android:orderInCategory="100"
-        android:title="Delete asset"
+        android:title="Delete"
         app:showAsAction="never" />
     <item
         android:visible="false"

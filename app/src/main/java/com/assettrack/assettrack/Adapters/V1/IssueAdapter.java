@@ -29,6 +29,10 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueViewHolder> {
         this.onclickRecyclerListener = onclickRecyclerListener;
     }
 
+    public void updateList(ArrayList<IssueModel> list) {
+        issueModels = list;
+        notifyDataSetChanged();
+    }
    
 
     @NonNull

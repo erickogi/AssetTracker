@@ -40,7 +40,6 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.nightonke.boommenu.BoomMenuButton
 import com.special.ResideMenu.ResideMenu
 import com.special.ResideMenu.ResideMenuItem
-import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
 class EngineerMainActivity : AppCompatActivity() {
@@ -143,11 +142,15 @@ class EngineerMainActivity : AppCompatActivity() {
         val materialBarcodeScanner = MaterialBarcodeScannerBuilder()
                 .withActivity(this)
                 .withBackfacingCamera()
+                // .withCenterTracker()
+                .withOnly2DScanning()
+                .withBarcodeFormats(Barcode.AZTEC or Barcode.EAN_13 or Barcode.CODE_93)
+
                 .withEnableAutoFocus(true)
                 .withBleepEnabled(true)
                 .withCenterTracker()
                 //.withOnly2DScanning()
-                .withBarcodeFormats(Barcode.AZTEC or Barcode.EAN_13 or Barcode.CODE_93 or Barcode.ALL_FORMATS)
+                // .withBarcodeFormats( Barcode.ALL_FORMATS)
                 .withBackfacingCamera()
                  .withText("Scanning...")
                 .withResultListener { barcode ->
@@ -310,7 +313,10 @@ class EngineerMainActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(response: String) {
-
+                if (progress.isShowing) {
+                    progress.setMessage(response)
+                    progress.dismiss()
+                }
 
 
                 Log.d("getData", response)

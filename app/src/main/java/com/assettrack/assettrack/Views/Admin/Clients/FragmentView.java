@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.V1.AssetAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
-import com.assettrack.assettrack.Data.Parsers.SIngleCustomerParser;
+import com.assettrack.assettrack.Data.Parsers.AssetParser;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
@@ -83,8 +83,12 @@ public class FragmentView extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
+        try {
+            ((ActivityManageClients) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp, false);
 
+        } catch (Exception nm) {
+            nm.printStackTrace();
+        }
         prefManager=new PrefManager(Objects.requireNonNull(getActivity()));
         Bundle args=getArguments();
         if(args!=null){
@@ -130,6 +134,7 @@ public class FragmentView extends Fragment {
 
             }
         });
+        getData();
 
         if(customerModel!=null){
             name.setText(customerModel.getName());
@@ -138,7 +143,6 @@ public class FragmentView extends Fragment {
             phone.setText(customerModel.getTelephone());
 
         }
-        getData();
     }
     private ArrayList<AssetModel> getData() {
         assetModels = new ArrayList<>();
@@ -162,7 +166,7 @@ public class FragmentView extends Fragment {
                     progressDialog.setMessage(error.getMessage());
                     progressDialog.dismiss();
                 }
-                Log.d("getData", error.getErrorBody());
+                Log.d("getDataca", error.getErrorBody());
                 snack(error.getMessage());
 
             }
@@ -174,7 +178,7 @@ public class FragmentView extends Fragment {
                     progressDialog.setMessage(error);
                     progressDialog.dismiss();
                 }
-                Log.d("getData", error);
+                Log.d("getDataca", error);
                 snack(error);
 
             }
@@ -193,8 +197,8 @@ public class FragmentView extends Fragment {
                     //if(!jsonObject.getBoolean("error")){
                     //JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-                    //assetModels = AssetParser.parse(jsonArray);
-                    assetModels= SIngleCustomerParser.parse(jsonObject).getAssetModels();
+                    assetModels = AssetParser.parse(jsonObject.getJSONObject("data").getJSONArray("custdesc"));
+                    //assetModels= SIngleCustomerParser.parse(jsonObject).getAssetModels();
 
                    // initUI(assetModels);
 
@@ -221,6 +225,18 @@ public class FragmentView extends Fragment {
 
 
         if (assetModels != null && assetModels.size() > 0) {
+
+
+            TextView av = view.findViewById(R.id.aset_txt);
+            String txt = "Assets - " + assetModels.size();
+
+
+            av.setText(txt);
+
+
+            for (int a = 0; a < assetModels.size(); a++) {
+                assetModels.get(a).getCustomerModel().setName(customerModel.getName());
+            }
             mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(mStaggeredLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());

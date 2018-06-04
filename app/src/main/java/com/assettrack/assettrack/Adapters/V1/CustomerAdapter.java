@@ -6,16 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.assettrack.assettrack.Adapters.ViewHolders.CustomerViewHolder;
 import com.assettrack.assettrack.Adapters.ViewHolders.CustomerViewHolder;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerViewHolder> {
@@ -33,7 +29,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerViewHolder> {
         this.onclickRecyclerListener = onclickRecyclerListener;
     }
 
-   
+    public void updateList(ArrayList<CustomerModel> list) {
+        customerModels = list;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
