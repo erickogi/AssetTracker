@@ -21,6 +21,7 @@ import com.assettrack.assettrack.Utils.MyToast
 import com.assettrack.assettrack.Utils.NetworkUtils
 import com.assettrack.assettrack.Views.Admin.Assets.ActivityManageAssets
 import com.assettrack.assettrack.Views.Engineer.EngineerMainActivity
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.util.*
 

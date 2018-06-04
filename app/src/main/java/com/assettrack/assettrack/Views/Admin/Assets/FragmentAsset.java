@@ -508,6 +508,10 @@ public class FragmentAsset extends Fragment {
 
         } else {
             Log.d("Loohj", "assetmodels is null");
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
+            setEmptyState(true);
 
         }
 

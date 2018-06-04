@@ -18,6 +18,7 @@ import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers
 import com.assettrack.assettrack.Views.Admin.Issues.ActivityManageIssues
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
+import kotlinx.android.synthetic.main.activity_manage_assets.*
 
 class ActivityManageAssets : AppCompatActivity() {
 

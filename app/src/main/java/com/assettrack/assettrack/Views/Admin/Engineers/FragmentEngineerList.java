@@ -460,6 +460,11 @@ public class FragmentEngineerList extends Fragment {
             }
 
         } else {
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
+            setEmptyState(true);
+
             Log.d("Loohj", "assetmodels is null");
 
         }

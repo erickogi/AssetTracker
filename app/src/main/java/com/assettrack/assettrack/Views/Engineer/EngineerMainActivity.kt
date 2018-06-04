@@ -40,6 +40,7 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.nightonke.boommenu.BoomMenuButton
 import com.special.ResideMenu.ResideMenu
 import com.special.ResideMenu.ResideMenuItem
+import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
 class EngineerMainActivity : AppCompatActivity() {

@@ -183,11 +183,11 @@ public class FragmentIssueList extends Fragment {
         initSearchView();
 
 
-//        if(NetworkUtils.Companion.isConnectionFast(getActivity())) {
-//            initData();
-//        }else {
-//            snack("Please check your internet connection");
-//        }
+        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+            initData();
+        } else {
+            snack("Please check your internet connection");
+        }
 
 
     }
@@ -228,7 +228,7 @@ public class FragmentIssueList extends Fragment {
             public void onError(@NotNull String error) {
 
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error);
+                    //progressDialog.setMessage(error);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error);
@@ -238,7 +238,7 @@ public class FragmentIssueList extends Fragment {
             @Override
             public void onSuccess(@NotNull String response) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(response);
+                    //progressDialog.setMessage(response);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", response);
@@ -256,6 +256,7 @@ public class FragmentIssueList extends Fragment {
                     //}
                 } catch (Exception nm) {
 
+                    initUI(new ArrayList<>());
                     Log.d("getData", nm.toString());
                 }
 
@@ -390,6 +391,10 @@ public class FragmentIssueList extends Fragment {
     private void initUI(ArrayList<IssueModel> issueModels) {
 
 
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+
+        }
         recyclerView = view.findViewById(R.id.recyclerView);
         if (issueModels != null && issueModels.size() > 0) {
             mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -489,6 +494,11 @@ public class FragmentIssueList extends Fragment {
                 swipe_refresh_layout.setRefreshing(false);
             }
         } else {
+            if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
+                swipe_refresh_layout.setRefreshing(false);
+            }
+            setEmptyState(true);
+
             Log.d("Loohj", "assetmodels is null");
 
         }
@@ -876,7 +886,7 @@ public class FragmentIssueList extends Fragment {
             linearLayoutEmpty2.setVisibility(View.VISIBLE);
             //         linearLayoutEmpty.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-            txt_empty.setText("No assets found");
+            txt_empty.setText("No issues found");
             // swipe_refresh_layout.setRefreshing(true);
 
 
@@ -884,7 +894,7 @@ public class FragmentIssueList extends Fragment {
 
             Log.d("revisi", "recyclerinvisible");
         } else {
-            txt_empty.setText("No assets found");
+            txt_empty.setText("No issues found");
 
 //            linearLayoutEmpty.setVisibility(View.GONE);
             // swipe_refresh_layout.setRefreshing(false);
