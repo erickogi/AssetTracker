@@ -23,6 +23,7 @@ import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
+import com.assettrack.assettrack.Utils.NetworkUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -131,7 +132,11 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                update();
+                if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                    update();
+                } else {
+                    snack("Check your internet connection");
+                }
             }
         });
 
@@ -314,7 +319,12 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
 
-                        startIssue(2, issueModel.getWork_tickets());
+                        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                            startIssue(2, issueModel.getWork_tickets());
+                        } else {
+                            snack("Check your internet connection");
+                        }
+
 
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:

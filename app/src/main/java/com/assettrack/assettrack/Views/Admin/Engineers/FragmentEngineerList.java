@@ -154,9 +154,9 @@ public class FragmentEngineerList extends Fragment {
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
         prefManager = new PrefManager(getActivity());
+        swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
         if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
-            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
             swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
             swipe_refresh_layout.setBackgroundResource(android.R.color.white);

@@ -147,10 +147,10 @@ public class FragmentIssueList extends Fragment {
 
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
+        swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
-        prefManager = new PrefManager(getActivity());
+        prefManager = new PrefManager(Objects.requireNonNull(getActivity()));
         if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
-            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
             swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
             swipe_refresh_layout.setBackgroundResource(android.R.color.white);
@@ -182,12 +182,12 @@ public class FragmentIssueList extends Fragment {
         initUI(new ArrayList<>());
         initSearchView();
 
-
-        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
-            initData();
-        } else {
-            snack("Please check your internet connection");
-        }
+//
+//        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+//            initData();
+//        } else {
+//            snack("Please check your internet connection");
+//        }
 
 
     }

@@ -327,39 +327,43 @@ public class FragmentNewIssues extends Fragment {
     private void initUI() {
 
 
-
-        assetId.setOnClickListener(v -> m=   new MaterialDialog.Builder(getActivity())
-                   .title("Assets")
-                  .adapter(new AssignmentSearchAdapter(getActivity(), assetModels, new OnclickRecyclerListener() {
-                       @Override
-                       public void onClickListener(int position) {
-                           assetId.setText(assetModels.get(position).getAsset_name());
-                   assetModel=assetModels.get(position);
-                   m.dismiss();
+        assetId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m = new MaterialDialog.Builder(FragmentNewIssues.this.getActivity())
+                        .title("Assets")
+                        .adapter(new AssignmentSearchAdapter(FragmentNewIssues.this.getActivity(), assetModels, new OnclickRecyclerListener() {
+                            @Override
+                            public void onClickListener(int position) {
+                                assetId.setText(assetModels.get(position).getAsset_name());
+                                assetModel = assetModels.get(position);
+                                m.dismiss();
 //
-                       }
+                            }
 
-                       @Override
-                       public void onLongClickListener(int position) {
+                            @Override
+                            public void onLongClickListener(int position) {
 
-                       }
+                            }
 
-                       @Override
-                       public void onCheckedClickListener(int position) {
+                            @Override
+                            public void onCheckedClickListener(int position) {
 
-                       }
+                            }
 
-                       @Override
-                       public void onMoreClickListener(int position) {
+                            @Override
+                            public void onMoreClickListener(int position) {
 
-                       }
+                            }
 
-                       @Override
-                       public void onClickListener(int adapterPosition, @NotNull View view) {
+                            @Override
+                            public void onClickListener(int adapterPosition, @NotNull View view) {
 
-                       }
-                   }), null)
-                   .show());
+                            }
+                        }), null)
+                        .show();
+            }
+        });
         engId.setOnClickListener(v -> {
 
           m=new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))

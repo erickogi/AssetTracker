@@ -159,10 +159,10 @@ public class FragmentClientList extends Fragment {
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
         prefManager = new PrefManager(getActivity());
+        swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
 
         if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
-            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
             swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
             swipe_refresh_layout.setBackgroundResource(android.R.color.white);
@@ -170,7 +170,7 @@ public class FragmentClientList extends Fragment {
             swipe_refresh_layout.setRefreshing(true);
 
 
-            //initData();
+            initData();
         } else {
             snack("Please check your internet connection");
             swipe_refresh_layout.setRefreshing(false);
@@ -192,7 +192,7 @@ public class FragmentClientList extends Fragment {
 
         initUI(new ArrayList<>());
         initSearchView();
-        initData();
+        // initData();
 
 
     }
@@ -215,7 +215,7 @@ public class FragmentClientList extends Fragment {
             @Override
             public void onError(@NotNull ANError error) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error.getMessage());
+                    // progressDialog.setMessage(error.getMessage());
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error.getErrorBody());
@@ -225,7 +225,7 @@ public class FragmentClientList extends Fragment {
             public void onError(@NotNull String error) {
 
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error);
+                    // progressDialog.setMessage(error);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error);
@@ -235,7 +235,7 @@ public class FragmentClientList extends Fragment {
             @Override
             public void onSuccess(@NotNull String response) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(response);
+                    //progressDialog.setMessage(response);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", response);
@@ -382,6 +382,9 @@ public class FragmentClientList extends Fragment {
     private void initUI(ArrayList<CustomerModel> customerModels) {
 
 
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         recyclerView = view.findViewById(R.id.recyclerView);
         if (customerModels != null && customerModels.size() > 0) {
             mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

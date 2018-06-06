@@ -148,10 +148,11 @@ public class FragmentIssueList extends Fragment {
 
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
+        swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
+
 
         prefManager = new PrefManager(getActivity());
         if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
-            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
             swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
             swipe_refresh_layout.setBackgroundResource(android.R.color.white);
@@ -182,7 +183,7 @@ public class FragmentIssueList extends Fragment {
         });
         initUI(new ArrayList<>());
         initSearchView();
-        initData();
+        // initData();
 
 
     }
@@ -205,7 +206,7 @@ public class FragmentIssueList extends Fragment {
             @Override
             public void onError(@NotNull ANError error) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error.getMessage());
+                    // progressDialog.setMessage(error.getMessage());
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error.getErrorBody());
@@ -215,7 +216,7 @@ public class FragmentIssueList extends Fragment {
             public void onError(@NotNull String error) {
 
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(error);
+                    // progressDialog.setMessage(error);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", error);
@@ -225,7 +226,7 @@ public class FragmentIssueList extends Fragment {
             @Override
             public void onSuccess(@NotNull String response) {
                 if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setMessage(response);
+                    //progressDialog.setMessage(response);
                     progressDialog.dismiss();
                 }
                 Log.d("getData", response);

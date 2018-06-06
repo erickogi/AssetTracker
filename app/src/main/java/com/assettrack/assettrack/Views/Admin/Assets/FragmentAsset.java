@@ -142,6 +142,7 @@ public class FragmentAsset extends Fragment {
         search = view.findViewById(R.id.search_bar);
         edtSearch = view.findViewById(R.id.edt_search);
 
+        swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
         STATUS_ID = Companion.getWORKING();
         if (getArguments() != null) {
@@ -150,7 +151,6 @@ public class FragmentAsset extends Fragment {
 
 
         if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
-            swipe_refresh_layout = view.findViewById(R.id.swipeRefreshView);
 
             swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
             swipe_refresh_layout.setBackgroundResource(android.R.color.white);
