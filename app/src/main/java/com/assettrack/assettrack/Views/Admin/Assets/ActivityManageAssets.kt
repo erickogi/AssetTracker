@@ -13,12 +13,12 @@ import com.assettrack.assettrack.Kogi.BottomNav.AHBottomNavigation
 import com.assettrack.assettrack.Kogi.BottomNav.AHBottomNavigationItem
 import com.assettrack.assettrack.R
 import com.assettrack.assettrack.Utils.DrawerClass
+import com.assettrack.assettrack.Views.Admin.Categories.ActivityManageCategories
 import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients
 import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers
 import com.assettrack.assettrack.Views.Admin.Issues.ActivityManageIssues
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
 import com.assettrack.assettrack.Views.Shared.Login.LoginActivity
-import kotlinx.android.synthetic.main.activity_manage_assets.*
 
 class ActivityManageAssets : AppCompatActivity() {
 
@@ -40,6 +40,14 @@ class ActivityManageAssets : AppCompatActivity() {
         val prefManager = PrefManager(this@ActivityManageAssets)
 
         DrawerClass.getDrawer(prefManager.getUserData().getEmail(), prefManager.getUserData().getFull_name(), this@ActivityManageAssets, toolbar, object : DrawerItemListener {
+            override fun dashboardClicked() {
+
+            }
+
+            override fun categoriesClicked() {
+                manageCategories()
+            }
+
             override fun logOutClicked() {
                 prefManager.setIsLoggedIn(false, 1)
                 startActivity(Intent(this@ActivityManageAssets, LoginActivity::class.java))
@@ -90,6 +98,10 @@ class ActivityManageAssets : AppCompatActivity() {
 
     fun manageClients() {
         startActivity(Intent(this, ActivityManageClients::class.java))
+    }
+
+    fun manageCategories() {
+        startActivity(Intent(this, ActivityManageCategories::class.java))
     }
 
     fun manageAssets() {

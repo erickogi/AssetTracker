@@ -83,5 +83,6 @@
     <string name="designation">Designation</string>
     <string name="engineer_s_name">Engineer\'s Name</string>
     <string name="customer_default_status">Active</string>
+    <string name="title_activity_manage_categories">ActivityManageCategories</string>
 
 </resources>

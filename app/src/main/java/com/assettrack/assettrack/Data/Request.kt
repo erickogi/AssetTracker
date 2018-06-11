@@ -95,6 +95,7 @@ class Request {
             }
 
             Log.d("putrequest", params.toString())
+            Log.d("putrequest", url)
 
             AndroidNetworking.put(url)
 
@@ -131,6 +132,8 @@ class Request {
                 mtoken = token
 
             }
+            Log.d("deleterequest", url)
+            //Log.d("deleterequest", url)
 
 
             AndroidNetworking.delete(url)

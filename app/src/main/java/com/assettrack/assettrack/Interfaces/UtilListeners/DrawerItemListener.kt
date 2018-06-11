@@ -22,4 +22,6 @@ interface DrawerItemListener {
     fun issuesClicked()
 
     fun accountClicked()
+    fun dashboardClicked()
+    fun categoriesClicked()
 }

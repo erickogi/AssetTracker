@@ -25,6 +25,16 @@ class APiConstants {
         //assets/
         // users/5/update
         var customerlist: String = baseUrl + "allcustomerlist"
+
+        //categories
+        var categorieslist: String = baseUrl + "categories"
+        var addcategory: String = baseUrl + "category/store"
+        var updatecategory: String = baseUrl + "category/" // id // update
+        var deletecategory: String = baseUrl + "category/delete" // id
+
+
+
+
         var updateAsset: String = baseUrl + "assets/"
         var updateIssue: String = baseUrl + "issue/"
         var updateWorkticket: String = baseUrl + "changeworkstate"

@@ -62,6 +62,12 @@ class DrawerClass {
             val issues = PrimaryDrawerItem().withIdentifier(4)
                     .withName("Manage Issues").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_error_outline_black_24dp)
 
+            val categories = PrimaryDrawerItem().withIdentifier(9)
+                    .withName("Manage Categories").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_error_outline_black_24dp)
+
+            val dash = PrimaryDrawerItem().withIdentifier(10)
+                    .withName("Dashboard").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_error_outline_black_24dp)
+
             val settings = PrimaryDrawerItem().withIdentifier(5)
                     //.withIcon(R.drawable.ic_settings_black_24dp)
                     .withName("Settings").withTextColorRes(R.color.drawertext)
@@ -120,11 +126,13 @@ class DrawerClass {
                     .addDrawerItems(
                             //drawerEmptyItem,
                             // favorites,
+                            dash,
                             assets, // payments, //new DividerDrawerItem(),
                             //messages,
                             clients,
                             engineers,
                             issues,
+                            categories,
                             DividerDrawerItem(),
                             // account,
 
@@ -182,6 +190,14 @@ class DrawerClass {
 
                             8 -> {
                                 itemListener.helpClicked()
+                                result.closeDrawer()
+                            }
+                            9 -> {
+                                itemListener.categoriesClicked()
+                                result.closeDrawer()
+                            }
+                            10 -> {
+                                itemListener.dashboardClicked()
                                 result.closeDrawer()
                             }
                         }
