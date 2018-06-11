@@ -131,6 +131,7 @@ class ActivityManageCategories : AppCompatActivity() {
 
 
                 onResume()
+
                 Log.d("getData", response)
 
                 try {

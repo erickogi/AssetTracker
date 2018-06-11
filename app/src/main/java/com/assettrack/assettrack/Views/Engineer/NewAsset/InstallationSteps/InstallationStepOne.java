@@ -19,14 +19,21 @@ import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.androidnetworking.error.ANError;
+import com.assettrack.assettrack.Adapters.V1.CategoryAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Constatnts.GLConstants;
+import com.assettrack.assettrack.Data.Parsers.CategoryParser;
 import com.assettrack.assettrack.Data.Parsers.CustomerListParser;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
+import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.AssetModel;
+import com.assettrack.assettrack.Models.CategoriesModel;
 import com.assettrack.assettrack.Models.CustomerModel;
 import com.assettrack.assettrack.R;
 import com.stepstone.stepper.BlockingStep;
@@ -46,17 +53,19 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
 
     private View view;
     private Button btnSelectCustomer;
-    private TextInputEditText edtAssetName, edtWarranty, edtWarrantyDuration, edtModel,
-            edtSerialNo, edtManufacturer, edtYrOfManufacture, edtServiceContract, edtCustomerName;
+    MaterialDialog m;
 
     private TextInputLayout tilWarrantyDuration;
     private RadioGroup rgWarranty;
     private RadioButton rbYes,rbNo;
 
     private String customerID=null;
+    MaterialDialog n;
     private PrefManager prefManager;
     private AVLoadingIndicatorView avi;
-
+    private TextInputEditText edtAssetName, edtWarranty, edtWarrantyDuration, edtModel,
+            edtSerialNo, edtManufacturer, edtYrOfManufacture, edtServiceContract, edtCustomerName, edtCategory;
+    private String categoryID = null;
 
     @Nullable
     @Override
@@ -73,6 +82,7 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
         initUI(view);
 
     }
+
     void  initUI(View view){
         btnSelectCustomer=view.findViewById(R.id.btn_customer);
         edtAssetName=view.findViewById(R.id.edt_asset_name);
@@ -84,6 +94,7 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
         edtManufacturer=view.findViewById(R.id.edt_manufacturer);
         edtYrOfManufacture=view.findViewById(R.id.edt_manufacture_yr);
         edtServiceContract=view.findViewById(R.id.edt_contact);
+        edtCategory = view.findViewById(R.id.edt_asset_category);
 
         rgWarranty=view.findViewById(R.id.rgrp_warranty);
         rbNo=view.findViewById(R.id.rbtn_warranty_no);
@@ -108,6 +119,11 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
                 edtCustomerName.setText(assetModel.getCustomers_id());
 
             }
+            if (GLConstants.Companion.getAssetModel().getCategory_id() != 0 && GLConstants.Companion.getAssetModel().getCategory() != null) {
+                edtCategory.setText(assetModel.getCategory());
+                categoryID = String.valueOf(assetModel.getCategory_id());
+
+            }
             if (assetModel.getAsset_name() != null) {
                 edtAssetName.setText(assetModel.getAsset_name());
             }
@@ -121,6 +137,7 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
                 edtWarrantyDuration.setVisibility(View.GONE);
                 rbYes.setChecked(false);
             }
+
             if (assetModel.getModel() != null) {
                 edtModel.setText(assetModel.getModel());
             }
@@ -183,6 +200,95 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
         return customerModels;
     }
 
+    ArrayList<CategoriesModel> getCategories() {
+        String url = APiConstants.Companion.getCategorieslist();
+
+        ArrayList<CategoriesModel> categoriesModels = new ArrayList<>();
+
+        avi.show();
+        // Log.d("getData",url+"\n"+params.toString()+"\n"+prefManager.getToken());
+        Request.Companion.getRequest(url, prefManager.getToken(), new RequestListener() {
+            @Override
+            public void onError(@NotNull ANError error) {
+
+                avi.hide();
+                Log.d("getData", error.getErrorBody());
+            }
+
+            @Override
+            public void onError(@NotNull String error) {
+
+                avi.hide();
+                Log.d("getData", error);
+
+            }
+
+            @Override
+            public void onSuccess(@NotNull String response) {
+
+                Log.d("getData", response);
+
+                avi.hide();
+                try {
+
+                    JSONObject jsonObject = new JSONObject(response).getJSONObject("data");
+                    //if(!jsonObject.getBoolean("error")){
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+
+                    createDialog(CategoryParser.parse(jsonArray));
+                    //
+                    // categoriesModels = CategoryParser.parse(jsonArray);
+                    //}
+                } catch (Exception nm) {
+
+                    Log.d("getData", nm.toString());
+                }
+
+                //initUI(categoriesModels);
+            }
+        });
+
+        return categoriesModels;
+    }
+
+    private void createDialog(ArrayList<CategoriesModel> parse) {
+        m = new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))
+                .title("Categories")
+                .adapter(new CategoryAdapter(getActivity(), parse, new OnclickRecyclerListener() {
+                    @Override
+                    public void onClickListener(int position) {
+                        categoryID = String.valueOf(parse.get(position).getId());
+                        edtCategory.setText(parse.get(position).getName());
+                        m.dismiss();
+                    }
+
+                    @Override
+                    public void onLongClickListener(int position) {
+
+                    }
+
+                    @Override
+                    public void onCheckedClickListener(int position) {
+
+                    }
+
+                    @Override
+                    public void onMoreClickListener(int position) {
+
+                    }
+
+                    @Override
+                    public void onClickListener(int adapterPosition, @NotNull View view) {
+
+                    }
+                }), null)
+                .theme(Theme.LIGHT)
+                .titleGravity(GravityEnum.CENTER)
+
+
+                .show();
+    }
+
     private void snack(String msg) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
                 .setAction("Action", null).show();
@@ -194,6 +300,7 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
 
 
         edtCustomerName.setOnClickListener(view1 -> getCustomers());
+        edtCategory.setOnClickListener(v -> getCategories());
         edtYrOfManufacture.setOnClickListener(this::onClick);
 
 
@@ -260,6 +367,8 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
             GLConstants.Companion.getAssetModel().setSerial(edtSerialNo.getText().toString());
             GLConstants.Companion.getAssetModel().setManufacturer(edtManufacturer.getText().toString());
             GLConstants.Companion.getAssetModel().setYr_of_manufacture(edtYrOfManufacture.getText().toString());
+            GLConstants.Companion.getAssetModel().setCategory(edtCategory.getText().toString());
+            GLConstants.Companion.getAssetModel().setCategory_id(Integer.valueOf(categoryID));
             // GLConstants.Companion.getAssetModel().setContract(edtServiceContract.getText().toString());
 
 
@@ -271,6 +380,9 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
             GLConstants.Companion.getAssetModel().setSerial(edtSerialNo.getText().toString());
             GLConstants.Companion.getAssetModel().setManufacturer(edtManufacturer.getText().toString());
             GLConstants.Companion.getAssetModel().setYr_of_manufacture(edtYrOfManufacture.getText().toString());
+            GLConstants.Companion.getAssetModel().setCategory(edtCategory.getText().toString());
+            GLConstants.Companion.getAssetModel().setCategory_id(Integer.valueOf(categoryID));
+
             //GLConstants.Companion.getAssetModel().setContract(edtServiceContract.getText().toString());
 
         }
@@ -324,11 +436,14 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
         return isTextInputEditTextFilled(edtAssetName)
                 && isRadioGroupChecked(rgWarranty)
                 && isTextInputEditTextFilled(edtModel)
+                && isTextInputEditTextFilled(edtCategory)
+                && isTextInputEditTextFilled(edtCustomerName)
                 && isTextInputEditTextFilled(edtSerialNo)
                 && isTextInputEditTextFilled(edtManufacturer)
                 && isTextInputEditTextFilled(edtYrOfManufacture)
                 && isTextInputEditTextFilled(edtServiceContract)
-                && isStringValid(customerID);
+                && isStringValid(customerID)
+                && isStringValid(categoryID);
     }
     private boolean isStringValid(String s){
         if(s==null){
