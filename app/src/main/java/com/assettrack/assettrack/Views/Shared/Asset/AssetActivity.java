@@ -1,7 +1,5 @@
 package com.assettrack.assettrack.Views.Shared.Asset;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,11 +28,7 @@ import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.Models.IssueModel;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.DateTimeUtils;
-import com.fueled.fabulous.FabulousPattern;
-import com.fueled.fabulous.FabulousPosition;
 import com.nightonke.boommenu.BoomMenuButton;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -394,39 +388,39 @@ public class AssetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class LinearPattern implements FabulousPattern {
-        private static final int MAIN_FAB_ANIMATION_DURATION = 200;
-
-        @NotNull
-        @Override
-        public AnimatorSet getClosingAnimation(@NotNull View element, float destX, float destY) {
-            AnimatorSet anim = new AnimatorSet();
-            ObjectAnimator fabX = ObjectAnimator.ofFloat(element, View.X, destX);
-            fabX.setDuration(MAIN_FAB_ANIMATION_DURATION);
-            ObjectAnimator fabY = ObjectAnimator.ofFloat(element, View.Y, destY);
-            fabY.setDuration(MAIN_FAB_ANIMATION_DURATION);
-
-            anim.play(fabX).with(fabY);
-            return anim;
-        }
-
-        @NotNull
-        @Override
-        public AnimatorSet getOpeningAnimation(@NotNull View element, float destX, float destY) {
-            AnimatorSet anim = new AnimatorSet();
-            ObjectAnimator fabX = ObjectAnimator.ofFloat(element, View.X, destX);
-            fabX.setDuration(MAIN_FAB_ANIMATION_DURATION);
-            ObjectAnimator fabY = ObjectAnimator.ofFloat(element, View.Y, destY);
-            fabY.setDuration(MAIN_FAB_ANIMATION_DURATION);
-
-            anim.play(fabX).with(fabY);
-            return anim;
-        }
-
-        @NotNull
-        @Override
-        public FabulousPosition getFinalPosition(@NotNull View subMenu, float fabX, float fabY, int position, int menuSize) {
-            return new FabulousPosition(fabX, fabY - ((position + 1) * 200));
-        }
-    }
+//    public class LinearPattern implements FabulousPattern {
+//        private static final int MAIN_FAB_ANIMATION_DURATION = 200;
+//
+//        @NotNull
+//        @Override
+//        public AnimatorSet getClosingAnimation(@NotNull View element, float destX, float destY) {
+//            AnimatorSet anim = new AnimatorSet();
+//            ObjectAnimator fabX = ObjectAnimator.ofFloat(element, View.X, destX);
+//            fabX.setDuration(MAIN_FAB_ANIMATION_DURATION);
+//            ObjectAnimator fabY = ObjectAnimator.ofFloat(element, View.Y, destY);
+//            fabY.setDuration(MAIN_FAB_ANIMATION_DURATION);
+//
+//            anim.play(fabX).with(fabY);
+//            return anim;
+//        }
+//
+//        @NotNull
+//        @Override
+//        public AnimatorSet getOpeningAnimation(@NotNull View element, float destX, float destY) {
+//            AnimatorSet anim = new AnimatorSet();
+//            ObjectAnimator fabX = ObjectAnimator.ofFloat(element, View.X, destX);
+//            fabX.setDuration(MAIN_FAB_ANIMATION_DURATION);
+//            ObjectAnimator fabY = ObjectAnimator.ofFloat(element, View.Y, destY);
+//            fabY.setDuration(MAIN_FAB_ANIMATION_DURATION);
+//
+//            anim.play(fabX).with(fabY);
+//            return anim;
+//        }
+//
+//        @NotNull
+//        @Override
+//        public FabulousPosition getFinalPosition(@NotNull View subMenu, float fabX, float fabY, int position, int menuSize) {
+//            return new FabulousPosition(fabX, fabY - ((position + 1) * 200));
+//        }
+//    }
 }

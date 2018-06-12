@@ -177,7 +177,7 @@ public class FragmentAsset extends Fragment {
         });
 
 
-        initUI(STATUS_ID, new ArrayList<>());
+        //initUI(STATUS_ID, new ArrayList<>());
         initSearchView();
 
 
@@ -245,10 +245,7 @@ public class FragmentAsset extends Fragment {
 
             @Override
             public void onSuccess(@NotNull String response) {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    //progressDialog.setMessage(response);
-                    progressDialog.dismiss();
-                }
+
                 Log.d("getData", response);
 
                 try {
@@ -270,7 +267,10 @@ public class FragmentAsset extends Fragment {
 
                     Log.d("getData", nm.toString());
                 }
-
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    //progressDialog.setMessage(response);
+                    progressDialog.dismiss();
+                }
                 initUI(STATUS_ID, assetModels);
             }
         });

@@ -21,9 +21,6 @@ import android.widget.RadioGroup;
 import com.assettrack.assettrack.Constatnts.GLConstants;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -49,7 +46,7 @@ public class InstallationStepThree extends Fragment implements BlockingStep, Dat
 
     private ArrayList<String> traineesList = new ArrayList<>();
     private String[] trainees;
-    private TimePickerView pvTime, pvCustomTime, pvCustomLunar;
+    //private TimePickerView pvTime, pvCustomTime, pvCustomLunar;
 
     private String getTime(Date date) {//可根据需要自行截取数据显示
         Log.d("getTime()", "choice date millis: " + date.getTime());
@@ -59,21 +56,21 @@ public class InstallationStepThree extends Fragment implements BlockingStep, Dat
 
     private void initTimePicker() {
 
-        pvTime = new TimePickerBuilder(getActivity(), (date, v) -> {
-
-
-            edtDateInst.setText(getTime(date));
-            Log.i("pvTime", "onTimeSelect");
-
-        })
-                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
-                    @Override
-                    public void onTimeSelectChanged(Date date) {
-                        Log.i("pvTime", "onTimeSelectChanged");
-                    }
-                })
-                .setType(new boolean[]{true, true, true, true, true, true})
-                .build();
+//        pvTime = new TimePickerBuilder(getActivity(), (date, v) -> {
+//
+//
+//            edtDateInst.setText(getTime(date));
+//            Log.i("pvTime", "onTimeSelect");
+//
+//        })
+//                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
+//                    @Override
+//                    public void onTimeSelectChanged(Date date) {
+//                        Log.i("pvTime", "onTimeSelectChanged");
+//                    }
+//                })
+//                .setType(new boolean[]{true, true, true, true, true, true})
+//                .build();
 
     }
 

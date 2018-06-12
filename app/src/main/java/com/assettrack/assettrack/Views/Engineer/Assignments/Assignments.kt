@@ -43,4 +43,21 @@ class Assignments : AppCompatActivity() {
 
     }
 
+    fun popOut() {
+        popOutFragments()
+    }
+
+    internal fun popOutFragments() {
+        val fragmentManager = this.supportFragmentManager
+        for (i in 0 until fragmentManager.backStackEntryCount) {
+            fragmentManager.popBackStack()
+        }
+    }
+
+    internal fun setFragment() {
+        // fragment = new FragmentSearch();
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").addToBackStack(null).commit()
+    }
+
 }

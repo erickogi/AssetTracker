@@ -72,7 +72,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Views.Admin.Categories.ActivityManageCategories"
-            android:label="@string/title_activity_manage_categories"
+            android:label="@string/category"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -190,7 +190,7 @@ public class FragmentCategoriesList extends Fragment {
 
         });
 
-        initUI(new ArrayList<>());
+        //initUI(new ArrayList<>());
         initSearchView();
         // initData();
 
@@ -234,10 +234,7 @@ public class FragmentCategoriesList extends Fragment {
 
             @Override
             public void onSuccess(@NotNull String response) {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    //progressDialog.setMessage(response);
-                    progressDialog.dismiss();
-                }
+
                 Log.d("getData", response);
 
                 try {
@@ -252,8 +249,12 @@ public class FragmentCategoriesList extends Fragment {
 
                     Log.d("getData", nm.toString());
                 }
-
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    //progressDialog.setMessage(response);
+                    progressDialog.dismiss();
+                }
                 initUI(categoriesModels);
+
             }
         });
 
@@ -620,6 +621,10 @@ public class FragmentCategoriesList extends Fragment {
             listAdapter.notifyDataSetChanged();
             // initUI();
         }
+    }
+
+    public void restart() {
+        initData();
     }
 
     private void setEmptyState(Boolean b) {

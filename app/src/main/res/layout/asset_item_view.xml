@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     app:cardUseCompatPadding="true"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -29,14 +29,23 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
-                    <TextView
-                        android:textColor="@color/black"
-                        android:id="@+id/txt_status_lbl"
-                        android:textStyle="italic|bold"
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
                         android:text="@string/statuslbl"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="#000000"
+                        android:textSize="13.5sp"
+
+                        android:id="@+id/txt_status_lbl"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                    <TextView
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textSize="13.5sp"
+
                         android:layout_marginStart="2dp"
                         android:id="@+id/txt_status"
                         android:textStyle="italic|bold"
@@ -50,15 +59,24 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
-                    <TextView
 
-                        android:textColor="@color/black"
-                        android:id="@+id/txt_code_lbl"
-                        android:textStyle="italic|bold"
+                    <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
                         android:text="Code : "
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="#000000"
+                        android:textSize="13.5sp"
+
+
+                        android:id="@+id/txt_code_lbl"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                    <TextView
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textSize="13.5sp"
+
                         android:id="@+id/txt_code"
                         android:textStyle="italic|bold"
                         android:text="55293788239"
@@ -108,17 +126,23 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="0dp">
-                        <TextView
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+
+                        <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                            android:textColor="#000000"
+                            android:textSize="13.5sp"
                             android:textStyle="bold"
-                            android:textColor="@color/black"
                             android:id="@+id/txt_name_lbl"
                             android:text="@string/asset"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content" />
-                        <TextView
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+
+                        <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                            android:textSize="13.5sp"
+
 
                             android:id="@+id/txt_name"
                             android:textStyle="bold"
@@ -132,15 +156,23 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="0dp">
-                        <TextView
-                            android:textColor="@color/black"
+
+                        <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                            android:textColor="#000000"
+                            android:textSize="13.5sp"
                             android:textStyle="bold"
                             android:id="@+id/txt_customer_lbl"
                             android:text="@string/customer"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content" />
-                        <TextView
+
+                        <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                            android:textSize="13.5sp"
+
                             android:id="@+id/txt_customer"
                             android:textStyle="bold"
                             android:text="@string/here_is_the_customer_name"
@@ -161,15 +193,23 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
+
+                <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000000"
+                    android:textSize="13.5sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
                     android:id="@+id/txt_engineer_lbl"
                     android:text="@string/installed_by"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
-                <TextView
+
+                <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textSize="13.5sp"
+
                     android:id="@+id/txt_engineer"
 
                     android:textAlignment="viewStart"
@@ -191,15 +231,23 @@
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
-                    <TextView
-                        android:textColor="@color/black"
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="#000000"
+                        android:textSize="13.5sp"
                         android:textStyle="bold"
                         android:id="@+id/lsd_lbl"
                         android:text="Last Service Date "
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                    <TextView
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textSize="13.5sp"
+
 
                         android:id="@+id/txt_lsd"
                         android:textAlignment="viewStart"
@@ -215,15 +263,23 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
-                    <TextView
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="#000000"
+                        android:textSize="13.5sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
                         android:id="@+id/nsd_lbl"
                         android:text="Next Service Date"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" />
-                    <TextView
+
+                    <com.assettrack.customfonts.MyTextView_Roboto_Regular
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textSize="13.5sp"
+
 
                         android:id="@+id/txt_nsd"
                         android:textAlignment="viewStart"

@@ -24,10 +24,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.V1.CategoryAdapter;
+import com.assettrack.assettrack.Adapters.V1.CustomerAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Constatnts.GLConstants;
 import com.assettrack.assettrack.Data.Parsers.CategoryParser;
-import com.assettrack.assettrack.Data.Parsers.CustomerListParser;
+import com.assettrack.assettrack.Data.Parsers.CustomerParser;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
@@ -54,6 +55,8 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
     private View view;
     private Button btnSelectCustomer;
     MaterialDialog m;
+    CustomerAdapter listAdapter;
+
 
     private TextInputLayout tilWarrantyDuration;
     private RadioGroup rgWarranty;
@@ -158,12 +161,59 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
             //snack("null");
         }
     }
+    //ArrayList<>
 
     ArrayList<CustomerModel> getCustomers() {
         ArrayList<CustomerModel> customerModels = new ArrayList<>();
+//        Request.Companion.getRequest(url, prefManager.getToken(), new RequestListener() {
+//            @Override
+//            public void onError(@NotNull ANError error) {
+//                if (progressDialog != null && progressDialog.isShowing()) {
+//                    // progressDialog.setMessage(error.getMessage());
+//                    progressDialog.dismiss();
+//                }
+//                Log.d("getData", error.getErrorBody());
+//            }
+//
+//            @Override
+//            public void onError(@NotNull String error) {
+//
+//                if (progressDialog != null && progressDialog.isShowing()) {
+//                    // progressDialog.setMessage(error);
+//                    progressDialog.dismiss();
+//                }
+//                Log.d("getData", error);
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(@NotNull String response) {
+//
+//                Log.d("getData", response);
+//
+//                try {
+//
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    //if(!jsonObject.getBoolean("error")){
+//                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+//
+//                    customerModels = CustomerParser.parse(jsonArray);
+//                    //}
+//                } catch (Exception nm) {
+//
+//                    Log.d("getData", nm.toString());
+//                }
+//
+//                initUI(customerModels);
+//            }
+//        });
 
+        String url = APiConstants.Companion.getAllCustomers();
+
+
+        //APiConstants.Companion.getCustomerlist()
         avi.show();
-        Request.Companion.getRequest(APiConstants.Companion.getCustomerlist(), prefManager.getToken(), new RequestListener() {
+        Request.Companion.getRequest(url, prefManager.getToken(), new RequestListener() {
             @Override
             public void onError(@NotNull ANError error) {
                 avi.hide();
@@ -185,11 +235,18 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
                 avi.hide();
                 Log.d("customerresponse", response);
                 try {
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    if (!jsonObject.optBoolean("errror")) {
+//                        JSONArray data = jsonObject.optJSONArray("data");
+//                       dialogSelectCustomer(CustomerListParser.parse(data));
+//                    }
+
                     JSONObject jsonObject = new JSONObject(response);
-                    if (!jsonObject.optBoolean("errror")) {
-                        JSONArray data = jsonObject.optJSONArray("data");
-                        dialogSelectCustomer(CustomerListParser.parse(data));
-                    }
+                    //if(!jsonObject.getBoolean("error")){
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+
+                    createDialogCustomer(CustomerParser.parse(jsonArray));
+                    // customerModels = CustomerParser.parse(jsonArray);
 
                 } catch (Exception nm) {
 
@@ -288,6 +345,47 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
 
                 .show();
     }
+
+    private void createDialogCustomer(ArrayList<CustomerModel> parse) {
+        m = new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))
+                .title("Customers")
+                .adapter(new CustomerAdapter(getActivity(), parse, new OnclickRecyclerListener() {
+                    @Override
+                    public void onClickListener(int position) {
+                        customerID = String.valueOf(parse.get(position).getId());
+                        edtCustomerName.setText(parse.get(position).getName());
+                        btnSelectCustomer.setText(parse.get(position).getName());
+
+                        m.dismiss();
+                    }
+
+                    @Override
+                    public void onLongClickListener(int position) {
+
+                    }
+
+                    @Override
+                    public void onCheckedClickListener(int position) {
+
+                    }
+
+                    @Override
+                    public void onMoreClickListener(int position) {
+
+                    }
+
+                    @Override
+                    public void onClickListener(int adapterPosition, @NotNull View view) {
+
+                    }
+                }), null)
+                .theme(Theme.LIGHT)
+                .titleGravity(GravityEnum.CENTER)
+
+
+                .show();
+    }
+
 
     private void snack(String msg) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)

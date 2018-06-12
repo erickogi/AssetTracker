@@ -18,9 +18,6 @@ import android.view.Surface;
 import android.view.View;
 
 import com.assettrack.assettrack.R;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 
 public class Scanner extends AppCompatActivity {
 
@@ -40,12 +37,12 @@ public class Scanner extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FirebaseVisionBarcodeDetectorOptions options =
-                new FirebaseVisionBarcodeDetectorOptions.Builder()
-                        .setBarcodeFormats(
-                                FirebaseVisionBarcode.FORMAT_QR_CODE,
-                                FirebaseVisionBarcode.FORMAT_AZTEC)
-                        .build();
+//        FirebaseVisionBarcodeDetectorOptions options =
+//                new FirebaseVisionBarcodeDetectorOptions.Builder()
+//                        .setBarcodeFormats(
+//                                FirebaseVisionBarcode.FORMAT_QR_CODE,
+//                                FirebaseVisionBarcode.FORMAT_AZTEC)
+//                        .build();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,19 +79,23 @@ public class Scanner extends AppCompatActivity {
         int result;
         switch (rotationCompensation) {
             case 0:
-                result = FirebaseVisionImageMetadata.ROTATION_0;
+                result = 0;
                 break;
             case 90:
-                result = FirebaseVisionImageMetadata.ROTATION_90;
+                result = 0;
+                //result = FirebaseVisionImageMetadata.ROTATION_90;
                 break;
             case 180:
-                result = FirebaseVisionImageMetadata.ROTATION_180;
+                result = 0;
+                //result = FirebaseVisionImageMetadata.ROTATION_180;
                 break;
             case 270:
-                result = FirebaseVisionImageMetadata.ROTATION_270;
+                result = 0;
+                //result = FirebaseVisionImageMetadata.ROTATION_270;
                 break;
             default:
-                result = FirebaseVisionImageMetadata.ROTATION_0;
+                result = 0;
+                //result = FirebaseVisionImageMetadata.ROTATION_0;
                 Log.e("scanner", "Bad rotation value: " + rotationCompensation);
         }
         return result;

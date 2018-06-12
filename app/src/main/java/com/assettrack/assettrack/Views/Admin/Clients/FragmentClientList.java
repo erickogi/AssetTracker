@@ -190,7 +190,7 @@ public class FragmentClientList extends Fragment {
 
         });
 
-        initUI(new ArrayList<>());
+        //initUI(new ArrayList<>());
         initSearchView();
         // initData();
 
@@ -234,10 +234,7 @@ public class FragmentClientList extends Fragment {
 
             @Override
             public void onSuccess(@NotNull String response) {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    //progressDialog.setMessage(response);
-                    progressDialog.dismiss();
-                }
+
                 Log.d("getData", response);
 
                 try {

@@ -21,8 +21,6 @@ import com.assettrack.assettrack.Models.AssetModel
 import com.assettrack.assettrack.Models.EngineerModel
 import com.assettrack.assettrack.Models.IssueModel
 import com.assettrack.assettrack.R
-import com.assettrack.assettrack.Views.Admin.Engineers.FragmentEdit
-import kotlinx.android.synthetic.main.activity_manage_issues.*
 import java.util.*
 
 class ActivityManageIssues : AppCompatActivity() {
@@ -47,7 +45,7 @@ class ActivityManageIssues : AppCompatActivity() {
 
         fab?.setOnClickListener { view ->
             fragment= FragmentNewIssues()
-            popOutFragments()
+            //popOutFragments()
             setFragment()
         }
         fragment = FragmentIssueList()
@@ -59,7 +57,8 @@ class ActivityManageIssues : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
 
     }
-    public fun  setFab(icon:Int,isVisible: Boolean ){
+
+    fun setFab(icon: Int, isVisible: Boolean) {
         fab?.setImageResource(icon)
         if(isVisible){
             fab?.show()
@@ -67,7 +66,8 @@ class ActivityManageIssues : AppCompatActivity() {
             fab?.hide()
         }
     }
-    public fun popOut(){
+
+    fun popOut() {
         popOutFragments()
     }
     fun createIssue() {
@@ -310,8 +310,9 @@ class ActivityManageIssues : AppCompatActivity() {
     internal fun setFragment() {
         // fragment = new FragmentSearch();
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").addToBackStack(null).commit()
     }
+
 
     internal fun popOutFragments() {
         val fragmentManager = this.supportFragmentManager

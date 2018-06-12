@@ -184,8 +184,10 @@ public class FragmentNewIssues extends Fragment {
                             snack("Issue Created Successfully");
                             //((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
                             // popOutFragments();
+                            ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
 
-                            Objects.requireNonNull(getActivity()).finish();
+
+                            //Objects.requireNonNull(getActivity()).finish();
                         } else {
                             snack("Error saving asset");
                         }

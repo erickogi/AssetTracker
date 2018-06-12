@@ -64,6 +64,8 @@ public class IssueAdapter extends RecyclerView.Adapter<IssueViewHolder> {
                         break;
 
             }
+            holder.customerPhone.setText(issueModel.getCustomerModel().getTelephone());
+            holder.customerEmail.setText(issueModel.getCustomerModel().getAddress());
             holder.assetName.setText(issueModel.getAssetModel().getAsset_name());
             holder.customerName.setText(issueModel.getCustomerModel().getName());
             holder.engineerName.setText(issueModel.getEngineername());

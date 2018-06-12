@@ -206,11 +206,9 @@ public class FragmentEdit extends Fragment {
                 Log.d("saveCustomer", response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if (!jsonObject.optBoolean("errror")) {
+                    if (!jsonObject.optBoolean("error")) {
                         snack("Saved Successfully");
-                        popOutFragments();
                         ((ActivityManageClients) Objects.requireNonNull(getActivity())).popOut();
-                        Objects.requireNonNull(getActivity()).finish();
 
                         //finish();
                     } else {

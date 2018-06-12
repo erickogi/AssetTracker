@@ -16,7 +16,6 @@ import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListene
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.R;
 import com.bumptech.glide.Glide;
-import com.haozhang.lib.SlantedTextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -79,9 +78,9 @@ public class AssetListAdapter extends RecyclerView.Adapter<AssetListAdapter.MyVi
         private CheckBox chckBox;
         private TextView mName, customer, last, next;
         private CardView layout;
-        private SlantedTextView slantedTextView;
         private WeakReference<OnclickRecyclerListener> listenerWeakReference;
 
+        TextView slantedTextView;
 
         public MyViewHolder(View itemView, OnclickRecyclerListener onclickRecyclerListener) {
             super(itemView);

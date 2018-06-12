@@ -394,7 +394,9 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.optBoolean("error")) {
                         snack("Issue Closed Successfully");
-                        Objects.requireNonNull(getActivity()).finish();
+                        // Objects.requireNonNull(getActivity()).finish();
+                        ((Assignments) Objects.requireNonNull(getActivity())).popOut();
+
                     } else {
                         snack("Error closing issue");
                     }

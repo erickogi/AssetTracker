@@ -2,20 +2,16 @@ package com.assettrack.assettrack.Views.Admin.Engineers
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toolbar
 import com.assettrack.assettrack.R
-import kotlinx.android.synthetic.main.activity_manage_assets.*
-
-import kotlinx.android.synthetic.main.activity_manage_engineers.*
 
 class ActivityManageEngineers : AppCompatActivity() {
     internal var fragment: Fragment? = null
     var  fab: FloatingActionButton?=null
     var  toolbar: android.support.v7.widget.Toolbar?=null
-    public fun popOut(){
+    fun popOut() {
+        //
         popOutFragments()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +24,7 @@ class ActivityManageEngineers : AppCompatActivity() {
 
         fab?.setOnClickListener { view ->
             fragment= FragmentEdit()
-            popOutFragments()
+            // popOutFragments()
             setFragment()
         }
 
@@ -41,7 +37,8 @@ class ActivityManageEngineers : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
 
     }
-    public fun  setFab(icon:Int,isVisible: Boolean ){
+
+    fun setFab(icon: Int, isVisible: Boolean) {
         fab?.setImageResource(icon)
         if(isVisible){
             fab?.show()
@@ -54,10 +51,10 @@ class ActivityManageEngineers : AppCompatActivity() {
     internal fun setFragment() {
         // fragment = new FragmentSearch();
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").addToBackStack(null).commit()
     }
 
-    internal fun popOutFragments() {
+    fun popOutFragments() {
         val fragmentManager = this.supportFragmentManager
         for (i in 0 until fragmentManager.backStackEntryCount) {
             fragmentManager.popBackStack()

@@ -99,6 +99,13 @@ public class FragmentEdit extends Fragment {
             @Override
             public void onClick(View v) {
                 saveDetails();
+                //popOutFragments();
+                // getActivity().getSupportFragmentManager().popBackStack();
+                //   getActivity().finish();
+                // getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentEdit.this).commit();
+
+
+
             }
         });
 
@@ -251,11 +258,13 @@ public class FragmentEdit extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
-                        popOutFragments();
                         ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
+
+                        // popOutFragments();
+                        // ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
                         // getActivity().getSupportFragmentManager().popBackStack();
-                        getActivity().finish();
-                        //getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentEdit.this).commit();
+                        //   getActivity().finish();
+                        // getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentEdit.this).commit();
                     } else {
                         snack("Error updating asset");
                     }
@@ -324,7 +333,6 @@ public class FragmentEdit extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
-                        popOutFragments();
                         ((ActivityManageEngineers) Objects.requireNonNull(getActivity())).popOut();
 
                         //finish();

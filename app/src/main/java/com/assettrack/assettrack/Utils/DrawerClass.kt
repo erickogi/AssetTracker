@@ -63,10 +63,10 @@ class DrawerClass {
                     .withName("Manage Issues").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_error_outline_black_24dp)
 
             val categories = PrimaryDrawerItem().withIdentifier(9)
-                    .withName("Manage Categories").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_error_outline_black_24dp)
+                    .withName("Manage Categories").withTextColorRes(R.color.drawertext).withIcon(R.drawable.categorya)
 
             val dash = PrimaryDrawerItem().withIdentifier(10)
-                    .withName("Dashboard").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_error_outline_black_24dp)
+                    .withName("Dashboard").withTextColorRes(R.color.drawertext).withIcon(R.drawable.ic_dashboard)
 
             val settings = PrimaryDrawerItem().withIdentifier(5)
                     //.withIcon(R.drawable.ic_settings_black_24dp)

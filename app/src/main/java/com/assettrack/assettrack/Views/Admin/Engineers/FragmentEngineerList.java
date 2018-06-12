@@ -396,10 +396,12 @@ public class FragmentEngineerList extends Fragment {
                     fragment.setArguments(args);
                     popOutFragments();
                     setUpView();
+
                 }
 
                 @Override
                 public void onLongClickListener(int position) {
+
 
                 }
 
@@ -446,6 +448,7 @@ public class FragmentEngineerList extends Fragment {
                 @Override
                 public void onClickListener(int adapterPosition, View view) {
 
+
                     popupMenu(adapterPosition, view, engineerModels.get(adapterPosition));
                 }
             });
@@ -473,7 +476,7 @@ public class FragmentEngineerList extends Fragment {
 
     private void popupMenu(int pos, View view, EngineerModel engineerModel) {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
-        popupMenu.inflate(R.menu.menu_asset_options);
+        popupMenu.inflate(R.menu.menu_engineer_options);
 
         // popupMenu.getMenu().getItem(3).setVisible(false);
         // popupMenu.getMenu().getItem(5).setVisible(false);

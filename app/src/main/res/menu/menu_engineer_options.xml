@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/view"
+        android:icon="@drawable/ic_list"
+        android:orderInCategory="100"
+        android:title="View details"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_edit_black_24dp"
+        android:orderInCategory="100"
+        android:title="Edit asset"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_delete_forever_blackd_24dp"
+        android:orderInCategory="100"
+        android:title="Delete"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/assign"
+        android:orderInCategory="100"
+        android:title="Assign engineer"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/update_status"
+        android:icon="@drawable/ic_update_black_24dp"
+        android:orderInCategory="100"
+        android:title="Update status"
+        android:visible="false" />
+    <item
+        android:id="@+id/share"
+        android:orderInCategory="100"
+        android:title="Share"
+        android:visible="false"
+        app:showAsAction="never" />
+</menu>

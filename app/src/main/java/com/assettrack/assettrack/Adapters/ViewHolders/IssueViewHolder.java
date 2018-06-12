@@ -15,7 +15,7 @@ public class IssueViewHolder extends RecyclerView.ViewHolder implements View.OnC
     private WeakReference<OnclickRecyclerListener> listenerWeakReference;
     public RelativeLayout issue_background;
     public TextView status,statusLbl,workTicket,workTicketLbl,customerName,customerNameLbl,assetName,assetNameLbl,
-    engineerName,engineerNameLbl,start,startLbl,close,closeLbl;
+            engineerName, engineerNameLbl, start, startLbl, close, closeLbl, customerEmail, customerPhone;
     private SwipeRefreshLayout swipe_refresh_layout;
 
 
@@ -24,6 +24,9 @@ public class IssueViewHolder extends RecyclerView.ViewHolder implements View.OnC
         listenerWeakReference = new WeakReference<>(onclickRecyclerListener);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
+
+        customerEmail = itemView.findViewById(R.id.txt_customer_email);
+        customerPhone = itemView.findViewById(R.id.txt_customer_phone);
 
         issue_background=itemView.findViewById(R.id.issue_background);
         status=itemView.findViewById(R.id.txt_status);

@@ -53,12 +53,16 @@
                             android:layout_weight="3"
                             android:orientation="vertical">
 
-                            <TextView
+                            <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                                android:text="ID"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="#000000"
+                                android:textSize="13.5sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="ID"
-                                android:textColor="@color/black"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -104,12 +108,16 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <TextView
+                            <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                                android:text="First Name"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="#000000"
+                                android:textSize="13.5sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="First Name"
-                                android:textColor="@color/black"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -130,12 +138,16 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <TextView
+                            <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                                android:text="Last Name"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="#000000"
+                                android:textSize="13.5sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="Last Name"
-                                android:textColor="@color/black"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -180,12 +192,16 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <TextView
+                            <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                                android:text="Phone Number"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="#000000"
+                                android:textSize="13.5sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="Phone Number"
-                                android:textColor="@color/black"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -229,12 +245,16 @@
                             android:layout_weight="3"
                             android:orientation="vertical">
 
-                            <TextView
+                            <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                                android:text="Email Address"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="#000000"
+                                android:textSize="13.5sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="Email Address"
-                                android:textColor="@color/black"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -278,12 +298,16 @@
                             android:layout_weight="3"
                             android:orientation="vertical">
 
-                            <TextView
+                            <com.assettrack.customfonts.MyTextView_Roboto_Bold
+
+                                android:text="Speciality"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="#000000"
+                                android:textSize="13.5sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="3dp"
-                                android:text="Speciality"
-                                android:textColor="@color/black"
                                 android:textStyle="bold" />
 
                             <TextView

@@ -33,7 +33,7 @@ class ActivityManageClients : AppCompatActivity() {
         fab?.setOnClickListener { view ->
            // startEditDialog(CustomerModel())
             fragment=FragmentEdit()
-            popOutFragments()
+            //  popOutFragments()
             setFragment()
         }
 
@@ -194,8 +194,9 @@ class ActivityManageClients : AppCompatActivity() {
     internal fun setFragment() {
         // fragment = new FragmentSearch();
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
+        fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").addToBackStack(null).commit()
     }
+
 
     internal fun popOutFragments() {
         val fragmentManager = this.supportFragmentManager

@@ -49,7 +49,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerViewHolder> {
         if(customerModel!=null){
           //  holder.customer_background.setBackgroundResource(R.color.transparent);
             holder.status.setText(R.string.customer_default_status);
-            //holder.id.setText(String.valueOf(customerModel.getId()));
+            holder.phone.setText(customerModel.getTelephone());
+            holder.id.setText(String.valueOf(customerModel.getId()));
             holder.name.setText(customerModel.getName());
             holder.location.setText(customerModel.getPhysical_address());
             holder.email.setText(customerModel.getAddress());

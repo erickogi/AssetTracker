@@ -135,6 +135,8 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
             jsonObject.put("RecieversDate", DateTimeUtils.Companion.getNow());
             jsonObject.put("RecieversName", assetModel.getRecievers_name());
             jsonObject.put("Security", assetModel.getWarranty());
+            jsonObject.put("Category", assetModel.getCategory());
+            jsonObject.put("CategoryId", assetModel.getCategory_id());
 
             jsonObject.put("RecieversDesignation", assetModel.getReceiver_designation());
             jsonObject.put("RecieversComment", assetModel.getReceiver_comments());
@@ -176,6 +178,8 @@ public class Installation extends AppCompatActivity implements StepperLayout.Ste
         params.put("RecieversDate", assetModel.getRecieversDate());
         params.put("RecieversName", assetModel.getRecievers_name());
         params.put("Security", assetModel.getWarranty());
+        params.put("Category", assetModel.getCategory());
+        params.put("CategoryId", "" + assetModel.getCategory_id());
 
         params.put("RecieversDesignation", assetModel.getReceiver_designation());
         params.put("RecieversComment", assetModel.getReceiver_comments());

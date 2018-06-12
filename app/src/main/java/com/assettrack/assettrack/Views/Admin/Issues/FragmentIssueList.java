@@ -826,7 +826,7 @@ public class FragmentIssueList extends Fragment {
             linearLayoutEmpty2.setVisibility(View.VISIBLE);
             //         linearLayoutEmpty.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-            txt_empty.setText("No assets found");
+            txt_empty.setText("No data found");
             // swipe_refresh_layout.setRefreshing(true);
 
 
@@ -834,7 +834,7 @@ public class FragmentIssueList extends Fragment {
 
             Log.d("revisi", "recyclerinvisible");
         } else {
-            txt_empty.setText("No assets found");
+            txt_empty.setText("No data found");
 
 //            linearLayoutEmpty.setVisibility(View.GONE);
             // swipe_refresh_layout.setRefreshing(false);

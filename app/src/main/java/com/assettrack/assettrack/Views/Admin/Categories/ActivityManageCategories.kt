@@ -45,6 +45,7 @@ class ActivityManageCategories : AppCompatActivity() {
         setSupportActionBar(toolbar)
         prefManager = PrefManager(this)
 
+
         fab = this.findViewById(R.id.fab)
         fab?.setOnClickListener { view ->
 
@@ -87,6 +88,7 @@ class ActivityManageCategories : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment, "fragmentMain").commit()
 
+        title = "Categories"
 
         //setFab(R.drawable.ic_add_white_24dp,true)
     }
@@ -98,7 +100,7 @@ class ActivityManageCategories : AppCompatActivity() {
         progress.setMessage("Working ...")
         progress.setCancelable(true)
         progress.isIndeterminate
-        progress.setTitle("Search asset")
+        progress.setTitle("Adding category")
         progress.show()
         var url = APiConstants.addcategory
 
@@ -130,7 +132,15 @@ class ActivityManageCategories : AppCompatActivity() {
                 }
 
 
-                onResume()
+                // onResume()
+
+                val fragment = supportFragmentManager.findFragmentByTag("fragmentMain") as FragmentCategoriesList
+                fragment.restart()
+
+//                val fragment = fragmentManager.findFragmentByTag("fragmentMain") as FragmentCategoriesList
+//                if (fragment!=null) {
+//                    fragment.restart()
+//                }
 
                 Log.d("getData", response)
 
@@ -243,9 +253,10 @@ class ActivityManageCategories : AppCompatActivity() {
             val categoriesModel = CategoriesModel()
             categoriesModel.name = name.text.toString()
             categoriesModel.id = keyid
+            dialog.dismiss()
+
             newCategory(categoriesModel)
 
-            dialog.dismiss()
 
             //            ContentValues contentValues = new ContentValues();
             //            contentValues.put(DbConstants.cust_name, categoriesModel.getName());
