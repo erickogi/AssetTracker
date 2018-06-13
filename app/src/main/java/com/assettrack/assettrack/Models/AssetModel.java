@@ -3,7 +3,9 @@ package com.assettrack.assettrack.Models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AssetModel implements Serializable {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class AssetModel implements Serializable, Searchable {
     private int id;
     private String asset_name="";
     private String asset_code="";
@@ -39,6 +41,25 @@ public class AssetModel implements Serializable {
     private String lastservicedate="";
     private int category_id;
     private String category = "";
+
+    private String contact_phone;   //ContactPhone
+    private String contact_email;  //ContactEmail
+
+    public String getContact_phone() {
+        return contact_phone;
+    }
+
+    public void setContact_phone(String contact_phone) {
+        this.contact_phone = contact_phone;
+    }
+
+    public String getContact_email() {
+        return contact_email;
+    }
+
+    public void setContact_email(String contact_email) {
+        this.contact_email = contact_email;
+    }
 
     public int getCategory_id() {
         return category_id;
@@ -356,5 +377,10 @@ public class AssetModel implements Serializable {
 
     public void setNextservice(String nextservice) {
         this.nextservice = nextservice;
+    }
+
+    @Override
+    public String getTitle() {
+        return asset_name;
     }
 }

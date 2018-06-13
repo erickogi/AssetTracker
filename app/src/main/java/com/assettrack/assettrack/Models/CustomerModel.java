@@ -3,7 +3,9 @@ package com.assettrack.assettrack.Models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CustomerModel implements Serializable {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class CustomerModel implements Serializable, Searchable {
 
     private int id=0;
     private String name="";
@@ -95,5 +97,10 @@ public class CustomerModel implements Serializable {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    @Override
+    public String getTitle() {
+        return name;
     }
 }

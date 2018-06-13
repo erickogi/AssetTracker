@@ -181,7 +181,7 @@ public class FragmentIssueList extends Fragment {
 
 
         });
-        initUI(new ArrayList<>());
+        // initUI(new ArrayList<>());
         initSearchView();
         // initData();
 
@@ -209,6 +209,9 @@ public class FragmentIssueList extends Fragment {
                     // progressDialog.setMessage(error.getMessage());
                     progressDialog.dismiss();
                 }
+                initUI(new ArrayList<>());
+                snack(error.getMessage());
+
                 Log.d("getData", error.getErrorBody());
             }
 
@@ -219,16 +222,16 @@ public class FragmentIssueList extends Fragment {
                     // progressDialog.setMessage(error);
                     progressDialog.dismiss();
                 }
+                initUI(new ArrayList<>());
                 Log.d("getData", error);
+
+                snack(error);
 
             }
 
             @Override
             public void onSuccess(@NotNull String response) {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    //progressDialog.setMessage(response);
-                    progressDialog.dismiss();
-                }
+
                 Log.d("getData", response);
 
                 try {
@@ -240,6 +243,8 @@ public class FragmentIssueList extends Fragment {
                     issueModels = IssueParser.parse(jsonArray);
                     //}
                 } catch (Exception nm) {
+
+                    snack(nm.getMessage());
 
                     Log.d("getData", nm.toString());
                 }
@@ -523,7 +528,7 @@ public class FragmentIssueList extends Fragment {
 
     private void popupMenu(int pos, View view, IssueModel issueModel) {
         PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), view);
-        popupMenu.inflate(R.menu.menu_asset_options);
+        popupMenu.inflate(R.menu.menu_issue_options);
 
         // popupMenu.getMenu().getItem(3).setVisible(false);
         // popupMenu.getMenu().getItem(5).setVisible(false);
@@ -537,7 +542,8 @@ public class FragmentIssueList extends Fragment {
                     break;
                 case R.id.edit:
 
-                    startEditDialog(issueModel);
+                    reassign(issueModel);
+                    //startEditDialog(issueModel);
                     break;
                 case R.id.delete:
 
@@ -558,6 +564,10 @@ public class FragmentIssueList extends Fragment {
             return false;
         });
         popupMenu.show();
+    }
+
+    private void reassign(IssueModel issueModel) {
+
     }
 
     private void startDeleteDialog(IssueModel issueModel) {

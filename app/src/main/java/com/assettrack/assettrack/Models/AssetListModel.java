@@ -1,6 +1,8 @@
 package com.assettrack.assettrack.Models;
 
-public class AssetListModel {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class AssetListModel implements Searchable {
 
     private String lable="";
     private String value="";
@@ -55,5 +57,10 @@ public class AssetListModel {
 
     public void setCustomerModel(CustomerModel customerModels) {
         this.customerModels = customerModels;
+    }
+
+    @Override
+    public String getTitle() {
+        return value;
     }
 }

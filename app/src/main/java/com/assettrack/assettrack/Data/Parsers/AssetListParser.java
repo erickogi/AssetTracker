@@ -1,5 +1,7 @@
 package com.assettrack.assettrack.Data.Parsers;
 
+import android.util.Log;
+
 import com.assettrack.assettrack.Models.AssetListModel;
 import com.assettrack.assettrack.Models.CustomerModel;
 
@@ -24,7 +26,7 @@ public class AssetListParser {
                 assetList.setValue(object.optString("value"));
                 assetList.setCustomers(object.optString("customers"));
 
-                JSONObject custObject = new JSONObject("custdesc");
+                JSONObject custObject = new JSONObject(object.optString("custdesc"));
                 CustomerModel customerModel = new CustomerModel();
                 customerModel.setId(custObject.optInt("id"));
                 customerModel.setAddress(custObject.optString("address"));
@@ -36,6 +38,28 @@ public class AssetListParser {
 
 
                 assetList.setCustomerModel(customerModel);
+
+                assetLists.add(assetList);
+
+            }
+        } catch (JSONException e) {
+            Log.d("getDataAss", e.toString());
+
+            e.printStackTrace();
+        }
+
+        return assetLists;
+    }
+
+    public static ArrayList<AssetListModel> parseList(JSONArray response) {
+
+        ArrayList<AssetListModel> assetLists = new ArrayList<>();
+        try {
+            for (int a = 0; a < response.length(); a++) {
+                AssetListModel assetList = new AssetListModel();
+                JSONObject object = response.getJSONObject(a);
+                assetList.setLable(object.optString("lable"));
+                assetList.setValue(object.optString("value"));
 
                 assetLists.add(assetList);
 

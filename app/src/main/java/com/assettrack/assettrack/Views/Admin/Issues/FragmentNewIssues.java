@@ -21,14 +21,18 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Adapters.AssignmentSearchAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
+import com.assettrack.assettrack.CustomSearchDialog.Asset.AssetSearchDialogCompat;
+import com.assettrack.assettrack.CustomSearchDialog.Engineer.EngineerSearchDialogCompat;
 import com.assettrack.assettrack.Data.Parsers.AllEngineerParser;
-import com.assettrack.assettrack.Data.Parsers.AssetParser;
+import com.assettrack.assettrack.Data.Parsers.AssetListParser;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
-import com.assettrack.assettrack.Interfaces.UtilListeners.OnclickRecyclerListener;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
+import com.assettrack.assettrack.Models.AssetListModel;
 import com.assettrack.assettrack.Models.AssetModel;
 import com.assettrack.assettrack.Models.EngineerModel;
+import com.assettrack.assettrack.Models.IssueModel;
+import com.assettrack.assettrack.Models.ListModel;
 import com.assettrack.assettrack.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -39,8 +43,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Objects;
+
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
 
 public class FragmentNewIssues extends Fragment {
     private View view;
@@ -59,6 +64,9 @@ public class FragmentNewIssues extends Fragment {
     private EngineerModel engineerModel=new EngineerModel();
 
 
+    private ArrayList<ListModel> engList;
+    private ArrayList<AssetListModel> assetList;
+    private AssetListModel assetListModel;
     private ArrayList<EngineerModel> engineerModels;
     private ArrayList<AssetModel> assetModels;
     private Fragment fragment;
@@ -78,6 +86,9 @@ public class FragmentNewIssues extends Fragment {
             fragmentManager.popBackStack();
         }
     }
+
+    private boolean isReassignment = false;
+    private IssueModel issueModel = null;
 
 
     @Nullable
@@ -99,28 +110,44 @@ public class FragmentNewIssues extends Fragment {
         avi = view.findViewById(R.id.avi);
         avi.hide();
 
-
         assetId = view.findViewById(R.id.edt_asset_id);
         engId = view.findViewById(R.id.edt_eng_id);
+
+        try {
+            if (getArguments() != null) {
+                isReassignment = getArguments().getBoolean("type");
+                if (isReassignment) {
+                    assetId.setEnabled(false);
+                    issueModel = (IssueModel) getArguments().getSerializable("data");
+
+
+                }
+            }
+
+
+        } catch (Exception nm) {
+            nm.printStackTrace();
+
+        }
+
+
         recyclerView = view.findViewById(R.id.recyclerView);
         btnSubmit=view.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitIssue();
+
             }
         });
 
 
-
-        avi.show();
-        getEngineers();
-        getAssets();
+        initUI();
         
     }
 
     private void submitIssue() {
-        if(assetModel==null||engineerModel==null){
+        if (assetListModel == null || engineerModel == null) {
             snack("No data loaded");
         }else {
             progressDialog = new ProgressDialog(getActivity());
@@ -131,11 +158,15 @@ public class FragmentNewIssues extends Fragment {
             progressDialog.show();
 
             HashMap<String,String> params=new HashMap<>();
-            params.put("Asset",String.valueOf(assetModel.getId()));
-            params.put("Engineer",""+engineerModel.getId());
-            params.put("AssetCode",assetModel.getAsset_code());
-            params.put("CustomerName",assetModel.getCustomerModel().getName());
-            params.put("CustomerId",""+assetModel.getCustomers_id());
+            params.put("Asset", String.valueOf(assetid));
+            params.put("AssetId", String.valueOf(assetid));
+            params.put("AssetName", String.valueOf(assetId.getText().toString()));
+            params.put("Engineer", "" + engid);
+
+
+            params.put("AssetCode", assetListModel.getCode());
+            params.put("CustomerName", assetListModel.getCustomerModel().getName());
+            params.put("CustomerId", "" + assetListModel.getCustomerModel().getId());
             params.put("StartDate","");
             params.put("CloseDate","");
             params.put("NextdueService","");
@@ -216,7 +247,7 @@ public class FragmentNewIssues extends Fragment {
 
     private ArrayList<EngineerModel> initData() {
         avi.show();
-        engineerModels = new ArrayList<>();
+        engList = new ArrayList<>();
 
        String url = APiConstants.Companion.getAllEngineers();
        Request.Companion.getRequest(url, prefManager.getToken(), new RequestListener() {
@@ -247,11 +278,8 @@ public class FragmentNewIssues extends Fragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                     avi.hide();
                     engineerModels = AllEngineerParser.parse(jsonArray);
-                    Iterator iterator=engineerModels.iterator();
-                    while (iterator.hasNext()){
-                        Log.d("hasNext",iterator.next().toString());
-                    }
-                    //}
+                    engSearch();
+
                 } catch (Exception nm) {
                     snack("Error getting Engineers");
                     avi.hide();
@@ -266,13 +294,13 @@ public class FragmentNewIssues extends Fragment {
         return engineerModels;
     }
 
-    private ArrayList<AssetModel> getData() {
+    private ArrayList<AssetListModel> getData() {
         avi.show();
-        assetModels = new ArrayList<>();
+        assetList = new ArrayList<>();
         HashMap<String, String> params = new HashMap<>();
 
 
-        String url = APiConstants.Companion.getAllAssets();
+        String url = APiConstants.Companion.getSeachAssetsList();
 
 
         Log.d("getData", url + "\n" + params.toString() + "\n" + prefManager.getToken());
@@ -295,7 +323,7 @@ public class FragmentNewIssues extends Fragment {
             @Override
             public void onSuccess(@NotNull String response) {
 
-                Log.d("getData", response);
+                Log.d("getDataAss", response);
 
                 try {
 
@@ -303,14 +331,15 @@ public class FragmentNewIssues extends Fragment {
                     //if(!jsonObject.getBoolean("error")){
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-                    assetModels = AssetParser.parse(jsonArray);
+                    assetList = AssetListParser.parse(jsonArray);
 
+                    assetSearch();
 
-                    if(engineerModels!=null&&assetModels!=null){
-                        avi.hide();
-                        initUI();
-
-                    }
+//                    if(engineerModels!=null&&assetList!=null){
+//                        avi.hide();
+//                        initUI();
+//
+//                    }
 
                     //}
                 } catch (Exception nm) {
@@ -323,7 +352,39 @@ public class FragmentNewIssues extends Fragment {
         });
 
 
-        return assetModels;
+        return assetList;
+    }
+
+    private void assetSearch() {
+        for (AssetListModel assetListModel : assetList) {
+            Log.d("deuass", assetListModel.getValue());
+        }
+        new AssetSearchDialogCompat(getActivity(), "Search...",
+                "What are you looking for...?", null, assetList,
+                (SearchResultListener<AssetListModel>) (dialog, item, position) -> {
+                    assetId.setText(assetList.get(position).getValue());
+                    assetid = Integer.valueOf(assetList.get(position).getLable());
+                    assetListModel = assetList.get(position);
+
+                    //assetModel = assetModels.get(position);
+                    //m.dismiss();
+
+                    dialog.dismiss();
+                }).show();
+    }
+
+    private void engSearch() {
+
+        new EngineerSearchDialogCompat(getActivity(), "Search...",
+                "What are you looking for...?", null, engineerModels,
+                (SearchResultListener<EngineerModel>) (dialog, item, position) -> {
+                    engId.setText(engineerModels.get(position).getFull_name());
+                    engid = Integer.valueOf(engineerModels.get(position).getId());
+                    //assetModel = assetModels.get(position);
+                    // m.dismiss();
+
+                    dialog.dismiss();
+                }).show();
     }
 
     private void initUI() {
@@ -332,76 +393,91 @@ public class FragmentNewIssues extends Fragment {
         assetId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                m = new MaterialDialog.Builder(FragmentNewIssues.this.getActivity())
-                        .title("Assets")
-                        .adapter(new AssignmentSearchAdapter(FragmentNewIssues.this.getActivity(), assetModels, new OnclickRecyclerListener() {
-                            @Override
-                            public void onClickListener(int position) {
-                                assetId.setText(assetModels.get(position).getAsset_name());
-                                assetModel = assetModels.get(position);
-                                m.dismiss();
+
+
+                getAssets();
+
+//                m = new MaterialDialog.Builder(Objects.requireNonNull(FragmentNewIssues.this.getActivity()))
+//                        .title("Search Options")
+//                        .content("Choose How to search for the asset")
+//                        .positiveText("By Code")
+//                        .negativeText("Choose From Asset List")
+//                        .show();
+
+//                new CustomerSearchDialogCompat(getActivity(),"Search....","Search for assets",null,assetList(SearchResultListener<AssetListModel>))
+
+
+//                m = new MaterialDialog.Builder(Objects.requireNonNull(FragmentNewIssues.this.getActivity()))
+//                        .title("Select Assets")
+//                        .adapter(new AssetAdapter(FragmentNewIssues.this.getActivity(), assetModels, new OnclickRecyclerListener() {
+//                            @Override
+//                            public void onClickListener(int position) {
+//                                assetId.setText(assetModels.get(position).getAsset_name());
+//                                assetModel = assetModels.get(position);
+//                                m.dismiss();
+////
+//                            }
 //
-                            }
-
-                            @Override
-                            public void onLongClickListener(int position) {
-
-                            }
-
-                            @Override
-                            public void onCheckedClickListener(int position) {
-
-                            }
-
-                            @Override
-                            public void onMoreClickListener(int position) {
-
-                            }
-
-                            @Override
-                            public void onClickListener(int adapterPosition, @NotNull View view) {
-
-                            }
-                        }), null)
-                        .show();
+//                            @Override
+//                            public void onLongClickListener(int position) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onCheckedClickListener(int position) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onMoreClickListener(int position) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onClickListener(int adapterPosition, @NotNull View view) {
+//
+//                            }
+//                        }), null)
+//                        .show();
             }
         });
         engId.setOnClickListener(v -> {
+//
+//          m=new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))
+//                    .title("Select Engineer")
+//                    // second parameter is an optional layout manager. Must be a LinearLayoutManager or GridLayoutManager.
+//                    .adapter(new EngineerAdapter(FragmentNewIssues.this.getActivity(), engineerModels, new OnclickRecyclerListener() {
+//                        @Override
+//                        public void onClickListener(int position) {
+//                            engineerModel=engineerModels.get(position);
+//                            engId.setText(engineerModel.getFull_name());
+//                            m.dismiss();
+//
+//                        }
+//
+//                        @Override
+//                        public void onLongClickListener(int position) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onCheckedClickListener(int position) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onMoreClickListener(int position) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onClickListener(int adapterPosition, @NotNull View view) {
+//
+//                        }
+//                    }), null)
+//                    .show();
 
-          m=new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))
-                    .title("Engineer")
-                    // second parameter is an optional layout manager. Must be a LinearLayoutManager or GridLayoutManager.
-                    .adapter(new AssignmentSearchAdapter(1, engineerModels, new OnclickRecyclerListener() {
-                        @Override
-                        public void onClickListener(int position) {
-                            engineerModel=engineerModels.get(position);
-                        engId.setText(engineerModel.getFull_name());
-                        m.dismiss();
-
-                        }
-
-                        @Override
-                        public void onLongClickListener(int position) {
-
-                        }
-
-                        @Override
-                        public void onCheckedClickListener(int position) {
-
-                        }
-
-                        @Override
-                        public void onMoreClickListener(int position) {
-
-                        }
-
-                        @Override
-                        public void onClickListener(int adapterPosition, @NotNull View view) {
-
-                        }
-                    }), null)
-                    .show();
-
+            initData();
         });
 
 

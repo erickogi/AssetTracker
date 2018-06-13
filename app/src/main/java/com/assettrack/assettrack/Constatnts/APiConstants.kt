@@ -47,7 +47,7 @@ class APiConstants {
 
 
         var seachClientsList: String = baseUrl + "allcustomerlist"
-        var seachAssetsList: String = baseUrl + "allcustomerlist"
+        var seachAssetsList: String = baseUrl + "allpartslist"
         var seachEngineersList: String = baseUrl + "allcustomerlist"
         var seachIssuesList: String = baseUrl + "allcustomerlist"
         //asset/delete/2

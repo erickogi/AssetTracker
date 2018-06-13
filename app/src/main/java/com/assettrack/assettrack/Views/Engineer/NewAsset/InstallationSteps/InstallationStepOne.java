@@ -27,6 +27,7 @@ import com.assettrack.assettrack.Adapters.V1.CategoryAdapter;
 import com.assettrack.assettrack.Adapters.V1.CustomerAdapter;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Constatnts.GLConstants;
+import com.assettrack.assettrack.CustomSearchDialog.Customer.CustomerSearchDialogCompat;
 import com.assettrack.assettrack.Data.Parsers.CategoryParser;
 import com.assettrack.assettrack.Data.Parsers.CustomerParser;
 import com.assettrack.assettrack.Data.PrefManager;
@@ -49,6 +50,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
 
 public class InstallationStepOne extends Fragment implements BlockingStep,DialogSearchCustomer.DialogSearchListener  {
 
@@ -245,7 +248,8 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
                     //if(!jsonObject.getBoolean("error")){
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-                    createDialogCustomer(CustomerParser.parse(jsonArray));
+                    //createDialogCustomer(CustomerParser.parse(jsonArray));
+                    selectCustomer(CustomerParser.parse(jsonArray));
                     // customerModels = CustomerParser.parse(jsonArray);
 
                 } catch (Exception nm) {
@@ -339,11 +343,26 @@ public class InstallationStepOne extends Fragment implements BlockingStep,Dialog
 
                     }
                 }), null)
-                .theme(Theme.LIGHT)
+                .theme(Theme.DARK)
                 .titleGravity(GravityEnum.CENTER)
 
 
                 .show();
+    }
+
+    private void selectCustomer(ArrayList<CustomerModel> parse) {
+        new CustomerSearchDialogCompat(getActivity(), "Search...",
+                "What are you looking for...?", null, parse,
+                (SearchResultListener<CustomerModel>) (dialog, item, position) -> {
+                    customerID = String.valueOf(parse.get(position).getId());
+                    edtCustomerName.setText(parse.get(position).getName());
+                    btnSelectCustomer.setText(parse.get(position).getName());
+
+                    //assetModel = assetModels.get(position);
+                    //m.dismiss();
+
+                    dialog.dismiss();
+                }).show();
     }
 
     private void createDialogCustomer(ArrayList<CustomerModel> parse) {

@@ -2,7 +2,9 @@ package com.assettrack.assettrack.Models;
 
 import java.io.Serializable;
 
-public class EngineerModel implements Serializable{
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class EngineerModel implements Serializable, Searchable {
 
     private int id;
     private String firstname="";
@@ -129,6 +131,11 @@ public class EngineerModel implements Serializable{
 
     public void setRolename(String rolename) {
         this.rolename = rolename;
+    }
+
+    @Override
+    public String getTitle() {
+        return full_name;
     }
 }
 

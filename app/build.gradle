@@ -101,6 +101,7 @@ dependencies {
 
 
     implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
+    compile 'com.github.mirrajabi:search-dialog:1.2.2'
 
     //implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
