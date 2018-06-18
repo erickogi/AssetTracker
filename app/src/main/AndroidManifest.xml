@@ -73,6 +73,14 @@
         <activity
             android:name=".Views.Admin.Categories.ActivityManageCategories"
             android:label="@string/category"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Admin.Dashboard.DashBoard"
+            android:label="@string/title_activity_dash_board"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Admin.Dashboard.DashBoardAdmin"
+            android:label="@string/title_activity_dash_board_admin"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -38,7 +38,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-
     //implementation 'com.haozhang.libary:android-slanted-textview:1.2'
     implementation 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
     implementation 'com.android.support:multidex:1.0.3'
@@ -56,7 +55,7 @@ dependencies {
     }
     //compile 'com.github.nguyenhoanglam:ImagePicker:1.2.1'
 
-   // implementation 'com.contrarywind:Android-PickerView:4.1.2'
+    // implementation 'com.contrarywind:Android-PickerView:4.1.2'
     implementation('com.wdullaer:materialdatetimepicker:3.3.0') {
         exclude group: 'com.android.support'
     }
@@ -102,6 +101,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
     compile 'com.github.mirrajabi:search-dialog:1.2.2'
+
+    compile 'com.github.mancj:SlimChart:0.1.2'
 
     //implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 

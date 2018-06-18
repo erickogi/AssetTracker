@@ -484,7 +484,13 @@ public class FragmentAsset extends Fragment {
             if (swipe_refresh_layout != null && swipe_refresh_layout.isRefreshing()) {
                 swipe_refresh_layout.setRefreshing(false);
             }
-            ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setCount(count, STATUS_ID);
+            try {
+                ((ActivityManageAssets) Objects.requireNonNull(getActivity())).setCount(count, STATUS_ID);
+
+
+            } catch (Exception nm) {
+
+            }
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -571,6 +577,8 @@ public class FragmentAsset extends Fragment {
                 case R.id.update_status:
 
                     break;
+
+                default:
             }
             return false;
         });
@@ -588,6 +596,8 @@ public class FragmentAsset extends Fragment {
                     dialog.dismiss();
 
                     break;
+
+                default:
             }
         };
 

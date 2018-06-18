@@ -15,6 +15,7 @@ import com.assettrack.assettrack.R
 import com.assettrack.assettrack.Utils.DrawerClass
 import com.assettrack.assettrack.Views.Admin.Categories.ActivityManageCategories
 import com.assettrack.assettrack.Views.Admin.Clients.ActivityManageClients
+import com.assettrack.assettrack.Views.Admin.Dashboard.DashBoardAdmin
 import com.assettrack.assettrack.Views.Admin.Engineers.ActivityManageEngineers
 import com.assettrack.assettrack.Views.Admin.Issues.ActivityManageIssues
 import com.assettrack.assettrack.Views.Engineer.NewAsset.Installation
@@ -42,7 +43,7 @@ class ActivityManageAssets : AppCompatActivity() {
 
         DrawerClass.getDrawer(prefManager.getUserData().getEmail(), prefManager.getUserData().getFull_name(), this@ActivityManageAssets, toolbar, object : DrawerItemListener {
             override fun dashboardClicked() {
-
+                startActivity(Intent(this@ActivityManageAssets, DashBoardAdmin::class.java))
             }
 
             override fun categoriesClicked() {
