@@ -128,6 +128,7 @@ public class KogiSlantText extends View {
             case MODE_RIGHT_BOTTOM_TRIANGLE:
                 path = getModeRightBottomTrianglePath(path, w, h);
                 break;
+            default:
         }
         path.close();
         canvas.drawPath(path, mPaint);
@@ -267,6 +268,7 @@ public class KogiSlantText extends View {
                 xy[3] = h / 2 + offset;
                 xy[4] = -ROTATE_ANGLE;
                 break;
+            default:
         }
         return xy;
     }

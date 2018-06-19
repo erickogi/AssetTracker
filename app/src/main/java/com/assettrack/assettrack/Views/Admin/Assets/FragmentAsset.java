@@ -210,7 +210,7 @@ public class FragmentAsset extends Fragment {
         progressDialog.setMessage("working....");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         if (currentPage == 1) {
             progressDialog.show();
         }
@@ -230,6 +230,8 @@ public class FragmentAsset extends Fragment {
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+                initUI(STATUS_ID, new ArrayList<>());
+
                 Log.d("getData", error.getErrorBody());
             }
 
@@ -239,6 +241,7 @@ public class FragmentAsset extends Fragment {
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+                initUI(STATUS_ID, new ArrayList<>());
                 Log.d("getData", error);
 
             }
