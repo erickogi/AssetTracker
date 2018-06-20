@@ -20,6 +20,7 @@ class APiConstants {
         var faultyAssets: String = baseUrl + "faulty"
         var workingAssets: String = baseUrl + "working"
         var groundedAssets: String = baseUrl + "grounded"
+        var globalCount: String = baseUrl + "globalcount"
         var getIssues: String = baseUrl + "issue"
         //i/issue/5/update
         //assets/

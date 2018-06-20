@@ -8,7 +8,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.assettrack.assettrack"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -102,8 +102,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
     compile 'com.github.mirrajabi:search-dialog:1.2.2'
 
-    compile 'com.github.mancj:SlimChart:0.1.2'
-
+    //compile 'com.github.mancj:SlimChart:0.1.2'
+    compile 'com.github.AnyChart:AnyChart-Android:0.2.7'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     //implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
 
