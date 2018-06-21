@@ -567,6 +567,36 @@ public class FragmentIssueList extends Fragment {
     }
 
     private void reassign(IssueModel issueModel) {
+        //issueId
+        //engineerTo
+        //status
+        //reassignedFrom
+
+        // 1 Assigned
+        //2 Cancelled
+        //3 Reassinged
+
+        // fragment= FragmentNewIssues()
+        //popOutFragments()
+        //setFragment()
+
+
+        fragment = new FragmentNewIssues();
+        Bundle args = new Bundle();
+        args.putSerializable("data", issueModel);
+        args.putSerializable("type", true);
+        fragment.setArguments(args);
+        popOutFragments();
+        setUpView();
+
+
+
+
+
+
+
+
+
 
     }
 

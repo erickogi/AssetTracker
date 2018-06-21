@@ -118,7 +118,12 @@ public class FragmentNewIssues extends Fragment {
                 isReassignment = getArguments().getBoolean("type");
                 if (isReassignment) {
                     assetId.setEnabled(false);
+
                     issueModel = (IssueModel) getArguments().getSerializable("data");
+
+                    assetId.setText(issueModel.getAssetModel().getAsset_name());
+
+
 
 
                 }
@@ -147,42 +152,34 @@ public class FragmentNewIssues extends Fragment {
     }
 
     private void submitIssue() {
-        if (assetListModel == null || engineerModel == null) {
-            snack("No data loaded");
-        }else {
+        if (isReassignment) {
+
+            //issueId
+            //engineerTo
+            //status
+            //reassignedFrom
+
+            // 1 Assigned
+            //2 Cancelled
+            //3 Reassinged
+
+            int issueId = issueModel.getId();
+            String engineerTo = "" + engid;
+            String status = "2";
+            String reassignedFrom = issueModel.getEngineer_id();
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Uploading....");
+            progressDialog.setMessage("Reassigning....");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.show();
 
-            HashMap<String,String> params=new HashMap<>();
-            params.put("Asset", String.valueOf(assetid));
-            params.put("AssetId", String.valueOf(assetid));
-            params.put("AssetName", String.valueOf(assetId.getText().toString()));
-            params.put("Engineer", "" + engid);
-
-
-            params.put("AssetCode", assetListModel.getCode());
-            params.put("CustomerName", assetListModel.getCustomerModel().getName());
-            params.put("CustomerId", "" + assetListModel.getCustomerModel().getId());
-            params.put("StartDate","");
-            params.put("CloseDate","");
-            params.put("NextdueService","");
-            params.put("TravelHours","");
-            params.put("LabourHours","");
-            params.put("FailureDesc","");
-            params.put("FailurSolution","");
-            params.put("EngineerComment","");
-
-            params.put("CustomerComment","");
-            params.put("Safety","");
-            params.put("Status","");
-            params.put("PartsState","");
-            params.put("workticketparts","");
-
-            Request.Companion.postRequest(APiConstants.Companion.getCreateIssue() , params, prefManager.getToken(), new RequestListener() {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("issueId", "" + issueId);
+            params.put("engineerTo", engineerTo);
+            params.put("status", status);
+            params.put("reassignedFrom", reassignedFrom);
+            Request.Companion.postRequest(APiConstants.Companion.getReAssignments(), params, prefManager.getToken(), new RequestListener() {
                 @Override
                 public void onError(@NotNull ANError error) {
                     if (progressDialog != null && progressDialog.isShowing()) {
@@ -231,7 +228,92 @@ public class FragmentNewIssues extends Fragment {
             });
 
 
+        } else {
+            if (assetListModel == null || engineerModel == null) {
+                snack("No data loaded");
+            } else {
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("Uploading....");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
+                HashMap<String, String> params = new HashMap<>();
+                params.put("Asset", String.valueOf(assetid));
+                params.put("AssetId", String.valueOf(assetid));
+                params.put("AssetName", String.valueOf(assetId.getText().toString()));
+                params.put("Engineer", "" + engid);
+
+
+                params.put("AssetCode", assetListModel.getCode());
+                params.put("CustomerName", assetListModel.getCustomerModel().getName());
+                params.put("CustomerId", "" + assetListModel.getCustomerModel().getId());
+                params.put("StartDate", "");
+                params.put("CloseDate", "");
+                params.put("NextdueService", "");
+                params.put("TravelHours", "");
+                params.put("LabourHours", "");
+                params.put("FailureDesc", "");
+                params.put("FailurSolution", "");
+                params.put("EngineerComment", "");
+
+                params.put("CustomerComment", "");
+                params.put("Safety", "");
+                params.put("Status", "");
+                params.put("PartsState", "");
+                params.put("workticketparts", "");
+
+                Request.Companion.postRequest(APiConstants.Companion.getCreateIssue(), params, prefManager.getToken(), new RequestListener() {
+                    @Override
+                    public void onError(@NotNull ANError error) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        Log.d("saveIssue", error.toString());
+                        snack(error.getMessage());
+
+                    }
+
+                    @Override
+                    public void onError(@NotNull String error) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        Log.d("saveIssue", error);
+                        snack(error);
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NotNull String response) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        Log.d("saveIssue", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (!jsonObject.optBoolean("errror")) {
+                                snack("Issue Created Successfully");
+                                //((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
+                                // popOutFragments();
+                                ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
+
+
+                                //Objects.requireNonNull(getActivity()).finish();
+                            } else {
+                                snack("Error saving asset");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            snack("Error saving asset");
+                        }
+
+                    }
+                });
+
+
+            }
         }
     }
 

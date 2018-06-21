@@ -8,10 +8,15 @@ public class Parts implements Serializable {
     private String id;
     private String assets_id;
     private String work_ticket;
+
+
+    //sent
     private String partnumber;
     private String quantity;
-    private String state;
+    private String state;//1 used 2 needed
     private String description;
+
+
     private String created_at;
     private String updated_at;
 

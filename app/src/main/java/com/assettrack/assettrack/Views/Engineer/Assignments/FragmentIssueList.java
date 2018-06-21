@@ -556,7 +556,7 @@ public class FragmentIssueList extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setMessage(message).setPositiveButton("Okay", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).setView(R.layout.dialog_search_item)
                     .show();
         }
 

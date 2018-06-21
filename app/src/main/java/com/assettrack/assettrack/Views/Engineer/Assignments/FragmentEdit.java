@@ -2,6 +2,7 @@ package com.assettrack.assettrack.Views.Engineer.Assignments;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,18 +11,24 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidnetworking.error.ANError;
 import com.assettrack.assettrack.Constatnts.APiConstants;
 import com.assettrack.assettrack.Data.PrefManager;
 import com.assettrack.assettrack.Data.Request;
 import com.assettrack.assettrack.Interfaces.UtilListeners.RequestListener;
 import com.assettrack.assettrack.Models.IssueModel;
+import com.assettrack.assettrack.Models.Parts;
 import com.assettrack.assettrack.R;
 import com.assettrack.assettrack.Utils.NetworkUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -32,17 +39,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     TextInputEditText edtStart, edtEnd, edtFix, edtSoln, edtEngRemarks, edtCustRemarks, edtSafety,
-            edtTravelHours, edtLabourHours, edtNextServiceDate;
+            edtTravelHours, edtLabourHours, edtNextServiceDate, edtPartsUsed, edtPartsNeeded;
     private ProgressDialog progressDialog;
     private PrefManager prefManager;
     private View view;
     private Button btnEdit;
+    private MaterialDialog m;
     private Button btnSave;
 
     private IssueModel issueModel = null;
@@ -50,6 +59,9 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
     private String date;
     private String time;
     private int isWhich = 0;
+
+
+    private ArrayList<Parts> parts;
 
     void setUpView() {
         if (fragment != null) {
@@ -77,6 +89,7 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        parts = new ArrayList<>();
 
         //((A) Objects.requireNonNull(getActivity())).setFab(R.drawable.ic_save_black_24dp,false);
 
@@ -101,6 +114,23 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         edtLabourHours = view.findViewById(R.id.edt_labour_hours);
         edtNextServiceDate = view.findViewById(R.id.edt_next_service_date);
         btnSave = view.findViewById(R.id.btn_save);
+
+        edtPartsNeeded = view.findViewById(R.id.edt_parts_need);
+        edtPartsUsed = view.findViewById(R.id.edt_parts_used);
+
+
+        edtPartsUsed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPart(1);
+            }
+        });
+        edtPartsNeeded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPart(2);
+            }
+        });
 
         edtStart.setEnabled(false);
         edtEnd.setEnabled(false);
@@ -155,6 +185,10 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         }
 
 
+    }
+
+    private void addPart(int i) {
+        Toast.makeText(getContext(), "Add parts functionality", Toast.LENGTH_SHORT).show();
     }
 
     private void update() {
@@ -225,12 +259,60 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         issueModelnew.setLabour_hours(edtLabourHours.getText().toString());
         issueModelnew.setNextdueservice(edtNextServiceDate.getText().toString());
 
-        updateIssues(issueModelnew);
+        boolean wrapInScrollView = true;
+        m = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("Options")
+                .customView(R.layout.dialog_update_issue, wrapInScrollView)
+                .positiveText("Continue")
+                .negativeText("Back")
+
+                .titleColorRes(R.color.red)
+                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                .backgroundColorRes(R.color.material_blue_grey_800)
+                .positiveColorRes(R.color.green_color_picker)
+                //.neutralColorRes(R.color.material_red_500)
+                .negativeColorRes(R.color.dark_greyish)
+                .widgetColorRes(R.color.colorAccent)
+                .buttonRippleColorRes(R.color.red)
+
+                .onPositive((dialog, which) -> {
+                    View view = m.getView();
+                    RadioGroup group = view.findViewById(R.id.radioGrp);
+                    RadioButton rbClose = view.findViewById(R.id.close);
+                    RadioButton rbOpen = view.findViewById(R.id.open);
+                    TextInputEditText edtComent = view.findViewById(R.id.edt_comment);
+
+                    String comment = "";
+                    String status = "1";//1 in progress 2 closed
+
+                    if (!TextUtils.isEmpty(edtComent.getText().toString())) {
+                        comment = edtComent.getText().toString();
+                    }
+
+                    if (group.getCheckedRadioButtonId() == -1) {
+                        snack("Select atleast one option");
+                    } else {
+                        if (group.getCheckedRadioButtonId() == R.id.open) {
+                            status = "1";
+                        } else {
+
+                            status = "2";
+                        }
+
+                        m.dismiss();
+                        updateIssues(issueModelnew, comment, status);
+
+                    }
+
+
+                })
+                .onNegative((dialog, which) -> m.dismiss())
+                .show();
 
 
     }
 
-    private void updateIssues(IssueModel issueModel) {
+    private void updateIssues(IssueModel issueModel, String commment, String status) {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Updating....");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -249,12 +331,17 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             jsonObject.put("LabourHours", issueModel.getLabour_hours());
             jsonObject.put("FailureDesc", issueModel.getFailure_desc());
             jsonObject.put("FailurSolution", issueModel.getFailure_soln());
-            jsonObject.put("Status", "1");
+            jsonObject.put("Status", status);
+            jsonObject.put("IssueComment", commment);
             jsonObject.put("Safety", issueModel.getSafety());
             jsonObject.put("Engineer", issueModel.getEngineer_id());
             jsonObject.put("EngineerComment", issueModel.getEngineer_comment());
             jsonObject.put("CustomerId", issueModel.getCustomers_id());
             jsonObject.put("CustomerComment", issueModel.getCustomer_comment());
+            jsonObject.put("Workticketparts", issueModel.getParts());
+
+
+
 
 
         } catch (Exception nm) {
@@ -294,7 +381,10 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.optBoolean("errror")) {
                         snack("Updated Successfully");
-                        alertDialog("Do you wish to close this issue now ?", issueModel);
+
+                        ((Assignments) Objects.requireNonNull(getActivity())).popOut();
+
+                        //alertDialog("Do you wish to close this issue now ?", issueModel);
                         //popOutFragments();
                         // ((ActivityManageIssues) Objects.requireNonNull(getActivity())).popOut();
 
@@ -319,7 +409,7 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
 
-                        if (NetworkUtils.Companion.isConnectionFast(getActivity())) {
+                        if (NetworkUtils.Companion.isConnectionFast(Objects.requireNonNull(getActivity()))) {
                             startIssue(2, issueModel.getWork_tickets());
                         } else {
                             snack("Check your internet connection");
