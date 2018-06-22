@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidnetworking.error.ANError;
@@ -132,6 +131,8 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             }
         });
 
+        updateParts();
+
         edtStart.setEnabled(false);
         edtEnd.setEnabled(false);
         edtEnd.setVisibility(View.GONE);
@@ -171,24 +172,120 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         });
 
         if (issueModel != null) {
-            edtStart.setText(issueModel.getStartdate());
-            edtEnd.setText(issueModel.getClosedate());
-            edtFix.setText(issueModel.getFailure_desc());
-            edtSoln.setText(issueModel.getFailure_soln());
-            edtEngRemarks.setText(issueModel.getEngineer_comment());
-            edtCustRemarks.setText(issueModel.getCustomer_comment());
-            edtSafety.setText(issueModel.getSafety());
-            edtTravelHours.setText(issueModel.getTravel_hours());
-            edtLabourHours.setText(issueModel.getLabour_hours());
-            edtNextServiceDate.setText(issueModel.getNextdueservice());
+
+            edtStart.setText(isNull(issueModel.getStartdate()));
+            edtEnd.setText(isNull(issueModel.getClosedate()));
+            edtFix.setText(isNull(issueModel.getFailure_desc()));
+            edtSoln.setText(isNull(issueModel.getFailure_soln()));
+            edtEngRemarks.setText(isNull(issueModel.getEngineer_comment()));
+            edtCustRemarks.setText(isNull(issueModel.getCustomer_comment()));
+            edtSafety.setText(isNull(issueModel.getSafety()));
+            edtTravelHours.setText(isNull(issueModel.getTravel_hours()));
+            edtLabourHours.setText(isNull(issueModel.getLabour_hours()));
+            edtNextServiceDate.setText(isNull(issueModel.getNextdueservice()));
+
 
         }
 
 
     }
 
+    private String isNull(String a) {
+
+        return a == null || a.equals("null") ? "" : a;
+    }
+
     private void addPart(int i) {
-        Toast.makeText(getContext(), "Add parts functionality", Toast.LENGTH_SHORT).show();
+        m = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("Parts")
+                .customView(R.layout.dialog_issues_part, true)
+                .positiveText("Continue")
+                .negativeText("Back")
+
+                .titleColorRes(R.color.red)
+                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                //.backgroundColorRes(R.color.material_blue_grey_800)
+                .positiveColorRes(R.color.green_color_picker)
+                //.neutralColorRes(R.color.material_red_500)
+                .negativeColorRes(R.color.dark_greyish)
+                .widgetColorRes(R.color.colorAccent)
+                .buttonRippleColorRes(R.color.red)
+
+                .onPositive((dialog, which) -> {
+                    View view = m.getView();
+                    TextInputEditText edtName = view.findViewById(R.id.edt_name);
+                    TextInputEditText edtQty = view.findViewById(R.id.edt_quantity);
+                    TextInputEditText edtNu = view.findViewById(R.id.edt_part_number);
+
+                    String name = "";
+                    String no = "";
+                    String qty = "";//1 in progress 2 closed
+
+                    if (!TextUtils.isEmpty(edtName.getText().toString())) {
+                        name = edtName.getText().toString();
+
+                    } else {
+                        edtName.requestFocus();
+                        edtName.setError("Required");
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(edtQty.getText().toString())) {
+                        qty = edtQty.getText().toString();
+                    } else {
+                        edtQty.requestFocus();
+                        edtQty.setError("Required");
+                        return;
+
+                    }
+                    if (!TextUtils.isEmpty(edtNu.getText().toString())) {
+                        no = edtNu.getText().toString();
+                    } else {
+                        edtNu.requestFocus();
+                        edtNu.setError("Required");
+                        return;
+
+                    }
+                    Parts parts = new Parts();
+
+                    if (i == 1) {
+                        parts.setState("1");
+                    } else {
+                        parts.setState("2");
+                    }
+                    parts.setDescription(name);
+                    parts.setPartnumber(no);
+                    parts.setQuantity(qty);
+                    parts.setAssets_id(issueModel.getAssets_id());
+                    parts.setWork_ticket(issueModel.getWork_tickets());
+
+                    this.parts.add(parts);
+                    m.dismiss();
+
+                    updateParts();
+
+
+                })
+                .onNegative((dialog, which) -> m.dismiss())
+                .show();
+    }
+
+    private void updateParts() {
+        //1 used 2 needed
+        String neededParts = "";
+        String usedParts = "";
+        if (this.parts != null) {
+            for (Parts parts : this.parts) {
+                if (parts.getState() == "2") {
+                    neededParts = neededParts + "," + parts.getDescription();
+                } else {
+                    usedParts = usedParts + "," + parts.getDescription();
+                }
+
+            }
+        }
+
+        edtPartsNeeded.setText(neededParts.replaceFirst("^,", ""));
+        edtPartsUsed.setText(usedParts.replaceFirst("^,", ""));
     }
 
     private void update() {
@@ -258,6 +355,8 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
         issueModelnew.setTravel_hours(edtTravelHours.getText().toString());
         issueModelnew.setLabour_hours(edtLabourHours.getText().toString());
         issueModelnew.setNextdueservice(edtNextServiceDate.getText().toString());
+        issueModelnew.setSafety(edtSafety.getText().toString());
+        issueModelnew.setParts(parts);
 
         boolean wrapInScrollView = true;
         m = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
@@ -338,7 +437,14 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             jsonObject.put("EngineerComment", issueModel.getEngineer_comment());
             jsonObject.put("CustomerId", issueModel.getCustomers_id());
             jsonObject.put("CustomerComment", issueModel.getCustomer_comment());
-            jsonObject.put("Workticketparts", issueModel.getParts());
+            jsonObject.put("workticketparts", issueModel.getPart());
+
+//            Gson gson = new Gson();
+//            String json = gson.toJson(parts);
+//
+//            jsonObject.put("Workticketparts", json);
+
+
 
 
 
@@ -348,7 +454,7 @@ public class FragmentEdit extends Fragment implements DatePickerDialog.OnDateSet
             nm.printStackTrace();
         }
 
-        Log.d("updateIssueur", APiConstants.Companion.getUpdateIssue() + "" + issueModel.getId() + "/update");
+        Log.d("updateIssueur", jsonObject.toString() + "" + APiConstants.Companion.getUpdateIssue() + "" + issueModel.getId() + "/update");
         Request.Companion.putRequest(APiConstants.Companion.getUpdateIssue() + "" + issueModel.getId() + "/update", jsonObject, prefManager.getToken(), new RequestListener() {
             @Override
             public void onError(@NotNull ANError error) {

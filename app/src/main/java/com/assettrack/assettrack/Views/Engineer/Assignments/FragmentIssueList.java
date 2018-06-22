@@ -179,7 +179,7 @@ public class FragmentIssueList extends Fragment {
 
 
         });
-        initUI(new ArrayList<>());
+        //initUI(new ArrayList<>());
         initSearchView();
 
 //

@@ -130,13 +130,30 @@ public class IssueParser {
 
                         ArrayList<Parts> partsArrayList = new ArrayList<>();
 
-                        JSONArray parts = jsonAsset.optJSONArray("accdesc");
+//
+//                        "partsdesc": [
+//                        {
+//                            "id": 1,
+//                                "asset_id": 1,
+//                                "issues_id": 2,
+//                                "part_no": "2134567",
+//                                "desc": "Testing part one",
+//                                "qty": 1,
+//                                "part_state": 2,
+//                                "created_at": "2018-06-21 00:00:00",
+//                                "updated_at": null,
+//                                "deleted_at": null
+//                        }
+
+                        JSONArray parts = jsonAsset.optJSONArray("partsdesc");
                         for (int b = 0; b < parts.length(); b++) {
                             JSONObject jsonPart = parts.optJSONObject(b);
                             Parts part = new Parts();
                             part.setAssets_id(jsonPart.optString("assets_id"));
                             part.setId(jsonPart.optString("id"));
-                            part.setDescription(jsonPart.optString("description"));
+                            part.setDescription(jsonPart.optString("desc"));
+                            part.setQuantity(jsonPart.optString("qty"));
+                            part.setState(jsonPart.optString("part_state"));
                             part.setCreated_at(jsonPart.optString("created_at"));
                             part.setUpdated_at(jsonPart.optString("updated_at"));
 

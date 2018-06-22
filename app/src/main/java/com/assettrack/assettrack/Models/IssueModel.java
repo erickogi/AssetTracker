@@ -1,5 +1,9 @@
 package com.assettrack.assettrack.Models;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -35,7 +39,19 @@ public class IssueModel implements Serializable{
     private CustomerModel customerModel=new CustomerModel();
 
     public ArrayList<Parts> getParts() {
+        Gson gson = new Gson();
+        String json = gson.toJson(parts);
+
         return parts;
+    }
+
+    public String getPart() {
+        Gson gson = new Gson();
+        String json = gson.toJson(parts);
+
+        Log.d("partsjson", json);
+
+        return json;
     }
 
     public void setParts(ArrayList<Parts> parts) {

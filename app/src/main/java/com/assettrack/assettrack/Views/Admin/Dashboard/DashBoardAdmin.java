@@ -163,16 +163,48 @@ public class DashBoardAdmin extends AppCompatActivity {
     private void initUI(Counts counts) {
 
 
+//        PieChart chart = findViewById(R.id.chart);
+//
+//        List<PieEntry> entries = new ArrayList<>();
+//
+//        entries.add(new PieEntry(counts.getWcount(), "Working"));
+//        entries.add(new PieEntry(counts.getEcount(), "Faulty"));
+//        entries.add(new PieEntry(counts.getCcount(), "Grounded"));
+//        // entries.add(new PieEntry(30.8f, "Blue"));
+//
+//        PieDataSet set = new PieDataSet(entries, "Assets");
+//        PieData data = new PieData(set);
+//        int colors[] = {R.color.colorPrimary, R.color.red, R.color.orange_color_picker};
+//        set.setColors(colors, this);
+//        chart.setData(data);
+//
+//        Description description = new Description();
+//        description.setText("Assets Summary");
+//        chart.setCenterText("All " + counts.getAcount());
+//        chart.setDescription(description);
+//        chart.invalidate(); // refresh
+//
+        initIssues(counts);
+        initAssets(counts);
+        initCust(counts);
+        initEng(counts);
+
+
+    }
+
+    private void initAssets(Counts counts) {
+
+
         PieChart chart = findViewById(R.id.chart);
 
         List<PieEntry> entries = new ArrayList<>();
 
         entries.add(new PieEntry(counts.getWcount(), "Working"));
-        entries.add(new PieEntry(counts.getEcount(), "Faulty"));
-        entries.add(new PieEntry(counts.getCcount(), "Grounded"));
+        entries.add(new PieEntry(counts.getFcount(), "Faulty"));
+        entries.add(new PieEntry(counts.getGcount(), "Grounded"));
         // entries.add(new PieEntry(30.8f, "Blue"));
 
-        PieDataSet set = new PieDataSet(entries, "Assets");
+        PieDataSet set = new PieDataSet(entries, "Assets " + counts.getAcount());
         PieData data = new PieData(set);
         int colors[] = {R.color.colorPrimary, R.color.red, R.color.orange_color_picker};
         set.setColors(colors, this);
@@ -185,52 +217,88 @@ public class DashBoardAdmin extends AppCompatActivity {
         chart.invalidate(); // refresh
 
 
-//
-//
-//
-//
-//        Pie pie = AnyChart.pie();
-//        Log.d("getData", "found "+counts.getAcount());
-//
-//        List<DataEntry> data = new ArrayList<>();
-//        data.add(new ValueDataEntry("Working", counts.getWcount()));
-//        data.add(new ValueDataEntry("Faulty", counts.getFcount()));
-//        data.add(new ValueDataEntry("Grounded", counts.getGcount()));
-//
-//        pie.setData(data);
-//
-//        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-//        anyChartView.setChart(pie);
-//
-//
-//
-//
-//        Pie pieIssues = AnyChart.pie();
-//        Log.d("getData", "found "+counts.getAcount());
-//
-//        List<DataEntry> datai = new ArrayList<>();
-//        datai.add(new ValueDataEntry("Open", counts.getOissues()));
-//        datai.add(new ValueDataEntry("In Progress", counts.getPissues()));
-//        datai.add(new ValueDataEntry("Closed", counts.getCissues()));
-//
-//        pieIssues.setData(datai);
-//
-//        AnyChartView anyChartViewi = findViewById(R.id.any_chart_issues);
-//        anyChartViewi.setChart(pieIssues);
-//
-//
-//        Pie pieUsers = AnyChart.pie();
-//        Log.d("getData", "found "+counts.getAcount());
-//
-//        List<DataEntry> datausers = new ArrayList<>();
-//        datausers.add(new ValueDataEntry("Engineers", counts.getEcount()));
-//        datausers.add(new ValueDataEntry("Clients", counts.getCcount()));
-//       // datausers.add(new ValueDataEntry("Closed", counts.getCissues()));
-//
-//        pieUsers.setData(datausers);
-//
-//        AnyChartView anyChartViewusers = findViewById(R.id.any_chart_users);
-//        anyChartViewusers.setChart(pieUsers);
+    }
+
+    private void initIssues(Counts counts) {
+
+
+        PieChart chart = findViewById(R.id.chartIssues);
+
+        List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(counts.getOissues(), "Open"));
+        entries.add(new PieEntry(counts.getPissues(), "In Progress"));
+        entries.add(new PieEntry(counts.getCissues(), "CLosed"));
+        // entries.add(new PieEntry(30.8f, "Blue"));
+
+        PieDataSet set = new PieDataSet(entries, "Issues");
+        PieData data = new PieData(set);
+        int colors[] = {R.color.colorPrimary, R.color.red, R.color.orange_color_picker};
+        set.setColors(colors, this);
+        chart.setData(data);
+
+        Description description = new Description();
+        description.setText("Issues Summary");
+        chart.setCenterText("Issues ");
+        chart.setDescription(description);
+        chart.setEntryLabelTextSize(13.5f);
+        chart.invalidate(); // refresh
+
+
+    }
+
+    private void initEng(Counts counts) {
+
+
+        PieChart chart = findViewById(R.id.chartEng);
+
+        List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(counts.getEcount(), "Engineers"));
+//        entries.add(new PieEntry(counts.getEcount(), "Faulty"));
+//        entries.add(new PieEntry(counts.getCcount(), "Grounded"));
+//        // entries.add(new PieEntry(30.8f, "Blue"));
+
+        PieDataSet set = new PieDataSet(entries, "Engineers " + counts.getEcount());
+        PieData data = new PieData(set);
+        int colors[] = {R.color.colorPrimary, R.color.red, R.color.orange_color_picker};
+        set.setColors(colors, this);
+        chart.setData(data);
+
+        Description description = new Description();
+        description.setText("Engineers Summary");
+        chart.setCenterText("All " + +counts.getEcount());
+        chart.setDescription(description);
+        chart.invalidate(); // refresh
+
+
+    }
+
+    private void initCust(Counts counts) {
+
+
+        PieChart chart = findViewById(R.id.chartCust);
+
+        List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(counts.getCcount(), "Customers"));
+//        entries.add(new PieEntry(counts.getEcount(), "Faulty"));
+//        entries.add(new PieEntry(counts.getCcount(), "Grounded"));
+//        // entries.add(new PieEntry(30.8f, "Blue"));
+
+        PieDataSet set = new PieDataSet(entries, "CLients " + counts.getCcount());
+        PieData data = new PieData(set);
+        int colors[] = {R.color.colorPrimary, R.color.red, R.color.orange_color_picker};
+        set.setColors(colors, this);
+        chart.setData(data);
+
+        Description description = new Description();
+        description.setText("Clients Summary");
+        chart.setCenterText("All " + counts.getCcount());
+        chart.setDescription(description);
+        chart.invalidate(); // refresh
+
+
     }
 
 }
