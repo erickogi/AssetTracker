@@ -3,10 +3,11 @@ package com.assettrack.assettrack.Views.Shared.Login
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.EditText
+
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.androidnetworking.error.ANError
@@ -26,8 +27,8 @@ import org.json.JSONObject
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
-    private var edtID: EditText? = null
-    private var edtPassword:EditText? = null
+    private var edtID: TextInputEditText? = null
+    private var edtPassword: TextInputEditText? = null
     private var dialog: MaterialDialog? = null
 
     private lateinit var prefManager: PrefManager
@@ -92,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun login(edtID: EditText?, edtPassword: EditText?): String {
+    fun login(edtID: TextInputEditText?, edtPassword: TextInputEditText?): String {
 
         if (edtID?.text.toString().isEmpty() || edtID?.text.toString() == "") {
             edtID?.requestFocus()
